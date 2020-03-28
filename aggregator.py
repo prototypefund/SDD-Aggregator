@@ -99,6 +99,6 @@ for x in range(0,days):
     dict = list_result.T.to_dict()
     dict
     # s3_client.put_object(Bucket='sdd-s3-basebucket', Key="aggdata/live", Body=json.dumps(dict))
-    response = s3_client.put_object(Bucket='sdd-s3-basebucket', Key='aggdata/{}/{}/{}'.format(str(date.year).zfill(4), str(date.month).zfill(2),
+    response = s3_client.put_object(Bucket='sdd-s3-bucket', Key='aggdata/{}/{}/{}'.format(str(date.year).zfill(4), str(date.month).zfill(2),
                                                                   str(date.day).zfill(2)), Body=json.dumps(dict))
     print(response)
