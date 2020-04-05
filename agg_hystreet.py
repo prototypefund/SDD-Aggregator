@@ -44,17 +44,17 @@ def aggregate(date):
 
 
     # compute mean for each ags (if multiple stations are in the same landkreis)
-    grouped = data_with_ags.groupby(['ags', 'date'], sort=False).agg(
-        {'pedestrians_count': 'mean', 'min_temperature': 'mean', 'temperature': 'mean', 'weather_condition': lambda x: x.iloc[0], 'relative_pedestrians_count': 'mean', 'city': lambda x: x.iloc[0], 'lat': lambda x: x.iloc[0], 'lon': lambda x: x.iloc[0], 'landkreis': lambda x: x.iloc[0]}).reset_index()
-
+    grouped = pd.DataFrame(data_with_ags.groupby(['landkreis'], sort=False)['relative_pedestrians_count'].mean())
+    grouped = grouped.reset_index()
+    #print(grouped)
     list_results = []
 
     for index, row in grouped.iterrows():
         data_dict = {
             'hystreet_score': row['relative_pedestrians_count'],
             'landkreis': row['landkreis']
-
         }
         list_results.append(data_dict)
 
     return list_results
+#aggregate(date.today() - timedelta(days = 2))
