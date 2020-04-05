@@ -9,7 +9,7 @@ import settings
 def aggregate(date):
     s3_client = boto3.client('s3')
     #date = datetime.date.today() - datetime.timedelta(days=1)
-    response = s3_client.get_object(Bucket='sdd-s3-basebucket', Key='tomtom/{}/{}/{}.json'.format(str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2), str(date)))
+    response = s3_client.get_object(Bucket=settings.BUCKET, Key='tomtom/{}/{}/{}.json'.format(str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2), str(date)))
     data_current = pd.DataFrame(json.loads(response["Body"].read()))
     data_current["ags"] = coords_convert(data_current)
     data_current["score"] = data_current["TrafficIndexLive"] / data_current["TrafficIndexHistoric"]
