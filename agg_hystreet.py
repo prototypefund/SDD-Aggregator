@@ -12,7 +12,7 @@ def aggregate(date):
     clientFirehose = boto3.client('firehose')
 
     response = s3_client.get_object(Bucket=settings.BUCKET, Key='hystreet/{}/{}/{}'.format(
-        str(date.year).zfill(4), str(date.month).zfill(2), str(date.day-3).zfill(2)))
+        str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2)))
     result = pd.DataFrame(json.loads(response["Body"].read()))
     data = data.append(result.loc[result["pedestrians_count"] > 0])
 
