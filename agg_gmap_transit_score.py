@@ -86,4 +86,4 @@ def aggregate(date):
         #print(input)
     return list_results
 
-aggregate(date.today() - timedelta(days = 1))
+#aggregate(date.today() - timedelta(days = 1))
