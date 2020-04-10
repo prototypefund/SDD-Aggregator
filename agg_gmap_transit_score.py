@@ -23,8 +23,8 @@ def aggregate(date):
             result["hour"] = x
             data = data.append(result)
         except Exception as e:
-            print("No gmap data for " + str(date) + " " + str(e))
-            return
+            print("No gmap data for " + str(x) + " " + str(date) + " " + str(e))
+            #return
 
     def normal_popularity(row):
         return row["populartimes"][row["date"].weekday()]["data"][row["hour"]]
@@ -85,3 +85,5 @@ def aggregate(date):
 
         #print(input)
     return list_results
+
+aggregate(date.today() - timedelta(days = 1))
