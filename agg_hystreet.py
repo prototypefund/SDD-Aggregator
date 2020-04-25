@@ -1,7 +1,7 @@
 import boto3
 import pandas as pd
 import json
-from datetime import datetime, timedelta, date
+from datetime import datetime
 from coords_to_kreis import coords_convert
 import settings
 

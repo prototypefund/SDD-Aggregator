@@ -14,9 +14,10 @@ import json
 import settings
 
 #How far back do you want to aggregate data?
-days = 10
+days = 20
 
 s3_client = boto3.client('s3')
+
 for x in range(0,days):
     date = date.today() - timedelta(days = x)
     print(date)

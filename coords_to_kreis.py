@@ -28,7 +28,7 @@ def coords_convert(df):
     df["geometry"] = df.apply(coord_to_point, axis = 1)
 
     df["geometry"] = df.geometry.apply(lambda x: x if x.is_valid else float("nan"))
-    df = df.dropna()
+    df = df.loc[df.geometry.notna()]
     #df = df.loc[df["geometry"].notna()]
     df = geopandas.GeoDataFrame(df, geometry="geometry")
     df = geopandas.sjoin(df, countries, how="left", op='intersects')
