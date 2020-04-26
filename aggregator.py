@@ -83,7 +83,7 @@ for x in range(0,days):
          airquality_list = pd.DataFrame(agg_airquality(date))
          airquality_list = airquality_list.set_index('landkreis')
          list_result = list_result.join(airquality_list, how="outer")
-     except Exception as e:
+    except Exception as e:
          print("Error Airquality")
          print(e)
 
