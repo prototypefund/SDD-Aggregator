@@ -12,7 +12,7 @@ def aggregate(date):
 
     merged = pd.DataFrame()
     object_list = []
-    s3_objects = s3_client.list_objects_v2(Bucket='sdd-s3-basebucket',
+    s3_objects = s3_client.list_objects_v2(Bucket='sdd-s3-bucket',
                                            Prefix='airquality/{}/{}/{}/'.format(str(date.year).zfill(4),
                                                                                 str(date.month).zfill(2),
                                                                                 str(date.day).zfill(2)))
