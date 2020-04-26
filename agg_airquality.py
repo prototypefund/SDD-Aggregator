@@ -36,10 +36,10 @@ def aggregate(date):
     merged = merged.reset_index()
     list_results = []
     for index, row in merged.iterrows():
-        landkreis = row['landkreis_name']
+        ags = row['ags']
         airquality = row['airquality.aqi']
         data_index = {
-            'landkreis': landkreis,
+            'ags': ags,
             'airquality_score': airquality
         }
         list_results.append(data_index)
