@@ -1,5 +1,6 @@
 import json
 from datetime import date
+import os
 import boto3
 import pandas as pd
 from pandas.io.json import json_normalize
@@ -21,7 +22,7 @@ def aggregate(date):
 
     print("Found " + str(len(s3_objects['Contents'])) + " elements")
     for key in s3_objects['Contents']:
-        airqualityObject = s3_client.get_object(Bucket='sdd-s3-basebucket', Key=key['Key'])
+        airqualityObject = s3_client.get_object(Bucket='sdd-s3-bucket', Key=key['Key'])
         object_body = str(airqualityObject["Body"].read(), 'utf-8')
         airquality_json = json_normalize(json.loads(object_body))
 
