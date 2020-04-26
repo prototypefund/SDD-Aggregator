@@ -79,13 +79,13 @@ for x in range(0,days):
         print("Error Fahrrad")
         print(e)
 
-    # try:
-    #     airquality_list = pd.DataFrame(agg_airquality(date))
-    #     airquality_list = airquality_list.set_index('landkreis')
-    #     list_result = list_result.join(airquality_list, how="outer")
-    # except Exception as e:
-    #     print("Error Airquality")
-    #     print(e)
+    try:
+         airquality_list = pd.DataFrame(agg_airquality(date))
+         airquality_list = airquality_list.set_index('landkreis')
+         list_result = list_result.join(airquality_list, how="outer")
+     except Exception as e:
+         print("Error Airquality")
+         print(e)
 
     try:
         tomtom_list = pd.DataFrame(agg_tomtom(date))
