@@ -80,9 +80,13 @@ for x in range(0,days):
         print(e)
 
     try:
-         airquality_list = pd.DataFrame(agg_airquality(date))
-         airquality_list = airquality_list.set_index('ags')
-         list_result = list_result.join(airquality_list, how="outer")
+         airquality_list = agg_airquality(date)
+         if airquality_list == []:
+            print("airquality: No data")
+         else:
+             airquality_df = pd.DataFrame(airquality_list)
+             airquality_df = airquality_df.set_index('ags')
+             list_result = list_result.join(airquality_df, how="outer")
     except Exception as e:
          print("Error Airquality")
          print(e)
