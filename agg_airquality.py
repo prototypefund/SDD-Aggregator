@@ -5,7 +5,7 @@ import boto3
 import pandas as pd
 from pandas.io.json import json_normalize
 
-#date = date.today()
+date = date.today()
 
 
 def aggregate(date):
@@ -30,8 +30,8 @@ def aggregate(date):
 
     merged = pd.concat(object_list)
 
-    merged['airquality.aqi'] = pd.to_numeric(merged['airquality.aqi'], errors='coerce')
-    merged = merged.groupby("landkreis_name")["airquality.aqi"].mean() / 100
+    merged['airquality.aqi'] = pd.to_numeric(merged['airquality.aqi'], errors='coerce') # here we could also grab other values like pm25, p10, no2, o3,...
+    merged = merged.groupby("ags")["airquality.aqi"].mean() / 100
 
     merged = merged.reset_index()
     list_results = []
