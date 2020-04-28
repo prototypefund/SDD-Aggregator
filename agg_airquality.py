@@ -5,8 +5,6 @@ import boto3
 import pandas as pd
 from pandas.io.json import json_normalize
 
-date = date.today()
-
 
 def aggregate(date):
     s3_client = boto3.client('s3')
