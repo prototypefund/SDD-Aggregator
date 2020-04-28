@@ -3,7 +3,7 @@ from datetime import date
 import os
 import boto3
 import pandas as pd
-from pandas.io.json import json_normalize
+from pandas import json_normalize
 
 
 def aggregate(date):
