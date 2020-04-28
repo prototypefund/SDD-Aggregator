@@ -15,10 +15,12 @@ def aggregate(date):
                                            Prefix='airquality/{}/{}/{}/'.format(str(date.year).zfill(4),
                                                                                 str(date.month).zfill(2),
                                                                                 str(date.day).zfill(2)))
-    if 'Contents' not in s3_objects:
+    if 'Contents' in s3_objects:
+        print("agg_airquality: Found " + str(len(s3_objects['Contents'])) + " elements")
+    else:
+        print("agg_airquality: Found 0 elements, skip this date.")
         return []
-
-    print("Found " + str(len(s3_objects['Contents'])) + " elements")
+    
     for key in s3_objects['Contents']:
         airqualityObject = s3_client.get_object(Bucket='sdd-s3-bucket', Key=key['Key'])
         object_body = str(airqualityObject["Body"].read(), 'utf-8')
@@ -27,6 +29,10 @@ def aggregate(date):
         object_list.append(pd.DataFrame(airquality_json))
 
     merged = pd.concat(object_list)
+    
+    if not "ags" in merged:
+        print("agg_airquality: No 'ags' column in dataframe, skip this date.")
+        return []
 
     merged['airquality.aqi'] = pd.to_numeric(merged['airquality.aqi'], errors='coerce') # here we could also grab other values like pm25, p10, no2, o3,...
     merged = merged.groupby("ags")["airquality.aqi"].mean() / 100
