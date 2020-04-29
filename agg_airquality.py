@@ -1,50 +1,16 @@
-import json
-from datetime import date
+import sys
 import os
-import boto3
-import pandas as pd
-from pandas import json_normalize
+sys.path.insert(0,"1_classes/")
 
+import S3
+import Aggregation
 
 def aggregate(date):
-    s3_client = boto3.client('s3')
-
-    merged = pd.DataFrame()
-    object_list = []
-    s3_objects = s3_client.list_objects_v2(Bucket='sdd-s3-bucket',
-                                           Prefix='airquality/{}/{}/{}/'.format(str(date.year).zfill(4),
-                                                                                str(date.month).zfill(2),
-                                                                                str(date.day).zfill(2)))
-    if 'Contents' in s3_objects:
-        print("agg_airquality: Found " + str(len(s3_objects['Contents'])) + " elements")
-    else:
-        print("agg_airquality: Found 0 elements, skip this date.")
-        return []
-    
-    for key in s3_objects['Contents']:
-        airqualityObject = s3_client.get_object(Bucket='sdd-s3-bucket', Key=key['Key'])
-        object_body = str(airqualityObject["Body"].read(), 'utf-8')
-        airquality_json = json_normalize(json.loads(object_body))
-
-        object_list.append(pd.DataFrame(airquality_json))
-
-    merged = pd.concat(object_list)
-    
-    if not "ags" in merged:
-        print("agg_airquality: No 'ags' column in dataframe, skip this date.")
-        return []
-
-    merged['airquality.aqi'] = pd.to_numeric(merged['airquality.aqi'], errors='coerce') # here we could also grab other values like pm25, p10, no2, o3,...
-    merged = merged.groupby("ags")["airquality.aqi"].mean() / 100
-
-    merged = merged.reset_index()
-    list_results = []
-    for index, row in merged.iterrows():
-        ags = row['ags']
-        airquality = row['airquality.aqi']
-        data_index = {
-            'ags': ags,
-            'airquality_score': airquality
-        }
-        list_results.append(data_index)
-    return list_results
+    s3Handler = S3.S3_Handler()
+    listOfFile = s3Handler.listFromAWS("airquality", date)
+    fullData = []
+    for pathItem in listOfFile:
+        jsonItem = s3Handler.readFromAWS(pathItem)
+        if jsonItem != False:
+            fullData = fullData + jsonItem
+    return Aggregation.Aggregator.aggregateJson(fullData,"airquality","aqi","airquality_score")
