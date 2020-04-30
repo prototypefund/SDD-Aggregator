@@ -1,6 +1,6 @@
 import sys
 import os
-sys.path.insert(0,"1_classes/")
+sys.path.insert(0,"./1_classes")
 
 import S3
 import Aggregation
