@@ -14,7 +14,7 @@ import json
 import settings
 
 #How far back do you want to aggregate data?
-days = 20
+days = 31
 
 s3_client = boto3.client('s3')
 
