@@ -12,7 +12,7 @@ def aggregate(date):
     response = s3_client.get_object(Bucket=settings.BUCKET, Key='tomtom/{}/{}/{}.json'.format(str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2), str(date)))
     data_current = pd.DataFrame(json.loads(response["Body"].read()))
     data_current["ags"] = coords_convert(data_current)
-    data_current["score"] = data_current["TrafficIndexLive"]# / data_current["TrafficIndexHistoric"]
+    data_current["score"] = data_current["TrafficIndexLive"]/100 # / data_current["TrafficIndexHistoric"]
     data_current.replace(np.inf, np.nan, inplace=True)
     result = pd.DataFrame(data_current.groupby("ags")["score"].mean())
 
