@@ -2,7 +2,6 @@ import boto3
 import pandas as pd
 import json
 from datetime import datetime
-from coords_to_kreis import coords_convert
 import settings
 
   # - timedelta(days=10)  # only for test purposes
@@ -40,7 +39,6 @@ def aggregate(date):
     stations_with_ags = pd.read_csv('data/stations_with_ags.csv')
     data_with_ags = pd.merge(data, stations_with_ags, left_on='station_id',
                              right_on='stationid', how='left').drop('stationid', axis=1)
-    data_with_ags['landkreis'] = coords_convert(data_with_ags)
 
 
     # compute mean for each ags (if multiple stations are in the same landkreis)
