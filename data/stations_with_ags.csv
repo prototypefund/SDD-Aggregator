@@ -1,128 +1,128 @@
-stationid,name,city,ags,lat,lon,address,distance_m
-47,Schildergasse (West),Köln,05315000,50.9364674,6.9493833,"Schildergasse, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50667, Deutschland",356
-48,Hohe Straße (Mitte),Köln,05315000,50.9353861,6.9561997,"Hohe Straße, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50667, Deutschland",723
-49,Westenhellweg (Mitte),Dortmund,05913000,51.5143119,7.4629448,"Westenhellweg, Mitte, Dortmund, Nordrhein-Westfalen, 44137, Deutschland",344
-50,Ehrenstraße (Ost),Köln,05315000,50.9383118,6.941502,"Ehrenstraße, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50672, Deutschland",1090
-51,Remigiusstraße,Bonn,05314000,50.7339763,7.1003292,"Remigiusstraße, Bonn-Zentrum, Stadtbezirk Bonn, Bonn, Nordrhein-Westfalen, 53111, Deutschland",83
-52,Sternstraße,Bonn,05314000,50.7357043,7.0988814,"Sternstraße, Bonn-Zentrum, Stadtbezirk Bonn, Bonn, Nordrhein-Westfalen, 53111, Deutschland",293
-53,Schadowstraße (West),Düsseldorf,05111000,51.2274614,6.7863326,"Schadowstraße, Stadtmitte, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40212, Deutschland",2368
-54,Schadowstraße (Ost),Düsseldorf,05111000,51.2274614,6.7863326,"Schadowstraße, Stadtmitte, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40212, Deutschland",2368
-55,Flinger Straße (Ost),Düsseldorf,05111000,51.2251385,6.7731226,"Flinger Straße, Altstadt, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40213, Deutschland",2026
-56,Königsallee Ostseite (Süd),Düsseldorf,05111000,51.2229101,6.7784179,"Königsallee, Stadtmitte, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40212, Deutschland",2376
-56,Königsallee Ostseite (Süd),Düsseldorf,05111000,51.2229101,6.7784179,"Königsallee, Stadtmitte, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40212, Deutschland",2376
-57,Schlösserstraße,Erfurt,16051000.0,50.9765925,11.030948411842118,"Schlösserstraße, Altstadt, Erfurt, Thüringen, 99084, Deutschland",777
-58,Große Bockenheimer Straße,Frankfurt a.M.,6412000.0,50.1148008,8.6735555,"Große Bockenheimer Straße, Innenstadt, Innenstadt 1, Frankfurt am Main, Hessen, 60313, Deutschland",1069
-59,Goethestraße,Frankfurt a.M.,6412000.0,50.1140694,8.673867,"Goethestraße, Innenstadt, Innenstadt 1, Frankfurt am Main, Hessen, 60313, Deutschland",1063
-63,Georgstraße,Hannover,03241001,52.3756404,9.7329323,"Georgstraße, Mitte, Hannover, Region Hannover, Niedersachsen, 30159, Deutschland",564
-64,Große Packhofstraße,Hannover,03241001,52.3757912,9.7383759,"Große Packhofstraße, Rosenquartier, Mitte, Hannover, Region Hannover, Niedersachsen, 30159, Deutschland",815
-65,Karmarschstraße,Hannover,03241001,52.3708201,9.7361797,"Karmarschstraße, Mitte, Hannover, Region Hannover, Niedersachsen, 30159, Deutschland",331
-67,Kaiserstraße (Mitte),Karlsruhe,8212000.0,49.0100848,8.3931202,"Kaiserstraße, Innenstadt-West Westlicher Teil, Innenstadt-West, Karlsruhe, Baden-Württemberg, 76133, Deutschland",1000
-68,Petersstraße,Leipzig,14713000,51.3377511,12.3747726,"Petersstraße, Leipzig-Zentrum, Mitte, Leipzig, Sachsen, 04109, Deutschland",433
-69,Hainstraße,Leipzig,14713000,51.3417327,12.3738016,"Hainstraße, Leipzig-Zentrum, Mitte, Leipzig, Sachsen, 04109, Deutschland",361
-71,Schusterstraße,Mainz,07315000,50.0015564,8.2713849,"Schusterstraße, Altstadt, Mainz, Rheinland-Pfalz, 55116, Deutschland",174
-72,Stadthausstraße,Mainz,07315000,50.0008405,8.2713699,"Stadthausstraße, Altstadt, Mainz, Rheinland-Pfalz, 55116, Deutschland",96
-73,Neuhauser Straße,München,09162,48.1384811,11.5693802,"Neuhauser Straße, Bezirksteil Kreuzviertel, Stadtbezirk 01 Altstadt-Lehel, München, Bayern, 80331, Deutschland",687
-74,Schützenstraße,München,09162,48.140083,11.5615895,"Schützenstraße, Bezirksteil Ludwigsvorstadt-Kliniken, Stadtbezirk 02 Ludwigsvorstadt-Isarvorstadt, München, Bayern, 80335, Deutschland",1566
-75,Bahnhofstraße,Saarbrücken,10041100.0,49.238602549999996,6.990666132001479,"Bahnhofstraße, Hauptbahnhof, Sankt Johann, Bezirk Mitte, Saarbrücken, Regionalverband Saarbrücken, Saarland, 66111, Deutschland",1186
-76,Königstraße (Mitte),Stuttgart,08111000,48.7782957,9.1781591,"Königstraße, Neue Vorstadt, Stuttgart-Mitte, Stuttgart, Baden-Württemberg, 70173, Deutschland",319
-77,Königstraße (Süd),Stuttgart,08111000,48.7782957,9.1781591,"Königstraße, Neue Vorstadt, Stuttgart-Mitte, Stuttgart, Baden-Württemberg, 70173, Deutschland",319
-78,Münsterplatz ,Ulm,8421000.0,48.398336900000004,9.991038228313956,"Münsterplatz, Ulm, Baden-Württemberg, 89073, Deutschland",1007
-79,Kirchgasse (Mitte),Wiesbaden,06414000,50.0777823,8.2382977,"Kirchgasse, Mitte, Wiesbaden, Hessen, 65185, Deutschland",1429
-81,Spitalerstraße,Hamburg,02000,53.5519945,10.0027713,"Spitalerstraße, Altstadt, Hamburg, 20095, Deutschland",944
-81,Spitalerstraße,Hamburg,02000,53.5519945,10.0027713,"Spitalerstraße, Altstadt, Hamburg, 20095, Deutschland",944
-84,Rathausgasse,Freiburg,08311000,47.995773,7.849758,"Rathausgasse, Altstadt-Mitte, Altstadt, Freiburg im Breisgau, Baden-Württemberg, 79098, Deutschland",350
-85,Am Brand,Mainz,07315000,50.0005603,8.2726134,"Am Brand, Altstadt, Mainz, Rheinland-Pfalz, 55116, Deutschland",177
-86,Löhrstraße (Mitte),Koblenz,07111,50.3562736,7.5912089,"Löhrstraße, Mitte, Koblenz, Rheinland-Pfalz, 56068, Deutschland",1193
-87,Poststraße,Bonn,05314000,50.7332612,7.0976424,"Poststraße, Bonn-Zentrum, Stadtbezirk Bonn, Bonn, Nordrhein-Westfalen, 53111, Deutschland",260
-88,Breite Gasse,Nürnberg,09564000,49.4500928,11.0744759,"Breite Gasse, Altstadt, St. Lorenz, Lorenz, Nürnberg, Bayern, 90402, Deutschland",727
-89,Kaiserstraße,Nürnberg,09564000,49.4522998,11.0751788,"Kaiserstraße, Altstadt, St. Lorenz, Lorenz, Nürnberg, Bayern, 90403, Deutschland",905
-90,Karolinenstraße,Nürnberg,09564000,49.4509655,11.0778783,"Karolinenstraße, Altstadt, St. Lorenz, Lorenz, Nürnberg, Bayern, 90402, Deutschland",1114
-91,Neuer Wall,Hamburg,02000,53.5526734,9.9929485,"Neuer Wall, Neustadt, Hamburg, 20354, Deutschland",263
-92,Jungfernstieg,Hamburg,2000000.0,53.5520952,9.9933974,"Jungfernstieg, Alsterarkaden, Neustadt, Hamburg, 20354, Deutschland",216
-93,Große Bleichen,Hamburg,2000000.0,53.5521001,9.9868267,"Große Bleichen, Neustadt, Hamburg, 20354, Deutschland",836
-93,Große Bleichen,Hamburg,2000000.0,53.5521001,9.9868267,"Große Bleichen, Neustadt, Hamburg, 20354, Deutschland",836
-94,Kurfürstendamm Nordseite (Ost),Berlin,11000000.0,52.5037608,13.3299456,"Berlin, Kurfürstendamm, Charlottenburg, Charlottenburg-Wilmersdorf, 10719, Deutschland",3771
-94,Kurfürstendamm Nordseite (Ost),Berlin,11000000.0,52.5037608,13.3299456,"Berlin, Kurfürstendamm, Charlottenburg, Charlottenburg-Wilmersdorf, 10719, Deutschland",3771
-95,Planken (Mitte),Mannheim,8222000.0,49.4861403,8.4703402,"Planken, Filsbach, Innenstadt, Innenstadt/Jungbusch, Mannheim, Baden-Württemberg, 68161, Deutschland",665
-96,Planken (Ost),Mannheim,8222000.0,49.4861403,8.4703402,"Planken, Filsbach, Innenstadt, Innenstadt/Jungbusch, Mannheim, Baden-Württemberg, 68161, Deutschland",665
-97,Kurfürstendamm Südseite (Ost),Berlin,11000000.0,52.5037608,13.3299456,"Berlin, Kurfürstendamm, Charlottenburg, Charlottenburg-Wilmersdorf, 10719, Deutschland",3771
-98,Tauentzienstraße Südseite (West),Berlin,11000000.0,52.5034002,13.3386373,"Berlin, Tauentzienstraße, Charlottenburg, Berlin, 10789, Deutschland",3434
-100,Rothenburg,Münster,05515,51.9609497,7.6270115,"Rothenburg, Dom, Altstadt, Münster-Mitte, Münster, Nordrhein-Westfalen, 48143, Deutschland",1034
-102,Bürgermeister-Fischer-Straße,Augsburg,09761,48.3665013,10.8949559,"Bürgermeister-Fischer-Straße, Innenstadt, St. Ulrich-Dom, Innenstadt, Augsburg, Bayern, 86150, Deutschland",1289
-103,Schuchardstraße,Darmstadt,06411000,49.8715225,8.6530036,"Schuchardstraße, Stadtzentrum, Darmstadt-Mitte, Darmstadt, Hessen, 64283, Deutschland",406
-104,Ernst-Ludwig-Straße,Darmstadt,06411000,49.8723399,8.6536802,"Ernst-Ludwig-Straße, Stadtzentrum, Darmstadt-Mitte, Darmstadt, Hessen, 64283, Deutschland",506
-107,Krahnstraße (Süd),Osnabrück,03404,52.2766517,8.0417897,"Krahnstraße, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland",609
-108,Große Straße (Mitte),Osnabrück,03404,52.27441065,8.047358647706904,"Große Straße, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland",911
-109,"Krahnstraße (Mitte, Altstadt)",Osnabrück,03404,52.2766517,8.0417897,"Krahnstraße, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland",609
-110,Johannisstraße (Nord),Osnabrück,03404,52.2665763,8.0535651,"Johannisstraße, Neustadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland",2003
-111,Jürgensort,Osnabrück,03404,52.2744688,8.0462921,"Jürgensort, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland",859
-114,Herrenteichsstraße (Ost),Osnabrück,03404,52.2759989,8.0468243,"Herrenteichsstraße, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland",728
-116,Herrenteichsstraße (West),Osnabrück,03404,52.2759989,8.0468243,"Herrenteichsstraße, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland",728
-117,Ludgeristraße,Münster,05515,51.9574433,7.6270887,"Ludgeristraße, Dom, Altstadt, Münster-Mitte, Münster, Nordrhein-Westfalen, 48143, Deutschland",661
-118,Grüner Markt,Bamberg,09471,49.892577,10.8884355,"Grüner Markt, Lorenzhöfe, Inselstadt, Bamberg, Bayern, 96047, Deutschland",368
-122,Seltersweg,Gießen,06531005,50.5822409,8.6705565,"Seltersweg, Weststadt, Kleinlinden, Gießen, Landkreis Gießen, Hessen, 35390, Deutschland",2276
-123,Ludwigstraße,Ingolstadt,09161,48.7643243,11.426726,"Ludwigstraße, Altstadt Südost, Mitte, Ingolstadt, Bayern, 85049, Deutschland",772
-125,Kettwiger Straße,Essen,05113,51.4556068,7.012868,"Kettwiger Straße, Stadtkern, Stadtbezirk I, Essen, Nordrhein-Westfalen, 45127, Deutschland",882
-126,Neue Straße,Braunschweig,3101000.0,52.2637723,10.5183034,"Neue Straße, Innenstadt, Braunschweig, Niedersachsen, 38100, Deutschland",589
-127,Poststraße,Braunschweig,3101000.0,52.2626184,10.5193601,"Poststraße, Innenstadt, Braunschweig, Niedersachsen, 38100, Deutschland",487
-128,Hutfiltern,Braunschweig,3101000.0,52.2624684,10.5207176,"Hutfiltern, Innenstadt, Braunschweig, Niedersachsen, 38100, Deutschland",350
-129,Schuhstraße,Braunschweig,3101000.0,52.2638857,10.5217345,"Schuhstraße, Innenstadt, Braunschweig, Niedersachsen, 38100, Deutschland",210
-130,Damm,Braunschweig,3101000.0,52.2623615,10.5235755,"Damm, Innenstadt, Braunschweig, Niedersachsen, 38100, Deutschland",149
-131,Sack,Braunschweig,3101000.0,52.2641682,10.5216993,"Sack, Innenstadt, Braunschweig, Niedersachsen, 38100, Deutschland",218
-132,Langer Hof,Braunschweig,3101000.0,52.2641095,10.5261639,"Langer Hof, Innenstadt, Braunschweig, Niedersachsen, 38100, Deutschland",283
-134,Wilhelmstraße,Reutlingen,8415061.0,48.491553,9.2122306,"Wilhelmstraße, Reutlingen, Landkreis Reutlingen, Baden-Württemberg, 72764, Deutschland",1031
-135,Schönbornstraße,Würzburg,09663,49.7956125,9.9310656,"Schönbornstraße, Würzburg Altstadt, Würzburg, Bayern, 97070, Deutschland",1022
-138,Brotstraße,Trier,07211000,49.7537897,6.6397112,"Brotstraße, Altstadt, Mitte-Gartenfeld, Trier, Rheinland-Pfalz, 54290, Deutschland",820
-139,Fleiner Straße,Heilbronn,08121000,49.1402353,9.2186304,"Fleiner Straße, Rosenberg, Neckarbogen, Heilbronn, Baden-Württemberg, 74072, Deutschland",151
-140,Fleischstraße,Trier,07211000,49.7563114,6.6400702,"Fleischstraße, Altstadt, Mitte-Gartenfeld, Trier, Rheinland-Pfalz, 54290, Deutschland",1020
-141,Hauptstraße (West),Heidelberg,08221,49.4122415,8.7120673,"Hauptstraße, Altstadt, Heidelberg, Baden-Württemberg, 69117, Deutschland",1421
-142,Hauptstraße (Süd),Erlangen,09562000,49.6021745,11.0035014,"Hauptstraße, Burgberg, Erlangen, Bayern, 91054, Deutschland",490
-143,Kaiser-Joseph-Straße (Mitte),Freiburg,08311000,47.9919716,7.8486291,"Kaiser-Joseph-Straße, Altstadt-Ring, Altstadt, Freiburg im Breisgau, Baden-Württemberg, 79098, Deutschland",304
-144,Hochstraße (Mitte),Krefeld,05114000,51.331805,6.5625906,"Hochstraße, Innenstadt, Krefeld-Mitte, Krefeld, Nordrhein-Westfalen, 47798, Deutschland",2349
-145,Rheinstraße (West),Krefeld,05114,51.3348359,6.5708064,"Rheinstraße, Innenstadt, Krefeld-Mitte, Krefeld, Nordrhein-Westfalen, 47799, Deutschland",1663
-146,Hirschstraße,Ulm,8421000.0,48.3982869,9.9888156,"Hirschstraße, Weststadt, Ulm, Baden-Württemberg, 89073, Deutschland",1251
-147,Ludwigstraße,Passau,9275159.0,48.5738419,13.4578862,"Ludwigstraße, Hofbauerngut, Altstadt, Passau, Bayern, 94032, Deutschland",641
-148,Werner-Senger-Straße,Limburg,06533009,50.3876425,8.0602669,"Werner-Senger-Straße, Blumenrod, Limburg a. d. Lahn, Landkreis Limburg-Weilburg, Hessen, 65549, Deutschland",1230
-150,Zeil (Mitte),Frankfurt a.M.,06438009,50.11430335,8.681703968462612,"Zeil, Innenstadt, Innenstadt 1, Frankfurt am Main, Hessen, 60313, Deutschland",316
-151,Stiftstraße,Stuttgart,08111000,48.7765149,9.1773658,"Stiftstraße, Rathaus, Stuttgart-Mitte, Stuttgart, Baden-Württemberg, 70173, Deutschland",277
-153,Große Straße (Süd),Osnabrück,03404,52.27441065,8.047358647706904,"Große Straße, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland",911
-154,Poststraße,Wuppertal,05124000,51.2577407,7.1475761,"Poststraße, Gemarkung Elberfeld, Wuppertal, Nordrhein-Westfalen, 42103, Deutschland",1139
-155,Georgstraße  (West),Osnabrück,03404,52.2747661,8.0481529,"Georgstraße, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland",920
-157,Mittelstraße,Düsseldorf,05111000,51.2246255,6.7741534,"Mittelstraße, Altstadt, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40213, Deutschland",2092
-158,Hohe Straße (Süd),Köln,05315000,50.9353861,6.9561997,"Hohe Straße, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50667, Deutschland",723
-159,Schildergasse (Mitte),Köln,05315000,50.9364674,6.9493833,"Schildergasse, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50667, Deutschland",356
-160,Schildergasse (Ost),Köln,05315000,50.9364674,6.9493833,"Schildergasse, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50667, Deutschland",356
-161,Stresemannstraße,Bielefeld,05711,52.0248819,8.5331578,"Stresemannstraße, Mitte, Bielefeld, Nordrhein-Westfalen, 33602, Deutschland",1437
-162,Bahnhofstraße (Mitte),Bielefeld,05711000,51.9438207,8.5786397,"Altmühlstraße, Verler Dreieck, Sennestadt, Bielefeld, Nordrhein-Westfalen, 33689, Deutschland",1015
-163,Bahnhofstraße (Süd),Bielefeld,05711000,51.9438207,8.5786397,"Altmühlstraße, Verler Dreieck, Sennestadt, Bielefeld, Nordrhein-Westfalen, 33689, Deutschland",1015
-164,Prager Straße (Nord),Dresden,14612000,51.0437481,13.7355142,"Prager Straße, Seevorstadt-Ost/Großer Garten, Seevorstadt, Altstadt, Dresden, Sachsen, 01069, Deutschland",761
-165,Kaufingerstraße,München,09162,48.137750350000005,11.572932953288827,"Kaufingerstraße, Bezirksteil Kreuzviertel, Stadtbezirk 01 Altstadt-Lehel, München, Bayern, 80331, Deutschland",286
-166,Maximilianstraße (Mitte),München,09162,48.1372062,11.5899466,"Maximilianstraße, Bezirksteil Maximilianeum, Stadtbezirk 05 Au-Haidhausen, München, Bayern, 80538, Deutschland",1598
-167,Zeppelinstraße ,Köln,05315000,50.9369896,6.9488152,"Zeppelinstraße, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50667, Deutschland",428
-168,Hohe Straße (Nord),Köln,05315000,50.9353861,6.9561997,"Hohe Straße, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50667, Deutschland",723
-169,Westernstraße,Paderborn,05774032,51.7166229,8.7503355,"Westernstraße, Univiertel, Paderborn, Kreis Paderborn, Nordrhein-Westfalen, 33098, Deutschland",833
-170,Adalbertstraße (West),Aachen,05313,50.7752422,6.0928546,"Adalbertstraße, Kaiserplatz, Burtscheid, Aachen-Mitte, Aachen, Städteregion Aachen, Nordrhein-Westfalen, 52062, Deutschland",1232
-171,Hauptstraße,Bergisch-Gladbach,05378004,50.9915895,7.1388777,"Hauptstraße, Irlenfelder Hof, Bergisch Gladbach, Rheinisch-Bergischer Kreis, Nordrhein-Westfalen, 51465, Deutschland",1098
-172,Obernstraße,Bremen,04011000,53.0784228,8.8029685,"Obernstraße, Altstadt, Mitte, Stadtbezirk Bremen-Mitte, Bremen, 28195, Deutschland",232
-205,Ehrenstraße (Mitte),Köln,05315000,50.9383118,6.941502,"Ehrenstraße, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50672, Deutschland",1090
-206,Kröpeliner Straße (West),Rostock,13003000.0,54.0884273,12.132454,"Kröpeliner Straße, Nördliche Altstadt, Stadtmitte, Ortsbeirat 14 : Stadtmitte, Rostock, Mecklenburg-Vorpommern, 18055, Deutschland",2856
-207,Breite Straße (Mitte),Lübeck,01003,53.8712032,10.6884468,"Breite Straße, Innenstadt, Lübeck, Schleswig-Holstein, 23552, Deutschland",203
-208,Hoher Weg,Hildesheim,03254021,52.1525477,9.9503812,"Hoher Weg, Altstadt, Stadtmitte/Neustadt, Hildesheim, Landkreis Hildesheim, Niedersachsen, 31134, Deutschland",2121
-209,Lange Straße,Oldenburg,03403000,53.1428662,8.2132747,"Lange Straße, Heiligengeistviertel, Innenstadt, Oldenburg, Niedersachsen, 26122, Deutschland",874
-210,Achternstraße,Oldenburg,03403000,53.1404641,8.2146351,"Achternstraße, Nikolaiviertel, Innenstadt, Oldenburg, Niedersachsen, 26122, Deutschland",1175
-244,Weender Straße (Süd),Göttingen,03152012,51.5362614,9.9347299,"Weender Straße, Am Leinebogen, Innenstadt, Göttingen, Landkreis Göttingen, Niedersachsen, 37073, Deutschland",619
-245,Hindenburgstraße (Mitte),Mönchengladbach,05116000,51.1969896,6.4438912,"Hindenburgstraße, Gladbach, Pesch, Mönchengladbach, Nordrhein-Westfalen, 41061, Deutschland",1214
-246,Westenhellweg (Ost),Dortmund,05913000,51.5143119,7.4629448,"Westenhellweg, Mitte, Dortmund, Nordrhein-Westfalen, 44137, Deutschland",344
-248,Bahnhofstraße (West),Brilon,05958012,51.3991078,8.5751925,"Bahnhofstraße, Brilon, Hochsauerlandkreis, Nordrhein-Westfalen, 59929, Deutschland",163
-249,Bahnhofstraße (Mitte),Brilon,05958012,51.3991078,8.5751925,"Bahnhofstraße, Brilon, Hochsauerlandkreis, Nordrhein-Westfalen, 59929, Deutschland",163
-250,Bürgerturmstraße,Biberach an der Riß,08426,48.099743,9.7902801,"Bürgerturmstraße, Birkendorf, Hagenbuch, Biberach an der Riß, Verwaltungsgemeinschaft Biberach an der Riß, Landkreis Biberach, Baden-Württemberg, 88400, Deutschland",689
-251,Annastraße,Augsburg,09761,48.3700482,10.8958207,"Annastraße, Innenstadt, St. Ulrich-Dom, Innenstadt, Augsburg, Bayern, 86150, Deutschland",1432
-252,Holm,Flensburg,01001000,54.7842014,9.4355319,"Holm, Westliche Höhe, Flensburg, Schleswig-Holstein, 24937, Deutschland",342
-253,Neustraße,Bocholt,05554008,51.8369381,6.6152866,"Neustraße, Altstadt, Stenern, Bocholt, Kreis Borken, Nordrhein-Westfalen, 46399, Deutschland",139
-254,Zöllnerstraße,Celle,03351006,52.6243673,10.0835468,"Zöllnerstraße, Blumlage/Altstadt, Celle, Landkreis Celle, Niedersachsen, 29221, Deutschland",2356
-256,Kirchgasse (Nord),Wiesbaden,06414000,50.0777823,8.2382977,"Kirchgasse, Mitte, Wiesbaden, Hessen, 65185, Deutschland",1429
-257,Holstenstraße (Mitte),Kiel,01002000,54.322569,10.1385306,"Holstenstraße, Altstadt, Kiel, Schleswig-Holstein, 24103, Deutschland",295
-258,Mittelstraße (Mitte),Lemgo,05766044,52.0283863,8.8956532,"Mittelstraße, Innenstadt, Lemgo, Kreis Lippe, Nordrhein-Westfalen, 32657, Deutschland",693
-259,Schadowstraße (Mitte),Düsseldorf,05111000,51.2274614,6.7863326,"Schadowstraße, Stadtmitte, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40212, Deutschland",2368
-260,Schadowstraße (Südwest),Düsseldorf,05111000,51.2274614,6.7863326,"Schadowstraße, Stadtmitte, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40212, Deutschland",2368
-261,Flinger Straße (Mitte),Düsseldorf,05111000,51.2251385,6.7731226,"Flinger Straße, Altstadt, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40213, Deutschland",2026
+stationid,name,city,landkreis,lat,lon,address
+47,Schildergasse (West),Köln,05315,50.9364674,6.9493833,"Schildergasse, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50667, Deutschland"
+48,Hohe Straße (Mitte),Köln,05315,50.9353861,6.9561997,"Hohe Straße, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50667, Deutschland"
+49,Westenhellweg (Mitte),Dortmund,05913,51.5143119,7.4629448,"Westenhellweg, Mitte, Dortmund, Nordrhein-Westfalen, 44137, Deutschland"
+50,Ehrenstraße (Ost),Köln,05315,50.9383118,6.941502,"Ehrenstraße, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50672, Deutschland"
+51,Remigiusstraße,Bonn,05314,50.7339763,7.1003292,"Remigiusstraße, Bonn-Zentrum, Stadtbezirk Bonn, Bonn, Nordrhein-Westfalen, 53111, Deutschland"
+52,Sternstraße,Bonn,05314,50.7357043,7.0988814,"Sternstraße, Bonn-Zentrum, Stadtbezirk Bonn, Bonn, Nordrhein-Westfalen, 53111, Deutschland"
+53,Schadowstraße (West),Düsseldorf,05111,51.2274614,6.7863326,"Schadowstraße, Stadtmitte, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40212, Deutschland"
+54,Schadowstraße (Ost),Düsseldorf,05111,51.2274614,6.7863326,"Schadowstraße, Stadtmitte, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40212, Deutschland"
+55,Flinger Straße (Ost),Düsseldorf,05111,51.2251385,6.7731226,"Flinger Straße, Altstadt, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40213, Deutschland"
+56,Königsallee Ostseite (Süd),Düsseldorf,05111,51.2229101,6.7784179,"Königsallee, Stadtmitte, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40212, Deutschland"
+56,Königsallee Ostseite (Süd),Düsseldorf,05111,51.2229101,6.7784179,"Königsallee, Stadtmitte, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40212, Deutschland"
+57,Schlösserstraße,Erfurt,16051,50.9765925,11.030948411842118,"Schlösserstraße, Altstadt, Erfurt, Thüringen, 99084, Deutschland"
+58,Große Bockenheimer Straße,Frankfurt a.M.,06412,50.1148008,8.6735555,"Große Bockenheimer Straße, Innenstadt, Innenstadt 1, Frankfurt am Main, Hessen, 60313, Deutschland"
+59,Goethestraße,Frankfurt a.M.,06412,50.1140694,8.673867,"Goethestraße, Innenstadt, Innenstadt 1, Frankfurt am Main, Hessen, 60313, Deutschland"
+63,Georgstraße,Hannover,03241,52.3756404,9.7329323,"Georgstraße, Mitte, Hannover, Region Hannover, Niedersachsen, 30159, Deutschland"
+64,Große Packhofstraße,Hannover,03241,52.3757912,9.7383759,"Große Packhofstraße, Rosenquartier, Mitte, Hannover, Region Hannover, Niedersachsen, 30159, Deutschland"
+65,Karmarschstraße,Hannover,03241,52.3708201,9.7361797,"Karmarschstraße, Mitte, Hannover, Region Hannover, Niedersachsen, 30159, Deutschland"
+67,Kaiserstraße (Mitte),Karlsruhe,08212,49.0100848,8.3931202,"Kaiserstraße, Innenstadt-West Westlicher Teil, Innenstadt-West, Karlsruhe, Baden-Württemberg, 76133, Deutschland"
+68,Petersstraße,Leipzig,14713,51.3377511,12.3747726,"Petersstraße, Leipzig-Zentrum, Mitte, Leipzig, Sachsen, 04109, Deutschland"
+69,Hainstraße,Leipzig,14713,51.3417327,12.3738016,"Hainstraße, Leipzig-Zentrum, Mitte, Leipzig, Sachsen, 04109, Deutschland"
+71,Schusterstraße,Mainz,07315,50.0015564,8.2713849,"Schusterstraße, Altstadt, Mainz, Rheinland-Pfalz, 55116, Deutschland"
+72,Stadthausstraße,Mainz,07315,50.0008405,8.2713699,"Stadthausstraße, Altstadt, Mainz, Rheinland-Pfalz, 55116, Deutschland"
+73,Neuhauser Straße,München,09162,48.1384811,11.5693802,"Neuhauser Straße, Bezirksteil Kreuzviertel, Stadtbezirk 01 Altstadt-Lehel, München, Bayern, 80331, Deutschland"
+74,Schützenstraße,München,09162,48.140083,11.5615895,"Schützenstraße, Bezirksteil Ludwigsvorstadt-Kliniken, Stadtbezirk 02 Ludwigsvorstadt-Isarvorstadt, München, Bayern, 80335, Deutschland"
+75,Bahnhofstraße,Saarbrücken,10041,49.238602549999996,6.990666132001479,"Bahnhofstraße, Hauptbahnhof, Sankt Johann, Bezirk Mitte, Saarbrücken, Regionalverband Saarbrücken, Saarland, 66111, Deutschland"
+76,Königstraße (Mitte),Stuttgart,08111,48.7782957,9.1781591,"Königstraße, Neue Vorstadt, Stuttgart-Mitte, Stuttgart, Baden-Württemberg, 70173, Deutschland"
+77,Königstraße (Süd),Stuttgart,08111,48.7782957,9.1781591,"Königstraße, Neue Vorstadt, Stuttgart-Mitte, Stuttgart, Baden-Württemberg, 70173, Deutschland"
+78,Münsterplatz ,Ulm,08421,48.398336900000004,9.991038228313956,"Münsterplatz, Ulm, Baden-Württemberg, 89073, Deutschland"
+79,Kirchgasse (Mitte),Wiesbaden,06414,50.0777823,8.2382977,"Kirchgasse, Mitte, Wiesbaden, Hessen, 65185, Deutschland"
+81,Spitalerstraße,Hamburg,02000,53.5519945,10.0027713,"Spitalerstraße, Altstadt, Hamburg, 20095, Deutschland"
+81,Spitalerstraße,Hamburg,02000,53.5519945,10.0027713,"Spitalerstraße, Altstadt, Hamburg, 20095, Deutschland"
+84,Rathausgasse,Freiburg,08311,47.995773,7.849758,"Rathausgasse, Altstadt-Mitte, Altstadt, Freiburg im Breisgau, Baden-Württemberg, 79098, Deutschland"
+85,Am Brand,Mainz,07315,50.0005603,8.2726134,"Am Brand, Altstadt, Mainz, Rheinland-Pfalz, 55116, Deutschland"
+86,Löhrstraße (Mitte),Koblenz,07111,50.3562736,7.5912089,"Löhrstraße, Mitte, Koblenz, Rheinland-Pfalz, 56068, Deutschland"
+87,Poststraße,Bonn,05314,50.7332612,7.0976424,"Poststraße, Bonn-Zentrum, Stadtbezirk Bonn, Bonn, Nordrhein-Westfalen, 53111, Deutschland"
+88,Breite Gasse,Nürnberg,09564,49.4500928,11.0744759,"Breite Gasse, Altstadt, St. Lorenz, Lorenz, Nürnberg, Bayern, 90402, Deutschland"
+89,Kaiserstraße,Nürnberg,09564,49.4522998,11.0751788,"Kaiserstraße, Altstadt, St. Lorenz, Lorenz, Nürnberg, Bayern, 90403, Deutschland"
+90,Karolinenstraße,Nürnberg,09564,49.4509655,11.0778783,"Karolinenstraße, Altstadt, St. Lorenz, Lorenz, Nürnberg, Bayern, 90402, Deutschland"
+91,Neuer Wall,Hamburg,02000,53.5526734,9.9929485,"Neuer Wall, Neustadt, Hamburg, 20354, Deutschland"
+92,Jungfernstieg,Hamburg,02000,53.5520952,9.9933974,"Jungfernstieg, Alsterarkaden, Neustadt, Hamburg, 20354, Deutschland"
+93,Große Bleichen,Hamburg,02000,53.5521001,9.9868267,"Große Bleichen, Neustadt, Hamburg, 20354, Deutschland"
+93,Große Bleichen,Hamburg,02000,53.5521001,9.9868267,"Große Bleichen, Neustadt, Hamburg, 20354, Deutschland"
+94,Kurfürstendamm Nordseite (Ost),Berlin,11000,52.5037608,13.3299456,"Berlin, Kurfürstendamm, Charlottenburg, Charlottenburg-Wilmersdorf, 10719, Deutschland"
+94,Kurfürstendamm Nordseite (Ost),Berlin,11000,52.5037608,13.3299456,"Berlin, Kurfürstendamm, Charlottenburg, Charlottenburg-Wilmersdorf, 10719, Deutschland"
+95,Planken (Mitte),Mannheim,08222,49.4861403,8.4703402,"Planken, Filsbach, Innenstadt, Innenstadt/Jungbusch, Mannheim, Baden-Württemberg, 68161, Deutschland"
+96,Planken (Ost),Mannheim,08222,49.4861403,8.4703402,"Planken, Filsbach, Innenstadt, Innenstadt/Jungbusch, Mannheim, Baden-Württemberg, 68161, Deutschland"
+97,Kurfürstendamm Südseite (Ost),Berlin,11000,52.5037608,13.3299456,"Berlin, Kurfürstendamm, Charlottenburg, Charlottenburg-Wilmersdorf, 10719, Deutschland"
+98,Tauentzienstraße Südseite (West),Berlin,11000,52.5034002,13.3386373,"Berlin, Tauentzienstraße, Charlottenburg, Berlin, 10789, Deutschland"
+100,Rothenburg,Münster,05515,51.9609497,7.6270115,"Rothenburg, Dom, Altstadt, Münster-Mitte, Münster, Nordrhein-Westfalen, 48143, Deutschland"
+102,Bürgermeister-Fischer-Straße,Augsburg,09761,48.3665013,10.8949559,"Bürgermeister-Fischer-Straße, Innenstadt, St. Ulrich-Dom, Innenstadt, Augsburg, Bayern, 86150, Deutschland"
+103,Schuchardstraße,Darmstadt,06411,49.8715225,8.6530036,"Schuchardstraße, Stadtzentrum, Darmstadt-Mitte, Darmstadt, Hessen, 64283, Deutschland"
+104,Ernst-Ludwig-Straße,Darmstadt,06411,49.8723399,8.6536802,"Ernst-Ludwig-Straße, Stadtzentrum, Darmstadt-Mitte, Darmstadt, Hessen, 64283, Deutschland"
+107,Krahnstraße (Süd),Osnabrück,03404,52.2766517,8.0417897,"Krahnstraße, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland"
+108,Große Straße (Mitte),Osnabrück,03404,52.27441065,8.047358647706904,"Große Straße, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland"
+109,"Krahnstraße (Mitte, Altstadt)",Osnabrück,03404,52.2766517,8.0417897,"Krahnstraße, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland"
+110,Johannisstraße (Nord),Osnabrück,03404,52.2665763,8.0535651,"Johannisstraße, Neustadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland"
+111,Jürgensort,Osnabrück,03404,52.2744688,8.0462921,"Jürgensort, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland"
+114,Herrenteichsstraße (Ost),Osnabrück,03404,52.2759989,8.0468243,"Herrenteichsstraße, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland"
+116,Herrenteichsstraße (West),Osnabrück,03404,52.2759989,8.0468243,"Herrenteichsstraße, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland"
+117,Ludgeristraße,Münster,05515,51.9574433,7.6270887,"Ludgeristraße, Dom, Altstadt, Münster-Mitte, Münster, Nordrhein-Westfalen, 48143, Deutschland"
+118,Grüner Markt,Bamberg,09461,49.892577,10.8884355,"Grüner Markt, Lorenzhöfe, Inselstadt, Bamberg, Bayern, 96047, Deutschland"
+122,Seltersweg,Gießen,06531,50.5822409,8.6705565,"Seltersweg, Weststadt, Kleinlinden, Gießen, Landkreis Gießen, Hessen, 35390, Deutschland"
+123,Ludwigstraße,Ingolstadt,09161,48.7643243,11.426726,"Ludwigstraße, Altstadt Südost, Mitte, Ingolstadt, Bayern, 85049, Deutschland"
+125,Kettwiger Straße,Essen,05113,51.4556068,7.012868,"Kettwiger Straße, Stadtkern, Stadtbezirk I, Essen, Nordrhein-Westfalen, 45127, Deutschland"
+126,Neue Straße,Braunschweig,03101,52.2637723,10.5183034,"Neue Straße, Innenstadt, Braunschweig, Niedersachsen, 38100, Deutschland"
+127,Poststraße,Braunschweig,03101,52.2626184,10.5193601,"Poststraße, Innenstadt, Braunschweig, Niedersachsen, 38100, Deutschland"
+128,Hutfiltern,Braunschweig,03101,52.2624684,10.5207176,"Hutfiltern, Innenstadt, Braunschweig, Niedersachsen, 38100, Deutschland"
+129,Schuhstraße,Braunschweig,03101,52.2638857,10.5217345,"Schuhstraße, Innenstadt, Braunschweig, Niedersachsen, 38100, Deutschland"
+130,Damm,Braunschweig,03101,52.2623615,10.5235755,"Damm, Innenstadt, Braunschweig, Niedersachsen, 38100, Deutschland"
+131,Sack,Braunschweig,03101,52.2641682,10.5216993,"Sack, Innenstadt, Braunschweig, Niedersachsen, 38100, Deutschland"
+132,Langer Hof,Braunschweig,03101,52.2641095,10.5261639,"Langer Hof, Innenstadt, Braunschweig, Niedersachsen, 38100, Deutschland"
+134,Wilhelmstraße,Reutlingen,08415,48.491553,9.2122306,"Wilhelmstraße, Reutlingen, Landkreis Reutlingen, Baden-Württemberg, 72764, Deutschland"
+135,Schönbornstraße,Würzburg,09663,49.7956125,9.9310656,"Schönbornstraße, Würzburg Altstadt, Würzburg, Bayern, 97070, Deutschland"
+138,Brotstraße,Trier,07211,49.7537897,6.6397112,"Brotstraße, Altstadt, Mitte-Gartenfeld, Trier, Rheinland-Pfalz, 54290, Deutschland"
+139,Fleiner Straße,Heilbronn,08121,49.1402353,9.2186304,"Fleiner Straße, Rosenberg, Neckarbogen, Heilbronn, Baden-Württemberg, 74072, Deutschland"
+140,Fleischstraße,Trier,07211,49.7563114,6.6400702,"Fleischstraße, Altstadt, Mitte-Gartenfeld, Trier, Rheinland-Pfalz, 54290, Deutschland"
+141,Hauptstraße (West),Heidelberg,08221,49.4122415,8.7120673,"Hauptstraße, Altstadt, Heidelberg, Baden-Württemberg, 69117, Deutschland"
+142,Hauptstraße (Süd),Erlangen,09562,49.6021745,11.0035014,"Hauptstraße, Burgberg, Erlangen, Bayern, 91054, Deutschland"
+143,Kaiser-Joseph-Straße (Mitte),Freiburg,08311,47.9919716,7.8486291,"Kaiser-Joseph-Straße, Altstadt-Ring, Altstadt, Freiburg im Breisgau, Baden-Württemberg, 79098, Deutschland"
+144,Hochstraße (Mitte),Krefeld,05114,51.331805,6.5625906,"Hochstraße, Innenstadt, Krefeld-Mitte, Krefeld, Nordrhein-Westfalen, 47798, Deutschland"
+145,Rheinstraße (West),Krefeld,05114,51.3348359,6.5708064,"Rheinstraße, Innenstadt, Krefeld-Mitte, Krefeld, Nordrhein-Westfalen, 47799, Deutschland"
+146,Hirschstraße,Ulm,08421,48.3982869,9.9888156,"Hirschstraße, Weststadt, Ulm, Baden-Württemberg, 89073, Deutschland"
+147,Ludwigstraße,Passau,09262,48.5738419,13.4578862,"Ludwigstraße, Hofbauerngut, Altstadt, Passau, Bayern, 94032, Deutschland"
+148,Werner-Senger-Straße,Limburg,06533,50.3876425,8.0602669,"Werner-Senger-Straße, Blumenrod, Limburg a. d. Lahn, Landkreis Limburg-Weilburg, Hessen, 65549, Deutschland"
+150,Zeil (Mitte),Frankfurt a.M.,06412,50.11430335,8.681703968462612,"Zeil, Innenstadt, Innenstadt 1, Frankfurt am Main, Hessen, 60313, Deutschland"
+151,Stiftstraße,Stuttgart,08111,48.7765149,9.1773658,"Stiftstraße, Rathaus, Stuttgart-Mitte, Stuttgart, Baden-Württemberg, 70173, Deutschland"
+153,Große Straße (Süd),Osnabrück,03404,52.27441065,8.047358647706904,"Große Straße, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland"
+154,Poststraße,Wuppertal,05124,51.2577407,7.1475761,"Poststraße, Gemarkung Elberfeld, Wuppertal, Nordrhein-Westfalen, 42103, Deutschland"
+155,Georgstraße  (West),Osnabrück,03404,52.2747661,8.0481529,"Georgstraße, Altstadt, Innenstadt, Osnabrück, Niedersachsen, 49074, Deutschland"
+157,Mittelstraße,Düsseldorf,05111,51.2246255,6.7741534,"Mittelstraße, Altstadt, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40213, Deutschland"
+158,Hohe Straße (Süd),Köln,05315,50.9353861,6.9561997,"Hohe Straße, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50667, Deutschland"
+159,Schildergasse (Mitte),Köln,05315,50.9364674,6.9493833,"Schildergasse, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50667, Deutschland"
+160,Schildergasse (Ost),Köln,05315,50.9364674,6.9493833,"Schildergasse, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50667, Deutschland"
+161,Stresemannstraße,Bielefeld,05711,52.0248819,8.5331578,"Stresemannstraße, Mitte, Bielefeld, Nordrhein-Westfalen, 33602, Deutschland"
+162,Bahnhofstraße (Mitte),Bielefeld,05711,51.9438207,8.5786397,"Altmühlstraße, Verler Dreieck, Sennestadt, Bielefeld, Nordrhein-Westfalen, 33689, Deutschland"
+163,Bahnhofstraße (Süd),Bielefeld,05711,51.9438207,8.5786397,"Altmühlstraße, Verler Dreieck, Sennestadt, Bielefeld, Nordrhein-Westfalen, 33689, Deutschland"
+164,Prager Straße (Nord),Dresden,14612,51.0437481,13.7355142,"Prager Straße, Seevorstadt-Ost/Großer Garten, Seevorstadt, Altstadt, Dresden, Sachsen, 01069, Deutschland"
+165,Kaufingerstraße,München,09162,48.137750350000005,11.572932953288827,"Kaufingerstraße, Bezirksteil Kreuzviertel, Stadtbezirk 01 Altstadt-Lehel, München, Bayern, 80331, Deutschland"
+166,Maximilianstraße (Mitte),München,09162,48.1372062,11.5899466,"Maximilianstraße, Bezirksteil Maximilianeum, Stadtbezirk 05 Au-Haidhausen, München, Bayern, 80538, Deutschland"
+167,Zeppelinstraße ,Köln,05315,50.9369896,6.9488152,"Zeppelinstraße, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50667, Deutschland"
+168,Hohe Straße (Nord),Köln,05315,50.9353861,6.9561997,"Hohe Straße, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50667, Deutschland"
+169,Westernstraße,Paderborn,05774,51.7166229,8.7503355,"Westernstraße, Univiertel, Paderborn, Kreis Paderborn, Nordrhein-Westfalen, 33098, Deutschland"
+170,Adalbertstraße (West),Aachen,05334,50.7752422,6.0928546,"Adalbertstraße, Kaiserplatz, Burtscheid, Aachen-Mitte, Aachen, Städteregion Aachen, Nordrhein-Westfalen, 52062, Deutschland"
+171,Hauptstraße,Bergisch-Gladbach,05378,50.9915895,7.1388777,"Hauptstraße, Irlenfelder Hof, Bergisch Gladbach, Rheinisch-Bergischer Kreis, Nordrhein-Westfalen, 51465, Deutschland"
+172,Obernstraße,Bremen,04011,53.0784228,8.8029685,"Obernstraße, Altstadt, Mitte, Stadtbezirk Bremen-Mitte, Bremen, 28195, Deutschland"
+205,Ehrenstraße (Mitte),Köln,05315,50.9383118,6.941502,"Ehrenstraße, Altstadt-Nord, Innenstadt, Köln, Nordrhein-Westfalen, 50672, Deutschland"
+206,Kröpeliner Straße (West),Rostock,13003,54.0884273,12.132454,"Kröpeliner Straße, Nördliche Altstadt, Stadtmitte, Ortsbeirat 14 : Stadtmitte, Rostock, Mecklenburg-Vorpommern, 18055, Deutschland"
+207,Breite Straße (Mitte),Lübeck,01003,53.8712032,10.6884468,"Breite Straße, Innenstadt, Lübeck, Schleswig-Holstein, 23552, Deutschland"
+208,Hoher Weg,Hildesheim,03254,52.1525477,9.9503812,"Hoher Weg, Altstadt, Stadtmitte/Neustadt, Hildesheim, Landkreis Hildesheim, Niedersachsen, 31134, Deutschland"
+209,Lange Straße,Oldenburg,03403,53.1428662,8.2132747,"Lange Straße, Heiligengeistviertel, Innenstadt, Oldenburg, Niedersachsen, 26122, Deutschland"
+210,Achternstraße,Oldenburg,03403,53.1404641,8.2146351,"Achternstraße, Nikolaiviertel, Innenstadt, Oldenburg, Niedersachsen, 26122, Deutschland"
+244,Weender Straße (Süd),Göttingen,03152,51.5362614,9.9347299,"Weender Straße, Am Leinebogen, Innenstadt, Göttingen, Landkreis Göttingen, Niedersachsen, 37073, Deutschland"
+245,Hindenburgstraße (Mitte),Mönchengladbach,05116,51.1969896,6.4438912,"Hindenburgstraße, Gladbach, Pesch, Mönchengladbach, Nordrhein-Westfalen, 41061, Deutschland"
+246,Westenhellweg (Ost),Dortmund,05913,51.5143119,7.4629448,"Westenhellweg, Mitte, Dortmund, Nordrhein-Westfalen, 44137, Deutschland"
+248,Bahnhofstraße (West),Brilon,05958,51.3991078,8.5751925,"Bahnhofstraße, Brilon, Hochsauerlandkreis, Nordrhein-Westfalen, 59929, Deutschland"
+249,Bahnhofstraße (Mitte),Brilon,05958,51.3991078,8.5751925,"Bahnhofstraße, Brilon, Hochsauerlandkreis, Nordrhein-Westfalen, 59929, Deutschland"
+250,Bürgerturmstraße,Biberach an der Riß,08426,48.099743,9.7902801,"Bürgerturmstraße, Birkendorf, Hagenbuch, Biberach an der Riß, Verwaltungsgemeinschaft Biberach an der Riß, Landkreis Biberach, Baden-Württemberg, 88400, Deutschland"
+251,Annastraße,Augsburg,09761,48.3700482,10.8958207,"Annastraße, Innenstadt, St. Ulrich-Dom, Innenstadt, Augsburg, Bayern, 86150, Deutschland"
+252,Holm,Flensburg,01001,54.7842014,9.4355319,"Holm, Westliche Höhe, Flensburg, Schleswig-Holstein, 24937, Deutschland"
+253,Neustraße,Bocholt,05554,51.8369381,6.6152866,"Neustraße, Altstadt, Stenern, Bocholt, Kreis Borken, Nordrhein-Westfalen, 46399, Deutschland"
+254,Zöllnerstraße,Celle,03351,52.6243673,10.0835468,"Zöllnerstraße, Blumlage/Altstadt, Celle, Landkreis Celle, Niedersachsen, 29221, Deutschland"
+256,Kirchgasse (Nord),Wiesbaden,06414,50.0777823,8.2382977,"Kirchgasse, Mitte, Wiesbaden, Hessen, 65185, Deutschland"
+257,Holstenstraße (Mitte),Kiel,01002,54.322569,10.1385306,"Holstenstraße, Altstadt, Kiel, Schleswig-Holstein, 24103, Deutschland"
+258,Mittelstraße (Mitte),Lemgo,05766,52.0283863,8.8956532,"Mittelstraße, Innenstadt, Lemgo, Kreis Lippe, Nordrhein-Westfalen, 32657, Deutschland"
+259,Schadowstraße (Mitte),Düsseldorf,05111,51.2274614,6.7863326,"Schadowstraße, Stadtmitte, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40212, Deutschland"
+260,Schadowstraße (Südwest),Düsseldorf,05111,51.2274614,6.7863326,"Schadowstraße, Stadtmitte, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40212, Deutschland"
+261,Flinger Straße (Mitte),Düsseldorf,05111,51.2251385,6.7731226,"Flinger Straße, Altstadt, Stadtbezirk 1, Düsseldorf, Nordrhein-Westfalen, 40213, Deutschland"

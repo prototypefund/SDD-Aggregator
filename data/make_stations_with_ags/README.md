@@ -1,6 +1,4 @@
-Hystreet delivers only city and street name for each station. However, we need to know the location and the AGS. The `make_stations_with_ags.py` script finds the approximate position by online lookup (Nominatim) and then finds the AGS by nearest-neighbour search of each "Gemeinde" in `data-gemeindeschluessel.csv`.
-
-Required input file: `data-gemeindeschluessel.csv`
+Hystreet delivers only city and street name for each station. However, we need to know the location and the AGS. The `make_stations_with_ags.py` script finds the approximate position by online lookup (Nominatim) and then finds the AGS using `coords_to_kreis.py` (from this repo).
 
 Output file: `stations_with_ags.csv`
 
