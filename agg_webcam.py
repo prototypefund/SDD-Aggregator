@@ -13,13 +13,14 @@ def aggregate(date):
     data = pd.DataFrame()
     for x in range(7,18):
         try:
-            response = s3_client.get_object(Bucket=settings.BUCKET, Key='webcamdaten/{}/{}/{}/{}webcamdaten.json'.format(str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2), str(x).zfill(2)))
+            key = 'webcamdaten/{}/{}/{}/{}webcamdaten.json'.format(str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2), str(x).zfill(2))
+            response = s3_client.get_object(Bucket=settings.BUCKET, Key=key)
             result = pd.DataFrame(json.loads(response["Body"].read()))
             result["date"] = date
             result["hour"] = x
             data = data.append(result)
         except Exception as e:
-            print(e)
+            print(e,key)
             pass
     #print(data)
     data.columns = [col.lower() for col in data.columns]
