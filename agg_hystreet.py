@@ -35,7 +35,7 @@ def aggregate(date):
             row['mean_pedestrians_count_weekday']
 
 
-    stations_with_ags = pd.read_csv('data/stations_with_ags.csv')
+    stations_with_ags = pd.read_csv('data/stations_with_ags.csv',dtype={"landkreis":"str"})
     data_with_ags = pd.merge(data, stations_with_ags, left_on='station_id',
                              right_on='stationid', how='left').drop('stationid', axis=1)
 
