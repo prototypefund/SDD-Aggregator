@@ -8,7 +8,6 @@ import settings
 def aggregate(date):
     s3_client = boto3.client('s3')
     data = pd.DataFrame()
-    clientFirehose = boto3.client('firehose')
 
     response = s3_client.get_object(Bucket=settings.BUCKET, Key='hystreet/{}/{}/{}'.format(
         str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2)))
