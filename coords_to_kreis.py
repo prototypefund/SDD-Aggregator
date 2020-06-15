@@ -3,7 +3,7 @@
 #sudo apt-get update && apt-get install -y libspatialindex-dev OR brew install spatialindex
 
 import geopandas.tools
-from shapely.geometry import Point
+# from shapely.geometry import Point
 import pandas as pd
 
 countries = geopandas.GeoDataFrame.from_file(
@@ -22,9 +22,13 @@ Converts all lon lat columns in a dataframe into a Series of AGS (Landkreis) Dat
 """
 
 def coords_convert(df):
+    # df = data
     df[["lat","lon"]] = df[["lat","lon"]].apply(pd.to_numeric, errors='coerce')
-    geometry=geopandas.points_from_xy(df["lon"], df["lat"])
+    geometry=geopandas.points_from_xy(df["lat"], df["lon"])
     gdf = geopandas.GeoDataFrame(df, geometry=geometry)
+    print(len(gdf))
+    gdf = gdf.dropna(subset=["geometry"]).reset_index(drop=True)
+    print(len(gdf))
     gdf.crs = countries.crs # supresses warning
     gdf = geopandas.sjoin(gdf, countries, how="left", op='intersects')
     return gdf["ags"]
