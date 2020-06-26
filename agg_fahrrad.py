@@ -1,39 +1,61 @@
 import json
 import boto3
-from coords_to_kreis import coords_convert
-import datetime
+from coords_to_kreis import get_ags
+from datetime import date,datetime,timedelta
 import pandas as pd
 import settings
-
-#date = datetime.date.today() - datetime.timedelta(days = 3)
+from push_to_influxdb import push_to_influxdb
+from convert_df_to_influxdb import transfer_df_to_influxdb
+from rfc3339 import rfc3339
 
 def aggregate(date):
     s3_client = boto3.client('s3')
     response = s3_client.get_object(Bucket=settings.BUCKET, Key='fahrrad/{}/{}/{}/{}.json'.format(str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2), str(date)))
 
-    data_current = pd.DataFrame(json.loads(json.loads(response["Body"].read())))
-    data_current["ags"] = coords_convert(data_current)
-    data_current = data_current.loc[~data_current["ags"].isin(["05362", "05913"])]
-    data_current["bike_count"] = data_current["bike_count"].astype(int)
-    data_current["prediction"] = data_current["prediction"].astype(int)
-    data_current["score"] = data_current["bike_count"] / data_current["prediction"]
-    result = pd.DataFrame(data_current.groupby("ags")["score"].mean())
-
-    # data_normal = pd.DataFrame()
-    # for x in range(1,6):
-    #     date = date - datetime.timedelta(days = 364) #x year ago same weekday
-    #     try:
-    #         response = s3_client.get_object(Bucket='sdd-s3-basebucket', Key='fahrrad/{}/{}/{}/{}.json'.format(str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2), str(date)))
-    #         data_normal.append(pd.DataFrame(json.loads(response["Body"].read())))
-    #     except:
-    #         pass
-    # return data_normal
-    # data_normal["ags"] = coords_convert(data_normal)
-    # data_normal["bike_count"] = data_normal["bike_count"].astype(int)
-    # data_normal = pd.DataFrame(data_normal.groupby("ags")["bike_count"].mean())
-    #
-    # result = data_current.join(data_normal, rsuffix = "normal")
+    df = pd.DataFrame(json.loads(json.loads(response["Body"].read())))
+    df = get_ags(df)
+    df = df.loc[~df["ags"].isin(["05362", "05913"])]
+    df["bike_count"] = df["bike_count"].astype(int)
+    df["prediction"] = df["prediction"].astype(int)
+    df["score"] = df["bike_count"] / df["prediction"]
+    result = pd.DataFrame(df.groupby("ags")["score"].mean())
     result = result.reset_index()
+    
+    # push to influxdb
+    df = df.reset_index()
+    df["timestamp"] = df.apply(lambda x: 1000000000*int(datetime.timestamp((pd.to_datetime(x["date"])))),1)
+    df["measurement"] = "bikes"
+    df["origin"] = "https://www.eco-compteur.com/"
+    df = df.rename(columns={
+        'index':'_id', 
+        'state':'bundesland'
+    })
+    list_fields = [
+        'lat', 
+        'lon',
+        'bike_count',
+        'temperature',
+        'precipitation',
+        'snowdepth', 
+        'windspeed', 
+        'sunshine',
+        'prediction',
+        'score',
+        ]
+    list_tags = [
+        '_id',
+        'name',
+        'ags',
+        'bundesland',
+        'landkreis',
+        'districtType']
+    df[list_fields] = df[list_fields].astype(float)
+    df['ags'] = pd.to_numeric(df['ags'])
+    json_out = transfer_df_to_influxdb(df,list_fields,list_tags)
+    #import pdb; pdb.set_trace()
+    push_to_influxdb(json_out)
+    
+    # prepare output for aggregator
     list_results = []
 
     for index, row in result.iterrows():
@@ -45,5 +67,12 @@ def aggregate(date):
         }
         list_results.append(data_index)
     return list_results
-#
-#aggregate(datetime.date.today() - datetime.timedelta(days = 3))
+    
+   
+if __name__ == '__main__':
+    # for testing
+    for i in range(1,14):
+        date = date.today() - timedelta(days = i)
+        list_results = aggregate(date)
+    print(list_results)
+    
