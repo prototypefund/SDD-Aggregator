@@ -9,6 +9,8 @@ import re
 import settings
 from influxdb_client import InfluxDBClient
 
+from donotpush import getsettings
+
 # def aggregate_old(date):
 #     s3_client = boto3.client('s3')
 #     data = pd.DataFrame()
@@ -74,7 +76,6 @@ def transfer_df_to_influxdb(data, list_fields=[], list_tags=[]):
     return json_out
 
 def pushto_influxdb(json_out):
-    from donotpush import getsettings
     event = {
         "output_format": "csv",
         "bucket": "test"
@@ -98,13 +99,13 @@ def aggregate(date=datetime.date.today()):
     data = pd.DataFrame()
     for hour in range(7,18):
         try:
-            key = 'webcamdaten/{}/{}/{}/{}webcamdaten.json'.format(str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2), str(x).zfill(2))
+            key = 'webcamdaten/{}/{}/{}/{}webcamdaten.json'.format(str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2), str(hour).zfill(2))
             response = s3_client.get_object(Bucket=settings.BUCKET, Key=key)
             body = response["Body"].read()
             df = pd.DataFrame(json.loads(body))
             df["date"] = date
             df["hour"] = hour
-            df["timestamp"] = str(datetime.datetime(year=date.year, month=date.month, day=date.day, hour=x))
+            df["timestamp"] = str(datetime.datetime(year=date.year, month=date.month, day=date.day, hour=hour))
             data = data.append(df)
         except Exception as e:
             print(e,key)
@@ -126,7 +127,7 @@ def aggregate(date=datetime.date.today()):
     data = data.merge(result)
     data = data.set_index("timestamp")
     list_webcam_fields = ["personenzahl"]
-    list_webcam_tags = ["ags", "hour", "lat", "lon", "name"]
+    list_webcam_tags = ["ags", "hour", "lat", "lon", "name"] # TODO: lat lon as tag or not?
 
     json_out = transfer_df_to_influxdb(data, list_webcam_fields, list_webcam_tags)
 
