@@ -16,8 +16,8 @@ from convert_df_to_influxdb import transfer_df_to_influxdb
 
 def convert_lat_lon_to_float(data):
     try:
-        data["lat"] = data["Lon"].astype(float)
-        data["lon"] = data["Lat"].astype(float)
+        data["lat"] = data["Lat"].astype(float)
+        data["lon"] = data["Lon"].astype(float)
         data = data.drop(columns=["Lon", "Lat"])
     except:
         print("convertlatlonerror")
@@ -52,15 +52,16 @@ def aggregate(date=datetime.date.today()):
     print(data.dtypes)
     print("--=--")
 
-    data = coords_convert(data)
+    data = get_ags(data)
     data["ags"] = data["ags"].astype(int, errors="ignore")
 
     data.columns = [col.lower() for col in data.columns]
     result = pd.DataFrame(data.groupby("ags")["personenzahl"].mean())
     data["measurement"] = "webcam"
     data = data.merge(result)
-    data["timestamp"] = data["stand"]
-    data = data.set_index("timestamp")
+    # data["time"] = data["stand"]
+    data = data.rename(columns={"stand" : "time", "state" : "bundesland", "url" : "origin"})
+    # data = data.set_index("timestamp")
     list_webcam_fields = ["personenzahl"]
     list_webcam_tags = ["ags", "bundesland", "name", "origin"] # TODO: lat lon as tag or not?
 
