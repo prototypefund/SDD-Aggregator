@@ -10,8 +10,9 @@ countries = geopandas.GeoDataFrame.from_file(
   "https://raw.githubusercontent.com/AliceWi/TopoJSON-Germany/master/germany.json",
   layer=1,
   driver="TopoJSON")
-countries = countries[["id", "geometry"]]
-countries.columns = ["ags", "geometry"]
+
+countries = countries[["id", "geometry", "state", "name", "districtType"]]
+countries.columns = ["ags", "geometry", "state", "landkreis", "districtType"]
 
 
 """
@@ -22,7 +23,6 @@ Converts all lon lat columns in a dataframe into a Series of AGS (Landkreis) Dat
 """
 
 def coords_convert(df):
-    # df = data
     df[["lat","lon"]] = df[["lat","lon"]].apply(pd.to_numeric, errors='coerce')
     geometry=geopandas.points_from_xy(df["lat"], df["lon"])
     gdf = geopandas.GeoDataFrame(df, geometry=geometry)
@@ -31,8 +31,21 @@ def coords_convert(df):
     print(len(gdf))
     gdf.crs = countries.crs # supresses warning
     gdf = geopandas.sjoin(gdf, countries, how="left", op='intersects')
+
     return gdf["ags"]
-    
+
+
+def get_ags(df):
+    df[["lat", "lon"]] = df[["lat", "lon"]].apply(pd.to_numeric, errors='coerce')
+    geometry = geopandas.points_from_xy(df["lat"], df["lon"])
+    gdf = geopandas.GeoDataFrame(df, geometry=geometry)
+    print(len(gdf))
+    gdf = gdf.dropna(subset=["geometry"]).reset_index(drop=True)
+    print(len(gdf))
+    gdf.crs = countries.crs  # supresses warning
+    gdf = geopandas.sjoin(gdf, countries, how="left", op='intersects')
+
+    return gdf
 
 # Example Usage:
 

@@ -7,13 +7,16 @@ try:
     INF_URL = os.environ['INF_URL']
     INF_ORG = os.environ['INF_ORG']
 except KeyError:
-    from donotpush import getsettings
+    try:
+        from donotpush import getsettings
 
-    err, temp = getsettings("dev", "csv")
-    INF_TOKEN = temp["token"]
-    INF_BUCKET = temp["bucket"]
-    INF_URL = temp["url"]
-    INF_ORG = temp["org"]
+        err, temp = getsettings("dev", "csv")
+        INF_TOKEN = temp["token"]
+        INF_BUCKET = temp["bucket"]
+        INF_URL = temp["url"]
+        INF_ORG = temp["org"]
+    except:
+        pass
     pass
 
 
