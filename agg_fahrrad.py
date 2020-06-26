@@ -9,8 +9,12 @@ from convert_df_to_influxdb import transfer_df_to_influxdb
 
 def aggregate(date):
     s3_client = boto3.client('s3')
-    response = s3_client.get_object(Bucket=settings.BUCKET, Key='fahrrad/{}/{}/{}/{}.json'.format(str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2), str(date)))
-
+    key = 'fahrrad/{}/{}/{}/{}.json'.format(str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2), str(date))
+    try:
+        response = s3_client.get_object(Bucket=settings.BUCKET, Key=key)
+    except Exception as e:
+        print("No bike data for {}. {}".format(str(date),str(e)))
+        return None
     df = pd.DataFrame(json.loads(json.loads(response["Body"].read())))
     df = get_ags(df)
     df = df.loc[~df["ags"].isin(["05362", "05913"])]
