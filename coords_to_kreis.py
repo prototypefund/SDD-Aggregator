@@ -24,11 +24,9 @@ Converts all lon lat columns in a dataframe into a Series of AGS (Landkreis) Dat
 
 def coords_convert(df):
     df[["lat","lon"]] = df[["lat","lon"]].apply(pd.to_numeric, errors='coerce')
-    geometry=geopandas.points_from_xy(df["lat"], df["lon"])
+    geometry=geopandas.points_from_xy(df["lon"], df["lat"])
     gdf = geopandas.GeoDataFrame(df, geometry=geometry)
-    print(len(gdf))
     gdf = gdf.dropna(subset=["geometry"]).reset_index(drop=True)
-    print(len(gdf))
     gdf.crs = countries.crs # supresses warning
     gdf = geopandas.sjoin(gdf, countries, how="left", op='intersects')
 
@@ -37,14 +35,13 @@ def coords_convert(df):
 
 def get_ags(df):
     df[["lat", "lon"]] = df[["lat", "lon"]].apply(pd.to_numeric, errors='coerce')
-    geometry = geopandas.points_from_xy(df["lat"], df["lon"])
+    geometry = geopandas.points_from_xy(df["lon"], df["lat"])
     gdf = geopandas.GeoDataFrame(df, geometry=geometry)
-    print(len(gdf))
     gdf = gdf.dropna(subset=["geometry"]).reset_index(drop=True)
-    print(len(gdf))
     gdf.crs = countries.crs  # supresses warning
     gdf = geopandas.sjoin(gdf, countries, how="left", op='intersects')
-
+    gdf = gdf.rename(columns={"ags_left":"ags"})
+    gdf = gdf.drop(["ags_right","index_right"],axis=1)
     return gdf
 
 # Example Usage:
