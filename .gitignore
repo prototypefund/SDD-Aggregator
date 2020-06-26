@@ -8,3 +8,5 @@
 __pycache__/
 .idea/
 donotpush.py
+
+.ipynb_checkpoints

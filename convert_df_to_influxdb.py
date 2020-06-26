@@ -5,7 +5,7 @@ def transfer_df_to_influxdb(data, list_fields=[], list_tags=[]):
         j = {}
         j["measurement"] = row["measurement"]
         j["fields"] = {x: row[x] for x in list_fields}
-        j["timestamp"] = row["timestamp"]
+        j["time"] = row["timestamp"]
         j["tags"] = {}
         for tag in list_tags:
             j["tags"][tag] = row[tag]
