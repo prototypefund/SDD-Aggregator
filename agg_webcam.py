@@ -7,50 +7,11 @@ import boto3
 from coords_to_kreis import coords_convert
 import re
 import settings
-from influxdb_client import InfluxDBClient
 
-from donotpush import getsettings
+from push_to_influxdb import push_to_influxdb
+from transfer_df_to_influxdb import transfer_df_to_influxdb
 
-# def aggregate_old(date):
-#     s3_client = boto3.client('s3')
-#     data = pd.DataFrame()
-#     for x in range(7,18):
-#         try:
-#             key = 'webcamdaten/{}/{}/{}/{}webcamdaten.json'.format(str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2), str(x).zfill(2))
-#             response = s3_client.get_object(Bucket=settings.BUCKET, Key=key)
-#             result = pd.DataFrame(json.loads(response["Body"].read()))
-#             result["date"] = date
-#             result["hour"] = x
-#             data = data.append(result)
-#         except Exception as e:
-#             print(e,key)
-#             pass
-#     #print(data)
-#     data.columns = [col.lower() for col in data.columns]
-#     def extract_float(string):
-#         return re.findall("\d+\.\d+", str(string))[0]
-#     data["lon"] = data["lon"].apply(extract_float)
-#     data["lat"] = data["lat"].apply(extract_float)
-#     #print(data.columns)
-#     #names(df)[names(df) == 'Lat'] <- 'lat'
-#     data["ags"] = coords_convert(data)
-#     #return data
-#     result = pd.DataFrame(data.groupby("ags")[["personenzahl"]].mean())
-#     result = result.reset_index()
-#     list_results = []
-#     #print(result["personenzahl"])
-#     #result["personenzahl"] = result[["personenzahl"]] / 2.4
-#     #print(result["personenzahl"])
-#     for index, row in result.iterrows():
-#         landkreis = row['ags']
-#         relative_popularity = row["personenzahl"]
-#         data_index = {
-#             "landkreis": landkreis,
-#             'webcam_score' : relative_popularity
-#         }
-#         list_results.append(data_index)
-#     return list_results
-# #aggregate(date.today() - timedelta(days = 2))
+
 
 def convert_lat_lon_to_float(data):
     try:
@@ -61,36 +22,6 @@ def convert_lat_lon_to_float(data):
         pass
     return data
 
-def transfer_df_to_influxdb(data, list_fields=[], list_tags=[]):
-    json_out = []
-    for index, row in data.iterrows():
-        j = {}
-        j["measurement"] = "webcam"
-        j["fields"] = {x: row[x] for x in list_fields}
-        j["time"] = row["stand"]
-        j["tags"] = {}
-        for tag in list_tags:
-            j["tags"][tag] = row[tag]
-
-        json_out.append(j)
-    return json_out
-
-def pushto_influxdb(json_out):
-    event = {
-        "output_format": "csv",
-        "bucket": "test"
-    }
-    check, userdata = getsettings(event["bucket"], event["output_format"])
-
-    url = userdata["url"]
-    user = userdata["user"]
-    token = userdata["token"]
-    pw = userdata["pw"]
-    org = userdata["org"]
-    bucket = userdata["bucket"]
-    client = InfluxDBClient(url=url, token=token, org=org)
-    write_api = client.write_api()
-    write_api.write(bucket=bucket, org=org, record=json_out)
 
 
 def aggregate(date=datetime.date.today()):
@@ -120,19 +51,21 @@ def aggregate(date=datetime.date.today()):
     print("--=--")
 
     data["ags"] = coords_convert(data)
-    data["ags"] = data["ags"].astype(int,errors="ignore")
+    data["ags"] = data["ags"].astype(int, errors="ignore")
 
     data.columns = [col.lower() for col in data.columns]
     result = pd.DataFrame(data.groupby("ags")["personenzahl"].mean())
+    data["measurement"] = "webcam"
     data = data.merge(result)
     data = data.set_index("timestamp")
+    data["time"] = data["time"]
     list_webcam_fields = ["personenzahl"]
     list_webcam_tags = ["ags", "hour", "lat", "lon", "name"] # TODO: lat lon as tag or not?
 
     json_out = transfer_df_to_influxdb(data, list_webcam_fields, list_webcam_tags)
 
 
-    pushto_influxdb(json_out)
+    push_to_influxdb(json_out)
 
 # def to_influx(body):
 #
