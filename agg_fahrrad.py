@@ -6,7 +6,6 @@ import pandas as pd
 import settings
 from push_to_influxdb import push_to_influxdb
 from convert_df_to_influxdb import transfer_df_to_influxdb
-from rfc3339 import rfc3339
 
 def aggregate(date):
     s3_client = boto3.client('s3')

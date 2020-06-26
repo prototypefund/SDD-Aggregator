@@ -3,7 +3,6 @@ import pandas as pd
 import json
 from datetime import date,datetime,timedelta
 import settings
-from rfc3339 import rfc3339
 from coords_to_kreis import get_ags
 from push_to_influxdb import push_to_influxdb
 from convert_df_to_influxdb import transfer_df_to_influxdb
@@ -85,7 +84,6 @@ def prepare_for_influxdb(df):
         'landkreis':'ags'
     })
     df=get_ags(df)
-    #df["timestamp"] = df.apply(lambda x: rfc3339(pd.to_datetime(x["timestamp"])),1)
     df["time"] = df.apply(lambda x: 1000000000*int(datetime.timestamp((pd.to_datetime(x["timestamp"])))),1)
     df["measurement"] = "hystreet"
     df["origin"] = "https://hystreet.com"
