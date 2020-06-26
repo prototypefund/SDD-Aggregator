@@ -92,15 +92,15 @@ if __name__ == "__main__":
             print("Error Airquality")
             print(e)
 
-        print("--------------")
-        print("start tomtom...")
-        try:
-            tomtom_list = pd.DataFrame(agg_tomtom(date))
-            tomtom_list = tomtom_list.set_index('landkreis')
-            list_result = list_result.join(tomtom_list, how="outer")
-        except Exception as e:
-            print("Error Tomtom")
-            print(e)
+        # print("--------------")
+        # print("start tomtom...")
+        # try:
+            # tomtom_list = pd.DataFrame(agg_tomtom(date))
+            # tomtom_list = tomtom_list.set_index('landkreis')
+            # list_result = list_result.join(tomtom_list, how="outer")
+        # except Exception as e:
+            # print("Error Tomtom")
+            # print(e)
 
         print("--------------")
         print("write output...")
