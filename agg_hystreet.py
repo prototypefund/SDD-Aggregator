@@ -1,10 +1,13 @@
 import boto3
 import pandas as pd
 import json
-from datetime import datetime
+from datetime import date,datetime,timedelta
 import settings
+from rfc3339 import rfc3339
+from coords_to_kreis import get_ags
+from push_to_influxdb import push_to_influxdb
+from convert_df_to_influxdb import transfer_df_to_influxdb
 
-  # - timedelta(days=10)  # only for test purposes
 def aggregate(date):
     s3_client = boto3.client('s3')
     data = pd.DataFrame()
@@ -39,11 +42,9 @@ def aggregate(date):
     data_with_ags = pd.merge(data, stations_with_ags, left_on='station_id',
                              right_on='stationid', how='left').drop('stationid', axis=1)
 
-
     # compute mean for each ags (if multiple stations are in the same landkreis)
     grouped = pd.DataFrame(data_with_ags.groupby(['landkreis'], sort=False)['relative_pedestrians_count'].mean())
     grouped = grouped.reset_index()
-    #print(grouped)
     list_results = []
 
     for index, row in grouped.iterrows():
@@ -52,6 +53,58 @@ def aggregate(date):
             'landkreis': row['landkreis']
         }
         list_results.append(data_dict)
+    
+    # push to influxdb
+    data_with_ags=prepare_for_influxdb(data_with_ags)
+    list_fields = [
+        'lat', 
+        'lon',
+        'pedestrian_count',
+        'min_temperature',
+        'temperature']
+    list_tags = [
+        '_id',
+        'unverified',
+        'name',
+        'city',
+        'ags',
+        'bundesland',
+        'landkreis',
+        'districtType']
+    json_out = transfer_df_to_influxdb(data_with_ags,list_fields,list_tags)
+    push_to_influxdb(json_out)
 
     return list_results
-#aggregate(date.today() - timedelta(days = 2))
+
+def prepare_for_influxdb(df):
+    '''
+    Bring a dataframe in the right format for 
+    the push_to_influxdb function
+    '''
+    df = df.rename(columns={
+        'landkreis':'ags'
+    })
+    df=get_ags(df)
+    #df["timestamp"] = df.apply(lambda x: rfc3339(pd.to_datetime(x["timestamp"])),1)
+    df["timestamp"] = df.apply(lambda x: 1000000000*int(datetime.timestamp((pd.to_datetime(x["timestamp"])))),1)
+    df["measurement"] = "hystreet"
+    df["origin"] = "https://hystreet.com"
+    df = df.rename(columns={
+        'station_id':'_id',
+        'pedestrians_count':'pedestrian_count',
+        'state':'bundesland'
+    })
+    #import pdb; pdb.set_trace()
+    return df
+    
+if __name__ == '__main__':
+    # for testing
+    for i in range(1,14):
+        date = date.today() - timedelta(days = i)
+        list_results = aggregate(date)
+    print(list_results)
+    
+    
+
+
+
