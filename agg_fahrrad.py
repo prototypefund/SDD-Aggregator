@@ -23,7 +23,7 @@ def aggregate(date):
     
     # push to influxdb
     df = df.reset_index()
-    df["timestamp"] = df.apply(lambda x: 1000000000*int(datetime.timestamp((pd.to_datetime(x["date"])))),1)
+    df["time"] = df.apply(lambda x: 1000000000*int(datetime.timestamp((pd.to_datetime(x["date"])))),1)
     df["measurement"] = "bikes"
     df["origin"] = "https://www.eco-compteur.com/"
     df = df.rename(columns={

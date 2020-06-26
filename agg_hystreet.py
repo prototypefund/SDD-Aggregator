@@ -86,7 +86,7 @@ def prepare_for_influxdb(df):
     })
     df=get_ags(df)
     #df["timestamp"] = df.apply(lambda x: rfc3339(pd.to_datetime(x["timestamp"])),1)
-    df["timestamp"] = df.apply(lambda x: 1000000000*int(datetime.timestamp((pd.to_datetime(x["timestamp"])))),1)
+    df["time"] = df.apply(lambda x: 1000000000*int(datetime.timestamp((pd.to_datetime(x["timestamp"])))),1)
     df["measurement"] = "hystreet"
     df["origin"] = "https://hystreet.com"
     df = df.rename(columns={
