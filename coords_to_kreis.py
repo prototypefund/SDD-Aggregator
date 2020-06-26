@@ -40,8 +40,10 @@ def get_ags(df):
     gdf = gdf.dropna(subset=["geometry"]).reset_index(drop=True)
     gdf.crs = countries.crs  # supresses warning
     gdf = geopandas.sjoin(gdf, countries, how="left", op='intersects')
+    
+    # in case there was a "ags" column in the original dataframe:
     gdf = gdf.rename(columns={"ags_left":"ags"})
-    gdf = gdf.drop(["ags_right","index_right"],axis=1)
+    gdf = gdf.drop(["ags_right","index_right"],axis=1,errors="ignore")
     return gdf
 
 # Example Usage:
