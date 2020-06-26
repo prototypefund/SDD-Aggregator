@@ -43,20 +43,6 @@ def get_ags(df):
     
     # in case there was a "ags" column in the original dataframe:
     gdf = gdf.rename(columns={"ags_left":"ags"})
-    for col in ["ags_right", "index_right"]:
-        try:
-            gdf = gdf.drop(columns=col)
-            print(col, "dropped")
-        except:
-            pass
-
-
-    # import matplotlib.pyplot as plt
-    # plt.figure()
-    # ax = gdf.plot(color="green")
-    # gdf.loc[gdf["ags"].isna()].plot(color="red", ax = ax)
-    # plt.show()
-
 
     return gdf
 
