@@ -94,6 +94,7 @@ def prepare_for_influxdb(df):
         'pedestrians_count':'pedestrian_count',
         'state':'bundesland'
     })
+    df['ags'] = pd.to_numeric(df['ags'])
     #import pdb; pdb.set_trace()
     return df
     
