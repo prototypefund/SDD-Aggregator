@@ -10,11 +10,18 @@ from agg_lemgo_digital import aggregate as agg_lemgo_digital
 #from agg_tomtom import aggregate as agg_tomtom
 import json
 import settings
+import os
 
 if __name__ == "__main__":
 
     #How far back do you want to aggregate data?
-    days = 1
+    if "TIMERANGE" in list(os.environ):
+        # this can be used for full-range aggregator runs
+        # in aws codebuild
+        days = int(os.environ["TIMERANGE"])
+    else:
+        days = 1
+    print(f"\nAggregate the last {days} days.")
 
     s3_client = boto3.client('s3')
 
