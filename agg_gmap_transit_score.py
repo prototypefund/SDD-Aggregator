@@ -1,19 +1,19 @@
-from coords_to_kreis import coords_convert
+from coords_to_kreis import get_ags
 import boto3
 import json
 import time
-from datetime import date, timedelta
+from datetime import date,datetime,timedelta,time
 import pandas as pd
 import csv
 import numpy as np
 import settings
+import ast
+from push_to_influxdb import push_to_influxdb
+from convert_df_to_influxdb import transfer_df_to_influxdb
 
 def aggregate(date):
     s3_client = boto3.client('s3')
-    #date = date.today() - timedelta(days = 1)
-    #print(date)
-    data = pd.DataFrame()
-    #clientFirehose = boto3.client('firehose')
+    df = pd.DataFrame()
 
     for x in range(9,19):
         try:
@@ -21,69 +21,75 @@ def aggregate(date):
             result = pd.DataFrame(json.loads(response["Body"].read()))
             result["date"] = date
             result["hour"] = x
-            data = data.append(result)
+            result["datetime"] = datetime.combine(date,time(x))
+            df = df.append(result)
         except Exception as e:
-            print("No gmap data for " + str(x) + " " + str(date) + " " + str(e))
-            #return
+            print("No gmap data for " + str(x) + ":00 " + str(date) + " " + str(e))
 
     def normal_popularity(row):
         return row["populartimes"][row["date"].weekday()]["data"][row["hour"]]
 
-    def to_data(landkreis, date, relative_popularity, airquality_score,hystreet_score,cycle_score):
-
-        #['id', 'name', 'date', 'gmap_score', 'hystreet_score', 'cycle_score']
-         return {
-            'name': landkreis,
-            # todo time from request
-            'date': date,
-            'gmap_score' : relative_popularity
-             #"airquality_score" : airquality_score
-             #'hystreet_score' : hystreet_score
-             # 'cycle_score' : cycle_score
-        }
-
-
-    import ast
-    data["normal_popularity"] = data.apply(normal_popularity, axis = 1, result_type = "reduce")
-    data["relative_popularity"] = data["current_popularity"] / data["normal_popularity"]
-    data["coordinates"] = data["coordinates"].astype(str)
+    df["normal_popularity"] = df.apply(normal_popularity, axis = 1, result_type = "reduce")
+    df=df[df["normal_popularity"]!=0]
+    df["relative_popularity"] = df["current_popularity"] / df["normal_popularity"]
+    df["coordinates"] = df["coordinates"].astype(str)
     lat = []
     lon = []
-    for index, row in data.iterrows():
+    for index, row in df.iterrows():
         lat.append(ast.literal_eval(row["coordinates"])["lat"])
         lon.append(ast.literal_eval(row["coordinates"])["lng"])
 
-    data["lat"] = lat
-    data["lon"] = lon
-    #print(data)
-    data["ags"] = coords_convert(data)
-    data
-    data2 = data.loc[data["ags"].notna()]
+    df["lat"] = lat
+    df["lon"] = lon
+    df = get_ags(df)
 
+    # push to influxdb
+    df = df.reset_index()
+    df["time"] = df.apply(lambda x: 1000000000*int(datetime.timestamp((pd.to_datetime(x["datetime"])))),1)
+    df["measurement"] = "google_maps"
+    baseurl = "https://www.google.com/maps/place/?q=place_id:"
+    df["origin"] = df.apply(lambda x: baseurl+x["id"],1)
+    df = df.rename(columns={
+        'id':'_id', 
+        'state':'bundesland',
+    })
+    list_fields = [
+        'lat', 
+        'lon',
+        'current_popularity',
+        'normal_popularity',
+        ]
+    list_tags = [
+        '_id',
+        'name',
+        'ags',
+        'bundesland',
+        'landkreis',
+        'districtType']
+    df[list_fields] = df[list_fields].astype(float)
+    df['ags'] = pd.to_numeric(df['ags'])
+    json_out = transfer_df_to_influxdb(df,list_fields,list_tags)
+    push_to_influxdb(json_out)
 
-    result = data2.groupby("ags").apply(lambda x: np.average(x.relative_popularity, weights=x.normal_popularity))
-    result = pd.DataFrame(result)
+    # prepare output for aggregator
+    result = df.loc[df["ags"].notna()]
+    result = result.groupby("ags").apply(lambda x: np.average(x.relative_popularity, weights=x.normal_popularity))
     result = result.reset_index()
     result.columns = ["ags", "relative_popularity"]
     list_results = []
     for index, row in result.iterrows():
-        landkreis = row['ags']
+        ags = row['ags']
         relative_popularity = row['relative_popularity']
         data_index = {
-            "landkreis": landkreis,
-            # todo time from request
-            #'date': str(date),
-            'gmap_score' : relative_popularity
-             #"airquality_score" : airquality_score
-             #'hystreet_score' : hystreet_score
-             # 'cycle_score' : cycle_score
+            "landkreis": ags,
+            "gmap_score" : relative_popularity
         }
         list_results.append(data_index)
-        #print (data_index)
-        # clientFirehose.put_record(DeliveryStreamName='sdd-kinese-aggregator',  Record={'Data':data_index })
-
-
-        #print(input)
     return list_results
 
-#aggregate(date.today() - timedelta(days = 1))
+if __name__ == '__main__':
+    # for testing
+    for i in range(1,14):
+        date = date.today() - timedelta(days = i)
+        list_results = aggregate(date)
+    print(list_results)
