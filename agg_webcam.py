@@ -10,7 +10,7 @@ import settings
 
 
 from push_to_influxdb import push_to_influxdb
-from transfer_df_to_influxdb import transfer_df_to_influxdb
+from convert_df_to_influxdb import transfer_df_to_influxdb
 
 
 
