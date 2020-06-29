@@ -2,6 +2,7 @@ from datetime import datetime
 import boto3
 import json
 import pandas as pd
+from coords_to_kreis import attach_to_ags
 
 class Aggregator:
     """ Static function to aggregate the data frame into a list """
@@ -30,7 +31,9 @@ class Aggregator:
             df = df.groupby("ags").agg({columnIn:"mean"}).reset_index()
             df[columnIn] = df[columnIn]/100
             df.columns = ["ags",columnOut]
-            return json.loads(df.to_json(orient='records'))
+            df = attach_to_ags(df)
+            return df
+            # return json.loads(df.to_json(orient='records'))
 
     def __init__(self, bucketName="sdd-s3-bucket"):
         self.s3_client = boto3.client('s3')
