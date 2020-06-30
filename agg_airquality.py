@@ -29,10 +29,11 @@ def aggregate(date_obj):
     df["measurement"] = "airquality"
     # df["time"] = pd.to_datetime(date)
     # df["time"] = pd.to_datetime(date).timestamp()
-    df["time"] = date_obj.isoformat() + "T12:00:00.000000"
+    df["time"] = datetime.datetime(year=date_obj.year, month=date_obj.month, day=date_obj.day, hour=12).isoformat()
     # df["time"] = date.hour
     # df["time"] = datetime.datetime.timestamp(year=date.year, month=date.month, day=date.day)
 
     list_jsons = convert_df_to_influxdb(df, list_tags=list_tags, list_fields=list_fields)
     push_to_influxdb(list_jsons)
     return json.loads(df.to_json(orient='records'))
+    # return json.loads(df.to_dict(orient="records"))

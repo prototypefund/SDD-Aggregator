@@ -49,6 +49,8 @@ def get_ags(df):
             gdf = gdf.drop(columns=col)
         except:
             pass
+    return gdf
+    # return df
 
 def attach_to_ags(df):
     # df = pd.DataFrame()
@@ -61,7 +63,7 @@ def attach_to_ags(df):
     # plt.show()
 
 
-    return gdf
+    # return gdf
 
 # Example Usage:
 

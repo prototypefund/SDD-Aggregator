@@ -30,10 +30,12 @@ class S3_Handler:
         s3_objects = self.s3_client.list_objects_v2(
             Bucket=self.bucketName,
             Prefix=path)
-        if 'Contents' in s3_objects:
-            print("Objects: Found " + str(len(s3_objects['Contents'])) + " elements")
-        else:
-            print("Objects: Found 0 elements, skip this date.")
+        # if 'Contents' in s3_objects:
+            # print("Objects: Found " + str(len(s3_objects['Contents'])) + " elements")
+        # else:
+
+        if 'Contents' not in s3_objects:
+            print("Objects: Found 0 elements, skip")
             return False
         # Extract data
         dataObject = self.s3_client.get_object(Bucket=self.bucketName, Key=path)
