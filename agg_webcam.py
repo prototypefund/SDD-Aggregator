@@ -27,18 +27,18 @@ def convert_lat_lon_to_float(data):
 
 
 def aggregate(date=datetime.date.today()):
-    date = datetime.date.today().replace(day=12)
+    date_obj = datetime.date.today().replace(day=12)
     s3_client = boto3.client('s3')
     data = pd.DataFrame()
     for hour in range(7,18):
         try:
-            key = 'webcamdaten/{}/{}/{}/{}webcamdaten.json'.format(str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2), str(hour).zfill(2))
+            key = 'webcamdaten/{}/{}/{}/{}webcamdaten.json'.format(str(date_obj.year).zfill(4), str(date_obj.month).zfill(2), str(date_obj.day).zfill(2), str(hour).zfill(2))
             response = s3_client.get_object(Bucket=settings.BUCKET, Key=key)
             body = response["Body"].read()
             df = pd.DataFrame(json.loads(body))
-            df["date_check"] = date
+            df["date_check"] = date_obj
             df["hour_check"] = hour
-            df["timestamp_check"] = str(datetime.datetime(year=date.year, month=date.month, day=date.day, hour=hour))
+            df["timestamp_check"] = str(datetime.datetime(year=date_obj.year, month=date_obj.month, day=date_obj.day, hour=hour))
             data = data.append(df)
         except Exception as e:
             print(e,key)
@@ -71,7 +71,7 @@ def aggregate(date=datetime.date.today()):
     push_to_influxdb(json_out)
 
     list_results = []
-    for index, row in result.iterrows():
+    for index, row in data.iterrows():
         landkreis = row['ags']
         relative_popularity = row["personenzahl"]
         data_index = {
