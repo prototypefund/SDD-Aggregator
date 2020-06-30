@@ -1,5 +1,5 @@
 
-def transfer_df_to_influxdb(data, list_fields=[], list_tags=[]):
+def convert_df_to_influxdb(data, list_fields=[], list_tags=[]):
     json_out = []
     for index, row in data.iterrows():
         j = {}

@@ -5,7 +5,7 @@ import boto3
 import pandas as pd
 import settings
 
-from convert_df_to_influxdb import transfer_df_to_influxdb
+from convert_df_to_influxdb import convert_df_to_influxdb
 from push_to_influxdb import push_to_influxdb
 
 
@@ -96,7 +96,7 @@ def aggregate(date_obj):
     aggregated_value['time'] = datetime(date_minus_one.year, date_minus_one.month, date_minus_one.day, hour=12).isoformat()
 
     aggregated_value['measurement'] = "lemgoDigital"
-    data = transfer_df_to_influxdb(aggregated_value, list_fields=list_fields, list_tags=list_tags)
+    data = convert_df_to_influxdb(aggregated_value, list_fields=list_fields, list_tags=list_tags)
     push_to_influxdb(data)
 
 

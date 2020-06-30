@@ -10,7 +10,7 @@ import settings
 
 
 from push_to_influxdb import push_to_influxdb
-from convert_df_to_influxdb import transfer_df_to_influxdb
+from convert_df_to_influxdb import convert_df_to_influxdb
 
 
 
@@ -65,7 +65,7 @@ def aggregate(date=datetime.date.today()):
     list_webcam_fields = ["personenzahl"]
     list_webcam_tags = ["ags", "bundesland", "name", "origin"] # TODO: lat lon as tag or not?
 
-    json_out = transfer_df_to_influxdb(data, list_webcam_fields, list_webcam_tags)
+    json_out = convert_df_to_influxdb(data, list_webcam_fields, list_webcam_tags)
 
 
     push_to_influxdb(json_out)

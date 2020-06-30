@@ -6,7 +6,7 @@ import S3
 import Aggregation
 import datetime
 from push_to_influxdb import push_to_influxdb
-from convert_df_to_influxdb import transfer_df_to_influxdb
+from convert_df_to_influxdb import convert_df_to_influxdb
 import pandas as pd
 import json
 
@@ -33,6 +33,6 @@ def aggregate(date_obj):
     # df["time"] = date.hour
     # df["time"] = datetime.datetime.timestamp(year=date.year, month=date.month, day=date.day)
 
-    list_jsons = transfer_df_to_influxdb(df, list_tags=list_tags, list_fields=list_fields)
+    list_jsons = convert_df_to_influxdb(df, list_tags=list_tags, list_fields=list_fields)
     push_to_influxdb(list_jsons)
     return json.loads(df.to_json(orient='records'))

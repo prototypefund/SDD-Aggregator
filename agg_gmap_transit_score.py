@@ -9,7 +9,7 @@ import numpy as np
 import settings
 import ast
 from push_to_influxdb import push_to_influxdb
-from convert_df_to_influxdb import transfer_df_to_influxdb
+from convert_df_to_influxdb import convert_df_to_influxdb
 
 def aggregate(date):
     s3_client = boto3.client('s3')
@@ -68,7 +68,7 @@ def aggregate(date):
         'districtType']
     df[list_fields] = df[list_fields].astype(float)
     df['ags'] = pd.to_numeric(df['ags'])
-    json_out = transfer_df_to_influxdb(df,list_fields,list_tags)
+    json_out = convert_df_to_influxdb(df, list_fields, list_tags)
     push_to_influxdb(json_out)
 
     # prepare output for aggregator
