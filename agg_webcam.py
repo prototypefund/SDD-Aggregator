@@ -70,6 +70,18 @@ def aggregate(date=datetime.date.today()):
 
     push_to_influxdb(json_out)
 
+    list_results = []
+    for index, row in result.iterrows():
+        landkreis = row['ags']
+        relative_popularity = row["personenzahl"]
+        data_index = {
+            "landkreis": landkreis,
+            'webcam_score' : relative_popularity
+        }
+        list_results.append(data_index)
+    return list_results
+
+
 # def to_influx(body):
 #
 #     json_out = {}

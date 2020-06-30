@@ -7,20 +7,20 @@ class S3_Handler:
     def __init__(self, bucketName="sdd-s3-bucket"):
         self.s3_client = boto3.client('s3')
         self.bucketName = bucketName
-    def listFromAWS(self, base, date):
+    def listFromAWS(self, base, date_obj):
         object_list = []
         # List data
         s3_objects = self.s3_client.list_objects_v2(
             Bucket=self.bucketName,
             Prefix='{}/{}/{}/{}/'.format(
                 base,
-                str(date.year).zfill(4),
-                str(date.month).zfill(2),
-                str(date.day).zfill(2)))
-        if 'Contents' in s3_objects:
-            print("Objects: Found " + str(len(s3_objects['Contents'])) + " elements")
-        else:
-            print("Objects: Found 0 elements, skip this date.")
+                str(date_obj.year).zfill(4),
+                str(date_obj.month).zfill(2),
+                str(date_obj.day).zfill(2)))
+        # if 'Contents' in s3_objects:
+        #     print("Objects: Found " + str(len(s3_objects['Contents'])) + " elements")
+        if 'Contents' not in s3_objects:
+            print("Objects: Found 0 elements, skip:", date_obj)
             return False
         for key in s3_objects['Contents']:
             object_list.append(key['Key'])

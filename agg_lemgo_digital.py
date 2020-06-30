@@ -1,10 +1,16 @@
 import json
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
+
 import boto3
 import pandas as pd
 import settings
 
-date = date.today()
+from convert_df_to_influxdb import transfer_df_to_influxdb
+from push_to_influxdb import push_to_influxdb
+
+
+date_obj = date.today()
+date_obj = date.today() - timedelta(30)
 
 
 def path_to_hour_of_day(path: str):
@@ -14,33 +20,39 @@ def path_to_hour_of_day(path: str):
 
 def get_relative_traffic(object_body_json):
     traffic_per_hour_object = object_body_json['data']['trafficPerHour']
-    traffic_per_hour_dp = json.dumps(traffic_per_hour_object)
-    traffic_per_hour_dp = pd.DataFrame(json.loads(traffic_per_hour_dp)).transpose()
-    traffic_per_hour_dp['relativTraffic'] = pd.to_numeric(traffic_per_hour_dp['trafficNormal']) / pd.to_numeric(
-        traffic_per_hour_dp['trafficCurrent'])
+    traffic_per_hour_dp = pd.DataFrame(traffic_per_hour_object).transpose()
+    try:
+        traffic_per_hour_dp['relativTraffic'] = pd.to_numeric(traffic_per_hour_dp['trafficNormal']) / pd.to_numeric(
+            traffic_per_hour_dp['trafficCurrent'])
+    except Exception as e:
+        traffic_per_hour_dp['relativTraffic'] = None
+        print("relativTraffic issue", e)
     return traffic_per_hour_dp
 
 
 def get_relative_passerby(object_body_json):
     passerby_per_hour_object = object_body_json['data']['passerbyPerHour']
-    passerby_per_hour_dp = json.dumps(passerby_per_hour_object)
-    passerby_per_hour_dp = pd.DataFrame(json.loads(passerby_per_hour_dp)).transpose()
-    passerby_per_hour_dp['relativPasserby'] = pd.to_numeric(passerby_per_hour_dp['passerbyCurrent']) / pd.to_numeric(
-        passerby_per_hour_dp['passerbyNormal'])
+    passerby_per_hour_dp = pd.DataFrame(passerby_per_hour_object).transpose()
+    try:
+        passerby_per_hour_dp['relativPasserby'] = pd.to_numeric(passerby_per_hour_dp['passerbyCurrent']) / pd.to_numeric(
+            passerby_per_hour_dp['passerbyNormal'])
+    except Exception as e:
+        passerby_per_hour_dp['relativPasserby'] = None
+        print("relativPasserby issue", e)
     return passerby_per_hour_dp
 
 
-def aggregate(date):
+def aggregate(date_obj):
     s3_client = boto3.client('s3')
 
     s3_objects = s3_client.list_objects_v2(Bucket=settings.BUCKET,
-                                           Prefix='lemgo-digital/{}/{}/{}/'.format(str(date.year).zfill(4),
-                                                                                   str(date.month).zfill(2),
-                                                                                   str(date.day).zfill(2)))
+                                           Prefix='lemgo-digital/{}/{}/{}/'.format(str(date_obj.year).zfill(4),
+                                                                                   str(date_obj.month).zfill(2),
+                                                                                   str(date_obj.day).zfill(2)))
     # if 'Contents' not in s3_objects:
     #     return []
 
-    print("Found " + str(len(s3_objects['Contents'])) + " elements")
+    # print("Found " + str(len(s3_objects['Contents'])) + " elements")
     dict_s3_objects = {}
     for key in s3_objects['Contents']:
         dict_s3_objects[path_to_hour_of_day(key['Key'])] = s3_client.get_object(Bucket=settings.BUCKET,
@@ -50,29 +62,43 @@ def aggregate(date):
     object_body = str(latest_lemgo_digital_object["Body"].read(), 'utf-8')
 
     object_body_json = json.loads(object_body)
-    traffic_per_hour_dp = get_relative_traffic(object_body_json)
-    passerby_per_hour_dp = get_relative_passerby(object_body_json)
 
-    traffic_per_hour_dp.set_index("timestamp")
-    passerby_per_hour_dp.set_index("timestamp")
-    aggregated_value = pd.merge(traffic_per_hour_dp, passerby_per_hour_dp, how='left', left_on='timestamp',
-                                right_on='timestamp')
+    traffic_per_hour_dp = get_relative_traffic(object_body_json)
+    # traffic_per_hour_dp.set_index("timestamp")
+
+    passerby_per_hour_dp = get_relative_passerby(object_body_json)
+    # passerby_per_hour_dp.set_index("timestamp")
+
+    aggregated_value = pd.merge(traffic_per_hour_dp, passerby_per_hour_dp, how='outer', on="timestamp")
 
     aggregated_value.reset_index()
-    aggregated_value['lemgoDigitalAggregated'] = 0.3 * aggregated_value['relativTraffic'] + 0.7 * aggregated_value[
-        'relativPasserby']
-    aggregated_value['lemgoDigitalAggregated']
+    try:
+        aggregated_value['lemgoDigitalAggregated'] = 0.3 * aggregated_value['relativTraffic'] + 0.7 * aggregated_value[
+            'relativPasserby']
+    except Exception as e:
+        aggregated_value['lemgoDigitalAggregated'] = None
+        print("lemgoDigitalAggregated issue", e)
+
     list_results = []
-    date_minus_one = date - timedelta(days=1)
+    date_minus_one = date_obj - timedelta(days=1)
     #print(aggregated_value["timestamp"])
     #print(str(date))
     aggregated_value_for_day = aggregated_value.loc[aggregated_value['timestamp'] == str(date_minus_one)]
     #print(aggregated_value_for_day)
     data_index = {
         'landkreis': '05766',
-        'lemgoDigital': aggregated_value_for_day['lemgoDigitalAggregated'].iloc[0]
+        'lemgoDigital': aggregated_value_for_day['lemgoDigitalAggregated'].iloc[0],
+        'time' : datetime(date_minus_one.year, date_minus_one.month, date_minus_one.day, hour=12).isoformat()
     }
     list_results.append(data_index)
+    list_fields=["lemgoDigital"]
+    list_tags=["landkreis"]
+    aggregated_value['time'] = datetime(date_minus_one.year, date_minus_one.month, date_minus_one.day, hour=12).isoformat()
+
+    aggregated_value['measurement'] = "lemgoDigital"
+    data = transfer_df_to_influxdb(aggregated_value, list_fields=list_fields, list_tags=list_tags)
+    push_to_influxdb(data)
+
 
     return list_results
 

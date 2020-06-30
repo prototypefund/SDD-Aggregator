@@ -44,6 +44,23 @@ def get_ags(df):
     # in case there was a "ags" column in the original dataframe:
     gdf = gdf.rename(columns={"ags_left":"ags"})
 
+    for col in ["ags_right", "index_right"]:
+        try:
+            gdf = gdf.drop(columns=col)
+        except:
+            pass
+
+def attach_to_ags(df):
+    # df = pd.DataFrame()
+    df = df.merge(countries, on="ags", how="left")
+    return df
+    # import matplotlib.pyplot as plt
+    # plt.figure()
+    # ax = gdf.plot(color="green")
+    # gdf.loc[gdf["ags"].isna()].plot(color="red", ax = ax)
+    # plt.show()
+
+
     return gdf
 
 # Example Usage:
