@@ -24,7 +24,10 @@ def aggregate(date):
             result["datetime"] = datetime.combine(date,time(x))
             df = df.append(result)
         except Exception as e:
-            print("No gmap data for " + str(x) + ":00 " + str(date) + " " + str(e))
+            print("  No gmap data for " + str(x) + ":00 " + str(date) + " " + str(e))
+    if df.empty:
+        print(f"WARNING: No data returned from S3 for {str(date)}!")
+        return []
 
     def normal_popularity(row):
         return row["populartimes"][row["date"].weekday()]["data"][row["hour"]]
