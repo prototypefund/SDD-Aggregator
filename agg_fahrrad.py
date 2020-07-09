@@ -17,7 +17,6 @@ def aggregate(date):
         return None
     df = pd.DataFrame(json.loads(json.loads(response["Body"].read())))
     df = get_ags(df)
-    df = df.loc[~df["ags"].isin(["05362", "05913"])]
     df["bike_count"] = df["bike_count"].astype(int)
     df["prediction"] = df["prediction"].astype(int)
     df["score"] = df["bike_count"] / df["prediction"]
@@ -27,10 +26,11 @@ def aggregate(date):
     # push to influxdb
     df = df.reset_index()
     df["time"] = df.apply(lambda x: 1000000000*int(datetime.timestamp((pd.to_datetime(x["date"])))),1)
+    df["name"] = df.apply(lambda x: x["name"].replace(" (DE)", ""), 1)
+    df["_id"] = df.apply(lambda x: x["name"].replace(" ", "_"), 1)
     df["measurement"] = "bikes"
     df["origin"] = "https://www.eco-compteur.com/"
     df = df.rename(columns={
-        'index':'_id', 
         'state':'bundesland'
     })
     list_fields = [
