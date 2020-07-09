@@ -69,7 +69,8 @@ def aggregate(date):
         'ags',
         'bundesland',
         'landkreis',
-        'districtType']
+        'districtType',
+        'origin']
     json_out = convert_df_to_influxdb(data_with_ags, list_fields, list_tags)
     push_to_influxdb(json_out)
 

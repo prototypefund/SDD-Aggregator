@@ -51,7 +51,8 @@ def aggregate(date):
         'ags',
         'bundesland',
         'landkreis',
-        'districtType']
+        'districtType',
+        'origin']
     df[list_fields] = df[list_fields].astype(float)
     df['ags'] = pd.to_numeric(df['ags'])
     json_out = convert_df_to_influxdb(df, list_fields, list_tags)
