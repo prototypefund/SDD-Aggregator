@@ -58,7 +58,7 @@ def aggregate(date_obj=datetime.date.today()):
                                 "url": "origin",
                                 "id": "_id",
                                 "districttype": "districtType"})
-    list_webcam_fields = ["personenzahl"]
+    list_webcam_fields = ["personenzahl", "lat", "lon"]
     list_webcam_tags = [
         '_id',
         'name',
