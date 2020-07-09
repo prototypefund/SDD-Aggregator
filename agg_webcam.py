@@ -53,10 +53,14 @@ def aggregate(date_obj=datetime.date.today()):
     data["ags"] = data["ags"].astype(int, errors="ignore")
     data["personenzahl"] = data["personenzahl"].astype(float, errors="raise")
     data["measurement"] = "webcam"
+    
+    # cannot use "id" as unique identifier, because e.g. id=35 was assigned to multiple 
+    # cameras in the past by accident. Workaround: use compound _id made up from id and ags.
+    data["_id"] = data.apply(lambda x: str(x["id"])+"_"+str(x["ags"]), 1)
+    
     data = data.rename(columns={"stand": "time",
                                 "state": "bundesland",
                                 "url": "origin",
-                                "id": "_id",
                                 "districttype": "districtType"})
     list_webcam_fields = ["personenzahl", "lat", "lon"]
     list_webcam_tags = [
