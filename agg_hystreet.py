@@ -1,11 +1,12 @@
 import boto3
 import pandas as pd
 import json
-from datetime import date,datetime,timedelta
+from datetime import date, datetime, timedelta
 import settings
 from coords_to_kreis import get_ags
 from push_to_influxdb import push_to_influxdb
 from convert_df_to_influxdb import convert_df_to_influxdb
+
 
 def aggregate(date):
     s3_client = boto3.client('s3')
@@ -21,7 +22,6 @@ def aggregate(date):
         date = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S.%f')
         return date.weekday()
 
-
     data['weekday'] = float("NaN")
     for index, row in data.iterrows():
         data.at[index, 'weekday'] = compute_weekday(row['timestamp'])
@@ -36,10 +36,19 @@ def aggregate(date):
         data.at[index, 'relative_pedestrians_count'] = row['pedestrians_count'] / \
             row['mean_pedestrians_count_weekday']
 
-
     stations_with_ags = pd.read_csv('data/stations_with_ags.csv',dtype={"landkreis":"str"})
     data_with_ags = pd.merge(data, stations_with_ags, left_on='station_id',
                              right_on='stationid', how='left').drop('stationid', axis=1)
+    # Check for unknown station_ids
+    ids_in_data = set(data["station_id"])
+    known_ids = set(stations_with_ags["stationid"])
+    for unknown_id in ids_in_data.difference(known_ids):
+        print(f"Warning: Unknown hystreet station_id: {unknown_id}.")
+        print(f"         Updating stations_with_ags.csv by running make_stations_with_ags.py should fix this.")
+
+    # Drop unknown stations
+    unknown_index = data_with_ags[data_with_ags["name"].isna()].index
+    data_with_ags = data_with_ags.drop(unknown_index)
 
     # compute mean for each ags (if multiple stations are in the same landkreis)
     grouped = pd.DataFrame(data_with_ags.groupby(['landkreis'], sort=False)['relative_pedestrians_count'].mean())
@@ -54,7 +63,7 @@ def aggregate(date):
         list_results.append(data_dict)
     
     # push to influxdb
-    data_with_ags=prepare_for_influxdb(data_with_ags)
+    data_with_ags = prepare_for_influxdb(data_with_ags)
     list_fields = [
         'lat', 
         'lon',
@@ -76,30 +85,32 @@ def aggregate(date):
 
     return list_results
 
+
 def prepare_for_influxdb(df):
-    '''
-    Bring a dataframe in the right format for 
+    """
+    Bring a dataframe in the right format for
     the push_to_influxdb function
-    '''
+    """
     df = df.rename(columns={
-        'landkreis':'ags'
+        'landkreis': 'ags'
     })
-    df=get_ags(df)
-    df["time"] = df.apply(lambda x: 1000000000*int(datetime.timestamp((pd.to_datetime(x["timestamp"])))),1)
+    df = get_ags(df)
+    df["time"] = df.apply(lambda x: 1000000000*int(datetime.timestamp((pd.to_datetime(x["timestamp"])))), 1)
     df["measurement"] = "hystreet"
     df["origin"] = "https://hystreet.com"
     df = df.rename(columns={
-        'station_id':'_id',
-        'pedestrians_count':'pedestrian_count',
-        'state':'bundesland'
+        'station_id': '_id',
+        'pedestrians_count': 'pedestrian_count',
+        'state': 'bundesland'
     })
     df['ags'] = pd.to_numeric(df['ags'])
-    #import pdb; pdb.set_trace()
+    # import pdb; pdb.set_trace()
     return df
-    
+
+
 if __name__ == '__main__':
     # for testing
-    for i in range(1,14):
+    for i in range(1, 5):
         date = date.today() - timedelta(days = i)
         list_results = aggregate(date)
     print(list_results)
