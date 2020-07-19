@@ -41,15 +41,15 @@ if __name__ == "__main__":
             print("Error Lemgo:")
             print(e)
 
-        print("--------------")
-        print("start gmap...")
-        try:
-            gmapscore_list = pd.DataFrame(agg_gmap_transit_score(date))
-            gmapscore_list = gmapscore_list.set_index('landkreis')
-            list_result = list_result.join(gmapscore_list, how="outer")
-        except Exception as e:
-            print("Error GMAP:")
-            print(e)
+        # print("--------------")
+        # print("start gmap...")
+        # try:
+        #     gmapscore_list = pd.DataFrame(agg_gmap_transit_score(date))
+        #     gmapscore_list = gmapscore_list.set_index('landkreis')
+        #     list_result = list_result.join(gmapscore_list, how="outer")
+        # except Exception as e:
+        #     print("Error GMAP:")
+        #     print(e)
 
         print("--------------")
         print("start webcams...")
