@@ -91,9 +91,7 @@ def prepare_for_influxdb(df):
     Bring a dataframe in the right format for
     the push_to_influxdb function
     """
-    df = df.rename(columns={
-        'landkreis': 'ags'
-    })
+    df = df.drop(columns="landkreis", errors="ignore")  # prevent name collision in get_ags()
     df = get_ags(df)
     df["time"] = df.apply(lambda x: 1000000000*int(datetime.timestamp((pd.to_datetime(x["timestamp"])))), 1)
     df["measurement"] = "hystreet"
