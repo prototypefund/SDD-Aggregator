@@ -39,18 +39,28 @@ def get_ags(df):
     gdf = geopandas.GeoDataFrame(df, geometry=geometry)
     gdf = gdf.dropna(subset=["geometry"]).reset_index(drop=True)
     gdf.crs = countries.crs  # supresses warning
-    gdf = geopandas.sjoin(gdf, countries, how="left", op='intersects')
-    
-    # in case there was a "ags" column in the original dataframe:
-    gdf = gdf.rename(columns={"ags_left":"ags"})
+    gdf_joined = geopandas.sjoin(gdf, countries, how="left", op='intersects')
+    gdf_joined = gdf_joined.drop(columns=["ags_right", "index_right"], errors="ignore")
 
-    for col in ["ags_right", "index_right"]:
-        try:
-            gdf = gdf.drop(columns=col)
-        except:
-            pass
-    return gdf
-    # return df
+    nan_indices = gdf_joined["ags"].isna()
+    if not gdf_joined.loc[nan_indices].empty:
+        # If there are locations just slightly outside of the country polygon, they
+        # will result in NaN values. Try to fix this by repeating the sjoin
+        # with slighty enlarged countries for those locations
+        countries_with_buffer = countries.copy()
+        countries_with_buffer["geometry"] = countries.buffer(0.004)
+        gdf_joined.loc[nan_indices] = geopandas.sjoin(gdf.loc[nan_indices], countries_with_buffer, how="left", op='intersects')
+        gdf_joined = gdf_joined.drop(columns=["ags_right", "index_right"], errors="ignore")
+        if gdf_joined.loc[gdf_joined['ags'].isna()].empty:
+            print(f"coords_convert: Successfully applied buffer fix to {len(gdf_joined.loc[nan_indices]['Name'].unique())} locations!")
+        else:
+            print(f"Warning: coords_convert: Some locatations could not be found {gdf_joined.loc[gdf_joined['ags'].isna()]['Name'].unique()}")
+
+    # in case there was a "ags" column in the original dataframe:
+    gdf = gdf.rename(columns={"ags_left": "ags"})
+
+    return gdf_joined
+
 
 def attach_to_ags(df):
     # df = pd.DataFrame()
