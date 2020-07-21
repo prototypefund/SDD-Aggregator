@@ -2,6 +2,7 @@ import boto3
 import pandas as pd
 from datetime import date, timedelta
 from agg_webcam import aggregate as agg_webcam
+from agg_webcam_customvision import aggregate as agg_webcam_customvision
 from agg_hystreet import aggregate as agg_hystreet
 from agg_gmap_transit_score import aggregate as agg_gmap_transit_score
 from agg_fahrrad import aggregate as agg_fahrrad
@@ -60,6 +61,17 @@ if __name__ == "__main__":
         except Exception as e:
             print("Error Webcam")
             print(e)
+
+        print("--------------")
+        print("start webcams customvision...")
+        try:
+            webcam_list_customvision = pd.DataFrame(agg_webcam_customvision(date))
+            webcam_list_customvision = webcam_list_customvision.set_index('landkreis')
+            list_result = list_result.join(webcam_list_customvision, how="outer")
+        except Exception as e:
+            print("Error Webcam customvision")
+            print(e)
+
         print("--------------")
         print("start hystreet...")
         try:
