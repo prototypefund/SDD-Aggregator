@@ -13,6 +13,7 @@ import json
 import settings
 import os
 
+
 if __name__ == "__main__":
 
     #How far back do you want to aggregate data?
@@ -25,6 +26,11 @@ if __name__ == "__main__":
     print(f"\nAggregate the last {days} days.")
 
     s3_client = boto3.client('s3')
+    if "TIMERANGE" in list(os.environ):
+        list_sources = os.environ["SOURCE_SELECTOR"].split(";")
+    else:
+        # lemgo;webcam;webcam-customvision;hystreet;fahrrad;airquality
+        list_sources = ['lemgo', 'webcam', 'webcam-customvision', 'hystreet', 'fahrrad', 'airquality']
 
     for x in range(0,days):
         date_obj = date.today() - timedelta(days = x)
@@ -33,14 +39,15 @@ if __name__ == "__main__":
         list_result = pd.DataFrame(columns = ['landkreis'])
         list_result = list_result.set_index("landkreis")
 
-        print("start lemgo...")
-        try:
-            lemgo_digital_list = pd.DataFrame(agg_lemgo_digital(date_obj))
-            lemgo_digital_list = lemgo_digital_list.set_index('landkreis')
-            list_result = list_result.join(lemgo_digital_list, how="outer")
-        except Exception as e:
-            print("Error Lemgo:")
-            print(e)
+        if 'lemgo' in list_sources:
+            print("start lemgo...")
+            try:
+                lemgo_digital_list = pd.DataFrame(agg_lemgo_digital(date_obj))
+                lemgo_digital_list = lemgo_digital_list.set_index('landkreis')
+                list_result = list_result.join(lemgo_digital_list, how="outer")
+            except Exception as e:
+                print("Error Lemgo:")
+                print(e)
 
         # print("--------------")
         # print("start gmap...")
@@ -52,59 +59,64 @@ if __name__ == "__main__":
         #     print("Error GMAP:")
         #     print(e)
 
-        print("--------------")
-        print("start webcams...")
-        try:
-            webcam_list = pd.DataFrame(agg_webcam(date_obj))
-            webcam_list = webcam_list.set_index('landkreis')
-            list_result = list_result.join(webcam_list, how="outer")
-        except Exception as e:
-            print("Error Webcam")
-            print(e)
+        if 'webcam' in list_sources:
+            print("--------------")
+            print("start webcams...")
+            try:
+                webcam_list = pd.DataFrame(agg_webcam(date_obj))
+                webcam_list = webcam_list.set_index('landkreis')
+                list_result = list_result.join(webcam_list, how="outer")
+            except Exception as e:
+                print("Error Webcam")
+                print(e)
 
-        print("--------------")
-        print("start webcams customvision...")
-        try:
-            webcam_list_customvision = pd.DataFrame(agg_webcam_customvision(date_obj))
-            webcam_list_customvision = webcam_list_customvision.set_index('landkreis')
-            list_result = list_result.join(webcam_list_customvision, how="outer")
-        except Exception as e:
-            print("Error Webcam customvision")
-            print(e)
+        if 'webcam-customvision' in list_sources:
+            print("--------------")
+            print("start webcams customvision...")
+            try:
+                webcam_list_customvision = pd.DataFrame(agg_webcam_customvision(date_obj))
+                webcam_list_customvision = webcam_list_customvision.set_index('landkreis')
+                list_result = list_result.join(webcam_list_customvision, how="outer")
+            except Exception as e:
+                print("Error Webcam customvision")
+                print(e)
 
-        print("--------------")
-        print("start hystreet...")
-        try:
-            hystreet_list = pd.DataFrame(agg_hystreet(date_obj))
-            hystreet_list = hystreet_list.set_index('landkreis')
-            list_result = list_result.join(hystreet_list, how = "outer")
-        except Exception as e:
-            print("Error Hystreet")
-            print(e)
+        if 'hystreet' in list_sources:
+            print("--------------")
+            print("start hystreet...")
+            try:
+                hystreet_list = pd.DataFrame(agg_hystreet(date_obj))
+                hystreet_list = hystreet_list.set_index('landkreis')
+                list_result = list_result.join(hystreet_list, how = "outer")
+            except Exception as e:
+                print("Error Hystreet")
+                print(e)
 
-        print("--------------")
-        print("start fahrrad...")
-        try:
-            fahrrad_list = pd.DataFrame(agg_fahrrad(date_obj))
-            fahrrad_list = fahrrad_list.set_index('landkreis')
-            list_result = list_result.join(fahrrad_list, how="outer")
-        except Exception as e:
-            print("Error Fahrrad")
-            print(e)
+        if 'fahrrad' in list_sources:
+            print("--------------")
+            print("start fahrrad...")
+            try:
+                fahrrad_list = pd.DataFrame(agg_fahrrad(date_obj))
+                fahrrad_list = fahrrad_list.set_index('landkreis')
+                list_result = list_result.join(fahrrad_list, how="outer")
+            except Exception as e:
+                print("Error Fahrrad")
+                print(e)
 
-        print("--------------")
-        print("start airquality...")
-        try:
-            airquality_list = agg_airquality(date_obj)
-            if airquality_list == []:
-                print("airquality: No data")
-            else:
-                airquality_df = pd.DataFrame(airquality_list)
-                airquality_df = airquality_df.set_index('ags')
-                list_result = list_result.join(airquality_df, how="outer")
-        except Exception as e:
-            print("Error Airquality")
-            print(e)
+        if 'airquality' in list_sources:
+            print("--------------")
+            print("start airquality...")
+            try:
+                airquality_list = agg_airquality(date_obj)
+                if airquality_list == []:
+                    print("airquality: No data")
+                else:
+                    airquality_df = pd.DataFrame(airquality_list)
+                    airquality_df = airquality_df.set_index('ags')
+                    list_result = list_result.join(airquality_df, how="outer")
+            except Exception as e:
+                print("Error Airquality")
+                print(e)
 
         # print("--------------")
         # print("start tomtom...")
