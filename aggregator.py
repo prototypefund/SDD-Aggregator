@@ -27,15 +27,15 @@ if __name__ == "__main__":
     s3_client = boto3.client('s3')
 
     for x in range(0,days):
-        date = date.today() - timedelta(days = x)
+        date_obj = date.today() - timedelta(days = x)
         print("\n##########################")
-        print('###   START ',date,"\n")
+        print('###   START ',date_obj,"\n")
         list_result = pd.DataFrame(columns = ['landkreis'])
         list_result = list_result.set_index("landkreis")
 
         print("start lemgo...")
         try:
-            lemgo_digital_list = pd.DataFrame(agg_lemgo_digital(date))
+            lemgo_digital_list = pd.DataFrame(agg_lemgo_digital(date_obj))
             lemgo_digital_list = lemgo_digital_list.set_index('landkreis')
             list_result = list_result.join(lemgo_digital_list, how="outer")
         except Exception as e:
@@ -45,7 +45,7 @@ if __name__ == "__main__":
         # print("--------------")
         # print("start gmap...")
         # try:
-        #     gmapscore_list = pd.DataFrame(agg_gmap_transit_score(date))
+        #     gmapscore_list = pd.DataFrame(agg_gmap_transit_score(date_obj))
         #     gmapscore_list = gmapscore_list.set_index('landkreis')
         #     list_result = list_result.join(gmapscore_list, how="outer")
         # except Exception as e:
@@ -55,7 +55,7 @@ if __name__ == "__main__":
         print("--------------")
         print("start webcams...")
         try:
-            webcam_list = pd.DataFrame(agg_webcam(date))
+            webcam_list = pd.DataFrame(agg_webcam(date_obj))
             webcam_list = webcam_list.set_index('landkreis')
             list_result = list_result.join(webcam_list, how="outer")
         except Exception as e:
@@ -65,7 +65,7 @@ if __name__ == "__main__":
         print("--------------")
         print("start webcams customvision...")
         try:
-            webcam_list_customvision = pd.DataFrame(agg_webcam_customvision(date))
+            webcam_list_customvision = pd.DataFrame(agg_webcam_customvision(date_obj))
             webcam_list_customvision = webcam_list_customvision.set_index('landkreis')
             list_result = list_result.join(webcam_list_customvision, how="outer")
         except Exception as e:
@@ -75,7 +75,7 @@ if __name__ == "__main__":
         print("--------------")
         print("start hystreet...")
         try:
-            hystreet_list = pd.DataFrame(agg_hystreet(date))
+            hystreet_list = pd.DataFrame(agg_hystreet(date_obj))
             hystreet_list = hystreet_list.set_index('landkreis')
             list_result = list_result.join(hystreet_list, how = "outer")
         except Exception as e:
@@ -85,7 +85,7 @@ if __name__ == "__main__":
         print("--------------")
         print("start fahrrad...")
         try:
-            fahrrad_list = pd.DataFrame(agg_fahrrad(date))
+            fahrrad_list = pd.DataFrame(agg_fahrrad(date_obj))
             fahrrad_list = fahrrad_list.set_index('landkreis')
             list_result = list_result.join(fahrrad_list, how="outer")
         except Exception as e:
@@ -95,7 +95,7 @@ if __name__ == "__main__":
         print("--------------")
         print("start airquality...")
         try:
-            airquality_list = agg_airquality(date)
+            airquality_list = agg_airquality(date_obj)
             if airquality_list == []:
                 print("airquality: No data")
             else:
@@ -109,7 +109,7 @@ if __name__ == "__main__":
         # print("--------------")
         # print("start tomtom...")
         # try:
-            # tomtom_list = pd.DataFrame(agg_tomtom(date))
+            # tomtom_list = pd.DataFrame(agg_tomtom(date_obj))
             # tomtom_list = tomtom_list.set_index('landkreis')
             # list_result = list_result.join(tomtom_list, how="outer")
         # except Exception as e:
@@ -118,16 +118,16 @@ if __name__ == "__main__":
 
         print("--------------")
         print("write output...")
-        list_result["date"] = str(date)
+        list_result["date"] = str(date_obj)
         #list_result.to_csv("test.csv")
 
         #list_result
         dict = list_result.T.to_dict()
         #dict
         # s3_client.put_object(Bucket='sdd-s3-basebucket', Key="aggdata/live", Body=json.dumps(dict))
-        response = s3_client.put_object(Bucket=settings.BUCKET, Key='aggdata/{}/{}/{}'.format(str(date.year).zfill(4), str(date.month).zfill(2),str(date.day).zfill(2)), Body=json.dumps(dict))
+        response = s3_client.put_object(Bucket=settings.BUCKET, Key='aggdata/{}/{}/{}'.format(str(date_obj.year).zfill(4), str(date_obj.month).zfill(2),str(date_obj.day).zfill(2)), Body=json.dumps(dict))
         print("s3_client.put_object response:",response)
-        print('\n###     END ',date,"")
+        print('\n###     END ',date_obj,"")
         print("##########################\n")
 
  
