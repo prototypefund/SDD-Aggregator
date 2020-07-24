@@ -8,19 +8,19 @@ from push_to_influxdb import push_to_influxdb
 from convert_df_to_influxdb import convert_df_to_influxdb
 
 
-def aggregate(date):
+def aggregate(date_obj):
     s3_client = boto3.client('s3')
     data = pd.DataFrame()
 
     response = s3_client.get_object(Bucket=settings.BUCKET, Key='hystreet/{}/{}/{}'.format(
-        str(date.year).zfill(4), str(date.month).zfill(2), str(date.day).zfill(2)))
+        str(date_obj.year).zfill(4), str(date_obj.month).zfill(2), str(date_obj.day).zfill(2)))
     result = pd.DataFrame(json.loads(response["Body"].read()))
     data = data.append(result.loc[result["pedestrians_count"] > 0])
 
     def compute_weekday(timestamp):
-        date_str = timestamp.split('+')[0]
-        date = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%S.%f')
-        return date.weekday()
+        date_obj_str = timestamp.split('+')[0]
+        date_obj = datetime.strptime(date_obj_str, '%Y-%m-%dT%H:%M:%S.%f')
+        return date_obj.weekday()
 
     data['weekday'] = float("NaN")
     for index, row in data.iterrows():
@@ -109,8 +109,8 @@ def prepare_for_influxdb(df):
 if __name__ == '__main__':
     # for testing
     for i in range(1, 5):
-        date = date.today() - timedelta(days = i)
-        list_results = aggregate(date)
+        date_obj = date.today() - timedelta(days = i)
+        list_results = aggregate(date_obj)
     print(list_results)
     
     

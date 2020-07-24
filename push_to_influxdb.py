@@ -7,7 +7,7 @@ try:
     #INF_BUCKET = os.environ['INF_BUCKET']
     INF_URL = os.environ['INF_URL']
     INF_ORG = os.environ['INF_ORG']
-except KeyError:
+except KeyError as e:
     try:
         from donotpush import getsettings
 
@@ -18,7 +18,7 @@ except KeyError:
         INF_ORG = temp["org"]
     except:
         pass
-    pass
+    print("switched to local mode")
 
 
 def push_to_influxdb(json_out, write_bucket="sdd"):

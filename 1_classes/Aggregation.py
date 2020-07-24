@@ -28,7 +28,7 @@ class Aggregator:
             print("agg_{}: No 'ags' column in dataframe, skip this date.".format(base))
         else:
             df[columnIn] = pd.to_numeric(df[base].str[columnIn], errors='coerce')
-            df = df.groupby("ags").agg({columnIn:"mean"}).reset_index()
+            # df = df.groupby("ags").agg({columnIn: "mean"}).reset_index()
             df[columnIn] = df[columnIn]/100
             df.columns = ["ags",columnOut]
             df = attach_to_ags(df)
@@ -38,6 +38,7 @@ class Aggregator:
     def __init__(self, bucketName="sdd-s3-bucket"):
         self.s3_client = boto3.client('s3')
         self.bucketName = bucketName
+
     def listFromAWS(self, base, date):
         object_list = []
         # List data

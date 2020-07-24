@@ -22,11 +22,12 @@ def aggregate(date_obj):
 
     # Aggregation.Aggregator.aggregateDf(fullData, "airquality", "aqi", "airquality_score")
     # pd.DataFrame.from_records(fullData)
-    list_fields = ["airquality_score"]
-    list_tags = ["state", "landkreis", "districtType", "ags"]
+    list_fields = ["airquality_score", "lat", "lon"]
+    list_tags = ["state", "landkreis", "districtType", "ags", "name", "_id", "origin"]
 
     df = Aggregation.Aggregator.aggregateJson(fullData,"airquality","aqi","airquality_score")
     df["measurement"] = "airquality"
+    # df["measurement"] = "airquality"
     # df["time"] = pd.to_datetime(date)
     # df["time"] = pd.to_datetime(date).timestamp()
     df["time"] = datetime.datetime(year=date_obj.year, month=date_obj.month, day=date_obj.day, hour=12).isoformat()

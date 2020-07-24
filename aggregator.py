@@ -29,7 +29,7 @@ if __name__ == "__main__":
     if "TIMERANGE" in list(os.environ):
         list_sources = os.environ["SOURCE_SELECTOR"].split(";")
     else:
-        # lemgo;webcam;webcam-customvision;hystreet;fahrrad;airquality
+        # Standardwert: lemgo;webcam;webcam-customvision;hystreet;fahrrad;airquality
         list_sources = ['lemgo', 'webcam', 'webcam-customvision', 'hystreet', 'fahrrad', 'airquality']
 
     for x in range(0,days):

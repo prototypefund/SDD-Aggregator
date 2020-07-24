@@ -69,33 +69,42 @@ def aggregate(date_obj):
     passerby_per_hour_dp = get_relative_passerby(object_body_json)
     # passerby_per_hour_dp.set_index("timestamp")
 
-    aggregated_value = pd.merge(traffic_per_hour_dp, passerby_per_hour_dp, how='outer', on="timestamp")
-
-    aggregated_value.reset_index()
     try:
-        aggregated_value['lemgoDigitalAggregated'] = 0.3 * aggregated_value['relativTraffic'] + 0.7 * aggregated_value[
+        aggregated_value = pd.merge(traffic_per_hour_dp, passerby_per_hour_dp, how='outer', on="timestamp")
+        aggregated_value.reset_index()
+    except Exception as e:
+        print("lemgoDigitalAggregated issue", e)
+    try:
+        aggregated_value['lemgoDigital'] = 0.3 * aggregated_value['relativTraffic'] + 0.7 * aggregated_value[
             'relativPasserby']
     except Exception as e:
-        aggregated_value['lemgoDigitalAggregated'] = None
+        aggregated_value = passerby_per_hour_dp.copy()
+        aggregated_value = aggregated_value.rename(columns={"relativPasserby" : "lemgoDigital"})
+        # aggregated_value['lemgoDigitalAggregated'] = None
         print("lemgoDigitalAggregated issue", e)
 
     list_results = []
-    date_minus_one = date_obj - timedelta(days=1)
-    #print(aggregated_value["timestamp"])
-    #print(str(date))
-    aggregated_value_for_day = aggregated_value.loc[aggregated_value['timestamp'] == str(date_minus_one)]
+    try:
+        date_minus_one = date_obj - timedelta(days=1)
+        #print(aggregated_value["timestamp"])
+        #print(str(date))
+        aggregated_value_for_day = aggregated_value.loc[aggregated_value['timestamp'] == str(date_minus_one)]
+        data_index = {
+            'landkreis': '05766',
+            'lemgoDigital': aggregated_value_for_day['lemgoDigital'].iloc[0],
+            'time': datetime(date_minus_one.year, date_minus_one.month, date_minus_one.day, hour=12).isoformat()
+        }
+        list_results.append(data_index)
+    except Exception as e:
+        print(e)
+
     #print(aggregated_value_for_day)
-    data_index = {
-        'landkreis': '05766',
-        'lemgoDigital': aggregated_value_for_day['lemgoDigitalAggregated'].iloc[0],
-        'time' : datetime(date_minus_one.year, date_minus_one.month, date_minus_one.day, hour=12).isoformat()
-    }
-    list_results.append(data_index)
-    list_fields=["lemgoDigital"]
-    list_tags=["landkreis"]
+    list_fields = ["lemgoDigital"]
+    list_tags = ["landkreis"]
     aggregated_value['time'] = datetime(date_minus_one.year, date_minus_one.month, date_minus_one.day, hour=12).isoformat()
 
     aggregated_value['measurement'] = "lemgoDigital"
+    aggregated_value['landkreis'] = "05766"
     data = convert_df_to_influxdb(aggregated_value, list_fields=list_fields, list_tags=list_tags)
     push_to_influxdb(data)
 
