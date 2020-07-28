@@ -2,7 +2,7 @@
 def convert_df_to_influxdb(data, list_fields=[], list_tags=[]):
     json_out = []
     for index, row in data.iterrows():
-        print(row)
+        # print(row)
         j = {}
         j["measurement"] = row["measurement"]
         j["fields"] = {x: row[x] for x in list_fields}
