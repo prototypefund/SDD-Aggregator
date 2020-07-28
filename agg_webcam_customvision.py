@@ -87,10 +87,10 @@ def aggregate(date_obj=datetime.date.today()):
         }
         list_results.append(data_index)
     return list_results
-
-if __name__ == '__main__':
-    # for testing
-    for i in range(1,14):
-        date = date.today() - timedelta(days = i)
-        list_results = aggregate(date)
-    print(list_results)
+#
+# if __name__ == '__main__':
+#     # for testing
+#     for i in range(1,14):
+#         date = date.today() - timedelta(days = i)
+#         list_results = aggregate(date)
+#     print(list_results)
