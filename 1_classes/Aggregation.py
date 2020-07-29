@@ -30,7 +30,7 @@ class Aggregator:
             df[columnIn] = pd.to_numeric(df[base].str[columnIn], errors='coerce')
             # df = df.groupby("ags").agg({columnIn: "mean"}).reset_index()
             df[columnIn] = df[columnIn]/100
-            df = df.rename(columns={columnIn:columnOut, "datetime", "time"})
+            df = df.rename(columns={columnIn:columnOut, "datetime" : "time"})
             df = attach_to_ags(df)
             return df
             # return json.loads(df.to_json(orient='records'))
