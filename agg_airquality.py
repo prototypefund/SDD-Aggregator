@@ -42,5 +42,6 @@ def aggregate(date_obj):
     # df["time"] = df["datetime"]
     list_jsons = convert_df_to_influxdb(df, list_tags=list_tags, list_fields=list_fields)
     push_to_influxdb(list_jsons)
+    df = df.drop(columns={"geometry"})
     return json.loads(df.to_json(orient='records'))
     # return json.loads(df.to_dict(orient="records"))
