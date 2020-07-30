@@ -26,7 +26,7 @@ if __name__ == "__main__":
     print(f"\nAggregate the last {days} days.")
 
     s3_client = boto3.client('s3')
-    if "TIMERANGE" in list(os.environ):
+    if "SOURCE_SELECTOR" in list(os.environ):
         list_sources = os.environ["SOURCE_SELECTOR"].split(";")
     else:
         # Standardwert: lemgo;webcam;webcam-customvision;hystreet;fahrrad;airquality

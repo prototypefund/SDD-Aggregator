@@ -26,7 +26,7 @@ def get_relative_traffic(object_body_json):
             traffic_per_hour_dp['trafficCurrent'])
     except Exception as e:
         traffic_per_hour_dp['relativTraffic'] = None
-        print("relativTraffic issue", e)
+        # print("relativTraffic issue", e)
     return traffic_per_hour_dp
 
 
@@ -73,7 +73,8 @@ def aggregate(date_obj):
         aggregated_value = pd.merge(traffic_per_hour_dp, passerby_per_hour_dp, how='outer', on="timestamp")
         aggregated_value.reset_index()
     except Exception as e:
-        print("lemgoDigitalAggregated issue", e)
+        # print("lemgoDigitalAggregated issue", e)
+        pass
     try:
         aggregated_value['lemgoDigital'] = 0.3 * aggregated_value['relativTraffic'] + 0.7 * aggregated_value[
             'relativPasserby']
@@ -81,7 +82,7 @@ def aggregate(date_obj):
         aggregated_value = passerby_per_hour_dp.copy()
         aggregated_value = aggregated_value.rename(columns={"relativPasserby" : "lemgoDigital"})
         # aggregated_value['lemgoDigitalAggregated'] = None
-        print("lemgoDigitalAggregated issue", e)
+        # print("lemgoDigitalAggregated issue", e)
 
     list_results = []
     try:
@@ -96,7 +97,8 @@ def aggregate(date_obj):
         }
         list_results.append(data_index)
     except Exception as e:
-        print(e)
+        # print(e)
+        pass
 
     #print(aggregated_value_for_day)
     list_fields = ["lemgoDigital"]
