@@ -11,7 +11,7 @@ except KeyError as e:
     try:
         from donotpush import getsettings
 
-        err, temp = getsettings("dev", "csv")
+        err, temp = getsettings("dev", "json")
         INF_TOKEN = temp["token"]
         #INF_BUCKET = temp["bucket"]
         INF_URL = temp["url"]
@@ -25,4 +25,4 @@ def push_to_influxdb(json_out, write_bucket="sdd"):
     client = InfluxDBClient(url=INF_URL, token=INF_TOKEN, org=INF_ORG)
     write_api = client.write_api(write_options=SYNCHRONOUS)
     write_api.write(bucket=write_bucket, org=INF_ORG, record=json_out)
-    print("Successful push to Influxdb.")
+    print(f"Successful push to Influxdb: {write_bucket}")

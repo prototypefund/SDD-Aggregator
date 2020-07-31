@@ -22,16 +22,18 @@ class Aggregator:
     """ Static function to aggregate the json into a list
         equivalent to aggregateDf(pd.json_normalize(jsonString), base, columnIn, columnOut)"""
     @staticmethod
-    def aggregateJson(jsonString, base, columnIn, columnOut):
-        df = pd.DataFrame(jsonString)
+    def aggregateJson(fullData, base, columnIn, columnOut):
+        df = pd.DataFrame(fullData)
         if not "ags" in df:
             print("agg_{}: No 'ags' column in dataframe, skip this date.".format(base))
         else:
-            df[columnIn] = pd.to_numeric(df[base].str[columnIn], errors='coerce')
+            df[columnIn] = pd.to_numeric(df[base].str[columnIn] , errors='coerce')
             # df = df.groupby("ags").agg({columnIn: "mean"}).reset_index()
             df[columnIn] = df[columnIn]/100
+
             df = df.rename(columns={columnIn:columnOut, "datetime" : "time"})
             df = attach_to_ags(df)
+
             return df
             # return json.loads(df.to_json(orient='records'))
 

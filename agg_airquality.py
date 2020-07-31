@@ -10,7 +10,7 @@ from convert_df_to_influxdb import convert_df_to_influxdb
 import pandas as pd
 import json
 
-date_obj = datetime.date.today().replace(day=12)
+date_obj = datetime.date.today().replace(day=30)
 def aggregate(date_obj):
     s3Handler = S3.S3_Handler()
     listOfFile = s3Handler.listFromAWS("airquality", date_obj)
@@ -20,7 +20,8 @@ def aggregate(date_obj):
         if jsonItem != False:
             fullData = fullData + jsonItem
     df = Aggregation.Aggregator.aggregateJson(fullData,"airquality","aqi","airquality_score")
-
+    df = df.drop(columns=["airquality"])
+    df["ags"] = pd.to_numeric(df["ags"])
     # Aggregation.Aggregator.aggregateDf(fullData, "airquality", "aqi", "airquality_score")
     # pd.DataFrame.from_records(fullData)
     list_fields = ["airquality_score", "lat", "lon"]
@@ -42,6 +43,6 @@ def aggregate(date_obj):
     # df["time"] = df["datetime"]
     list_jsons = convert_df_to_influxdb(df, list_tags=list_tags, list_fields=list_fields)
     push_to_influxdb(list_jsons)
-    df = df.drop(columns={"geometry"})
+    df = df[["ags", "airquality_score"]].copy()
     return json.loads(df.to_json(orient='records'))
     # return json.loads(df.to_dict(orient="records"))

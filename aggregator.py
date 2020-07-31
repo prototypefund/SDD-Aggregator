@@ -15,25 +15,20 @@ import os
 
 
 if __name__ == "__main__":
-
+    sources = "lemgo;webcam;webcam-customvision;hystreet;fahrrad;airquality"
+    dict_environ = {"TIMERANGE": 2, "SOURCE_SELECTOR": sources, "OFFSET": 1}
+    for key, value in dict_environ.items():
+        if key in list(os.environ):
+            dict_environ[key] = os.environ[key]
+    list_sources = dict_environ["SOURCE_SELECTOR"].split(";")
     #How far back do you want to aggregate data?
-    if "TIMERANGE" in list(os.environ):
-        # this can be used for full-range aggregator runs
-        # in aws codebuild
-        days = int(os.environ["TIMERANGE"])
-    else:
-        days = 1
-    print(f"\nAggregate the last {days} days.")
+    days = int(dict_environ["TIMERANGE"])
 
     s3_client = boto3.client('s3')
-    if "SOURCE_SELECTOR" in list(os.environ):
-        list_sources = os.environ["SOURCE_SELECTOR"].split(";")
-    else:
-        # Standardwert: lemgo;webcam;webcam-customvision;hystreet;fahrrad;airquality
-        list_sources = ['lemgo', 'webcam', 'webcam-customvision', 'hystreet', 'fahrrad', 'airquality']
+    print(f"\nAggregate the last {days} days.")
 
-    for x in range(0,days):
-        date_obj = date.today() - timedelta(days = x)
+    for x in range(dict_environ["OFFSET"], days + dict_environ["OFFSET"]):
+        date_obj = date.today() - timedelta(days=x)
         print("\n##########################")
         print('###   START ',date_obj,"\n")
         list_result = pd.DataFrame(columns = ['landkreis'])
@@ -131,15 +126,15 @@ if __name__ == "__main__":
         print("--------------")
         print("write output...")
         list_result["date"] = str(date_obj)
+        list_result.index = list_result.index.astype(int).astype(str).str.zfill(5)
         #list_result.to_csv("test.csv")
 
         #list_result
-        dict = list_result.T.to_dict()
+        dict_results = list_result.T.to_dict()
         #dict
         # s3_client.put_object(Bucket='sdd-s3-basebucket', Key="aggdata/live", Body=json.dumps(dict))
-        response = s3_client.put_object(Bucket=settings.BUCKET, Key='aggdata/{}/{}/{}'.format(str(date_obj.year).zfill(4), str(date_obj.month).zfill(2),str(date_obj.day).zfill(2)), Body=json.dumps(dict))
-        print("s3_client.put_object response:",response)
+        response = s3_client.put_object(Bucket=settings.BUCKET, Key='aggdata/{}/{}/{}'.format(str(date_obj.year).zfill(4), str(date_obj.month).zfill(2),str(date_obj.day).zfill(2)), Body=json.dumps(dict_results))
+        print("s3_client.put_object response:", response)
         print('\n###     END ',date_obj,"")
         print("##########################\n")
 
- 

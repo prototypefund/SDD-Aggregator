@@ -57,8 +57,8 @@ def get_ags(df):
             print(f"Warning: coords_convert: Some locatations could not be found {gdf_joined.loc[gdf_joined['ags'].isna()]['Name'].unique()}")
 
     # in case there was a "ags" column in the original dataframe:
-    gdf = gdf.rename(columns={"ags_left": "ags"})
-
+    gdf_joined = gdf_joined.rename(columns={"ags_left": "ags"})
+    gdf_joined["ags"] = gdf_joined["ags"].astype(int)
     return gdf_joined
 
 

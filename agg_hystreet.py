@@ -36,7 +36,7 @@ def aggregate(date_obj):
         data.at[index, 'relative_pedestrians_count'] = row['pedestrians_count'] / \
             row['mean_pedestrians_count_weekday']
 
-    stations_with_ags = pd.read_csv('data/stations_with_ags.csv',dtype={"landkreis":"str"})
+    stations_with_ags = pd.read_csv('data/stations_with_ags.csv',dtype={"landkreis": "int"})
     data_with_ags = pd.merge(data, stations_with_ags, left_on='station_id',
                              right_on='stationid', how='left').drop('stationid', axis=1)
     # Check for unknown station_ids
@@ -54,7 +54,7 @@ def aggregate(date_obj):
     grouped = pd.DataFrame(data_with_ags.groupby(['landkreis'], sort=False)['relative_pedestrians_count'].mean())
     grouped = grouped.reset_index()
     list_results = []
-
+    # grouped["landkreis"] = grouped["landkreis"].astype(str)
     for index, row in grouped.iterrows():
         data_dict = {
             'hystreet_score': row['relative_pedestrians_count'],

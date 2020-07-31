@@ -89,15 +89,16 @@ def aggregate(date_obj):
         date_minus_one = date_obj - timedelta(days=1)
         #print(aggregated_value["timestamp"])
         #print(str(date))
-        aggregated_value_for_day = aggregated_value.loc[aggregated_value['timestamp'] == str(date_minus_one)]
+        aggregated_value_for_day = aggregated_value.loc[aggregated_value['timestamp'] == str(date_obj)]
         data_index = {
             'landkreis': '05766',
+            # 'ags': int('05766'),
             'lemgoDigital': aggregated_value_for_day['lemgoDigital'].iloc[0],
             'time': datetime(date_minus_one.year, date_minus_one.month, date_minus_one.day, hour=12).isoformat()
         }
         list_results.append(data_index)
     except Exception as e:
-        # print(e)
+        print(e)
         pass
 
     #print(aggregated_value_for_day)
@@ -106,7 +107,7 @@ def aggregate(date_obj):
     aggregated_value['time'] = datetime(date_minus_one.year, date_minus_one.month, date_minus_one.day, hour=12).isoformat()
 
     aggregated_value['measurement'] = "lemgoDigital"
-    aggregated_value['landkreis'] = "05766"
+    aggregated_value['landkreis'] = int("05766")
     data = convert_df_to_influxdb(aggregated_value, list_fields=list_fields, list_tags=list_tags)
     push_to_influxdb(data)
 

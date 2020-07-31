@@ -50,7 +50,7 @@ def aggregate(date_obj=datetime.date.today()):
     data = convert_lat_lon_to_float(data)
     data = get_ags(data)
     data.columns = [col.lower() for col in data.columns]
-    data["ags"] = data["ags"].astype(int, errors="ignore")
+    # data["ags"] = data["ags"].astype(int, errors="ignore")
     data["personenzahl"] = data["personenzahl"].astype(float, errors="raise")
     data["measurement"] = "webcam-customvision"
     
@@ -83,7 +83,7 @@ def aggregate(date_obj=datetime.date.today()):
         webcam_score = row["personenzahl"]
         data_index = {
             "landkreis": landkreis,
-            'webcam_score' : webcam_score
+            'webcam_customvision_score': webcam_score
         }
         list_results.append(data_index)
     return list_results
