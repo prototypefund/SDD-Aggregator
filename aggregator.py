@@ -16,12 +16,12 @@ import os
 
 if __name__ == "__main__":
     sources = "lemgo;webcam;webcam-customvision;hystreet;fahrrad;airquality"
-    dict_environ = {"TIMERANGE": 2, "SOURCE_SELECTOR": sources, "OFFSET": 1}
+    dict_environ = {"TIMERANGE": 2, "SOURCE_SELECTOR": sources, "OFFSET": 0}
     for key, value in dict_environ.items():
         if key in list(os.environ):
             dict_environ[key] = os.environ[key]
     list_sources = dict_environ["SOURCE_SELECTOR"].split(";")
-    #How far back do you want to aggregate data?
+    # How far back do you want to aggregate data?
     days = int(dict_environ["TIMERANGE"])
     dict_environ["OFFSET"] = int(dict_environ["OFFSET"])
     
