@@ -23,7 +23,8 @@ if __name__ == "__main__":
     list_sources = dict_environ["SOURCE_SELECTOR"].split(";")
     #How far back do you want to aggregate data?
     days = int(dict_environ["TIMERANGE"])
-
+    dict_environ["OFFSET"] = int(dict_environ["OFFSET"])
+    
     s3_client = boto3.client('s3')
     print(f"\nAggregate the last {days} days.")
 
