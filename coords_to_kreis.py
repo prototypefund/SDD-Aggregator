@@ -55,6 +55,7 @@ def get_ags(df):
             print(f"coords_convert: Successfully applied buffer fix to {len(gdf_joined.loc[nan_indices]['Name'].unique())} locations!")
         else:
             print(f"Warning: coords_convert: Some locatations could not be found {gdf_joined.loc[gdf_joined['ags'].isna()]['Name'].unique()}")
+            gdf_joined = gdf_joined.dropna(subset=["ags"])
 
     # in case there was a "ags" column in the original dataframe:
     gdf_joined = gdf_joined.rename(columns={"ags_left": "ags"})
