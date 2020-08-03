@@ -52,9 +52,9 @@ if __name__ == "__main__":
                 webcam_list = pd.DataFrame(agg_webcam(date_obj))
                 webcam_list = webcam_list.set_index('landkreis')
                 list_result = list_result.join(webcam_list, how="outer")
-           except Exception as e:
-               print("Error Webcam")
-               print(e)
+            except Exception as e:
+                print("Error Webcam")
+                print(e)
 
         if 'webcam-customvision' in list_sources:
             print("--------------")
