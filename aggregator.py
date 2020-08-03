@@ -43,39 +43,29 @@ if __name__ == "__main__":
                 list_result = list_result.join(lemgo_digital_list, how="outer")
             except Exception as e:
                 print("Error Lemgo:")
-                print(e)
+                print(e)   
 
-        # print("--------------")
-        # print("start gmap...")
-        # try:
-        #     gmapscore_list = pd.DataFrame(agg_gmap_transit_score(date_obj))
-        #     gmapscore_list = gmapscore_list.set_index('landkreis')
-        #     list_result = list_result.join(gmapscore_list, how="outer")
-        # except Exception as e:
-        #     print("Error GMAP:")
-        #     print(e)
+        #if 'webcam' in list_sources:
+        #    print("--------------")
+        #    print("start webcams...")
+        #    try:
+        #        webcam_list = pd.DataFrame(agg_webcam(date_obj))
+        #        webcam_list = webcam_list.set_index('landkreis')
+        #        list_result = list_result.join(webcam_list, how="outer")
+        #   except Exception as e:
+        #       print("Error Webcam")
+        #       print(e)
 
-        if 'webcam' in list_sources:
-            print("--------------")
-            print("start webcams...")
-            try:
-                webcam_list = pd.DataFrame(agg_webcam(date_obj))
-                webcam_list = webcam_list.set_index('landkreis')
-                list_result = list_result.join(webcam_list, how="outer")
-            except Exception as e:
-                print("Error Webcam")
-                print(e)
-
-        if 'webcam-customvision' in list_sources:
-            print("--------------")
-            print("start webcams customvision...")
-            try:
-                webcam_list_customvision = pd.DataFrame(agg_webcam_customvision(date_obj))
-                webcam_list_customvision = webcam_list_customvision.set_index('landkreis')
-                list_result = list_result.join(webcam_list_customvision, how="outer")
-            except Exception as e:
-                print("Error Webcam customvision")
-                print(e)
+        #if 'webcam-customvision' in list_sources:
+        #    print("--------------")
+        #    print("start webcams customvision...")
+        #    try:
+        #        webcam_list_customvision = pd.DataFrame(agg_webcam_customvision(date_obj))
+        #        webcam_list_customvision = webcam_list_customvision.set_index('landkreis')
+        #        list_result = list_result.join(webcam_list_customvision, how="outer")
+        #    except Exception as e:
+        #        print("Error Webcam customvision")
+        #        print(e)
 
         if 'hystreet' in list_sources:
             print("--------------")
