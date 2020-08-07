@@ -30,22 +30,21 @@ def convert_lat_lon_to_float(data):
 def aggregate(date_obj=datetime.date.today()):
     s3_client = boto3.client('s3')
     data = pd.DataFrame()
-    for hour in range(7,18):
-        try:
-            key = 'webcamdaten/{}/{}/{}/{}webcamdaten-customvision.json'.format(str(date_obj.year).zfill(4), str(date_obj.month).zfill(2), str(date_obj.day).zfill(2), str(hour).zfill(2))
-            response = s3_client.get_object(Bucket=settings.BUCKET, Key=key)
-            body = response["Body"].read()
-            df = pd.DataFrame(json.loads(body))
-            df["date_check"] = date_obj
-            df["hour_check"] = hour
-            df["timestamp_check"] = str(datetime.datetime(year=date_obj.year, month=date_obj.month, day=date_obj.day, hour=hour))
-            data = data.append(df)
-        except Exception as e:
-            print(e,key)
-            pass
+    try:
+       key = 'webcamdaten/{}/{}/{}/{}webcamdaten-customvision.json'.format(str(date_obj.year).zfill(4), str(date_obj.month).zfill(2), str(date_obj.day).zfill(2), str(hour).zfill(2))
+       response = s3_client.get_object(Bucket=settings.BUCKET, Key=key)
+       body = response["Body"].read()
+       df = pd.DataFrame(json.loads(body))
+       df["date_check"] = date_obj
+       df["hour_check"] = hour
+       df["timestamp_check"] = str(datetime.datetime(year=date_obj.year, month=date_obj.month, day=date_obj.day, hour=hour))
+       data = data.append(df)
+    except Exception as e:
+       print(e,key)
+       pass
     if data.empty:
-        print(f"WARNING: No data returned from S3 for {str(date_obj)}!")
-        return []
+       print(f"WARNING: No data returned from S3 for {str(date_obj)}!")
+       return []
 
     data = convert_lat_lon_to_float(data)
     data = get_ags(data)
