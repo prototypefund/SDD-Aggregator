@@ -58,9 +58,12 @@ def aggregate(date_obj=datetime.date.today()):
     # cameras in the past by accident. Workaround: use compound _id made up from id and ags.
     data["_id"] = data.apply(lambda x: str(x["id"])+"_"+str(x["ags"]), 1)
     
+    #data = data.rename(columns={"stand": "time",
+    #                            "state": "bundesland",
+    #                            "url": "origin",
+    #                            "districttype": "districtType"})
     data = data.rename(columns={"stand": "time",
                                 "state": "bundesland",
-                                "url": "origin",
                                 "districttype": "districtType"})
     list_webcam_fields = ["personenzahl", "lat", "lon"]
     list_webcam_tags = [
