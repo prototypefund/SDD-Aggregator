@@ -64,7 +64,7 @@ def aggregate(date_obj=datetime.date.today()):
     data["_id"] = data.apply(lambda x: str(x["id"])+"_"+str(x["ags"]), 1)
 
     if "orgin" not in data.columns:
-        data["origin"] = data["URL"]
+        data["origin"] = data["url"]
     data = data.rename(columns={"stand": "time",
                                 "state": "bundesland",
                                 "districttype": "districtType"})
