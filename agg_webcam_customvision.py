@@ -74,7 +74,7 @@ def aggregate(date_obj=datetime.date.today()):
         'origin']
     json_out = convert_df_to_influxdb(data, list_webcam_fields, list_webcam_tags)
     push_to_influxdb(json_out)
-    #print(json_out)
+    print(json_out)
     
     # prepare output for aggregator
     data = pd.DataFrame(data.groupby("ags").mean())  # aggregate per day
