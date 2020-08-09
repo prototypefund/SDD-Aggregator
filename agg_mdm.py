@@ -1,105 +1,94 @@
 from xml.dom import minidom
-import pandas as pd
 import datetime
-from datetime import date, timedelta
-# compatibility with ipython
-#os.chdir(os.path.dirname(__file__))
-import json
-import boto3
-from coords_to_kreis import coords_convert, get_ags
-import re
-import settings
-import io
+
+def rec(el, recursion_lvl):
+    spaces = recursion_lvl * "   "
+    for node in el.childNodes:
+        print(f"{spaces}NAME: ", node.nodeName)
+        print(f"{spaces}VALUE: ", node.nodeValue)
+        print(f"{spaces}PARENT: ", node.parentNode.nodeName)
+        print(f"{spaces}CHILDS: ", node.hasChildNodes())
+        print("- - -")
+        if node.parentNode.nodeName == "basicData":
+            pass
+            # return node
+        if node.nodeName == "predefinedLocationReference":
+            node.getAttributeNode("id").value
+            node.getAttributeNode("targetClass").value
+            node.parentNode.getAttributeNode("xsi:type").value
+            return node
+    # df.join(rec())
+    # df = pd.DataFrame()
+    # for i in range(5):
+    #     rec(el, )
+
+def recursive(el, recursion_lvl):
+    spaces = recursion_lvl * "   "
+    for node in el.childNodes:
+        print(f"{spaces}NAME: ", node.nodeName)
+        print(f"{spaces}VALUE: ", node.nodeValue)
+        print(f"{spaces}PARENT: ", node.parentNode.nodeName)
+        print(f"{spaces}CHILDS: ", node.hasChildNodes())
+        print("- - -")
+        if node.parentNode.nodeName == "basicData":
+            pass
+            # return node
+        if node.nodeName == "predefinedLocationReference":
+            node.getAttributeNode("id").value
+            node.getAttributeNode("targetClass").value
+            node.parentNode.getAttributeNode("xsi:type").value
+            return node
 
 
-from push_to_influxdb import push_to_influxdb
-from convert_df_to_influxdb import convert_df_to_influxdb
+        # if node.parentNode.nodeName == "basicData" and node.parentNode.hasChildNodes():
+        #     return node
 
-def aggregate(date_obj=datetime.date.today()):
-    s3_client = boto3.client('s3')
+        rec = recursive(node, recursion_lvl + 1)
+        if rec:
+            return rec
+
+def aggregate():
+    pass
+
+def create_df(mdm_data):
+    columns = ["Rang","key","isnode","value_dtype","value","isinnode","isrelevant", "document"]
+    df = pd.DataFrame(columns=columns)
+    for d in mdm_data:
+        rec(d)
+
+
+import pandas as pd
+from awsthreading import get_mdm_data, _init, get_client, get_mdm_prefix
+if __name__ == "__main__":
+    date_obj = _init()
+    date_obj = datetime.datetime.now()
+    dict_objects = get_client().list_objects(Bucket=settings.BUCKET, Prefix=get_mdm_prefix(date_obj))
+    date_obj = date_obj.replace(minute=int(date_obj.minute/15) *15)
     data = pd.DataFrame()
-    try:
-        dict_objects = s3_client.list_objects(Bucket=settings.BUCKET, Prefix= 'mdm/{}/{}/{}/'.format(
-            str(date_obj.year).zfill(4),
-            str(date_obj.month).zfill(2),
-            str(date_obj.day).zfill(2)
-            )
-        )
-        for element in dict_objects["Contents"]:
-            print(element["Key"])
-            response = s3_client.get_object(Bucket=settings.BUCKET, Key=element["Key"])
-            body = response["Body"].read()
-
-            buffer = io.StringIO(body.decode())
-            mydoc = minidom.parse(buffer)
+    date_obj = datetime.date.today() - datetime.timedelta(1)
+    mdm_data = get_mdm_data(date_obj)
+    df = create_df(mdm_data)
 
 
-            list_childnodes = mydoc.childNodes
-            for i in list_childnodes:
-                print(i.nodeName)
-                list_childnodes2 = i.childNodes
-                for j in list_childnodes2:
-                    print(" ", j.nodeName)
-                    list_childnodes3 = j.childNodes
-                    for k in list_childnodes3:
-                        list_childnodes4 = k.childNodes
-                        print("   ", k.nodeName)
-                        for l in list_childnodes4:
-                            # print("   ", l.nodeName)
-                            pass
+# import boto3
+# import settings
+# import io
+# import sys
+
+# def get_data(date_obj):
+#     s3_client = boto3.client('s3')
+#     dict_objects = s3_client.list_objects(Bucket=settings.BUCKET, Prefix=get_prefix(date_obj))
+#     list_doc = []
+#     try:
+#         for element in dict_objects["Contents"]:
+#             response = s3_client.get_object(Bucket=settings.BUCKET, Key=element["Key"])
+#
+#             body = response["Body"].read()
+#             buffer = io.StringIO(body.decode())
+#             list_doc.append(minidom.parse(buffer))
+#     except Exception as e:
+#         pass
+#         # return None, e
+#     return list_doc, dict_objects
 
 
-            payloadPublication = mydoc.getElementsByTagName('payloadPublication')
-            for item in payloadPublication:
-                print(item)
-                value = item.getElementsByTagName('publicationTime')
-                for val in value:
-                    print(val)
-                    val
-                print(value)
-            body
-    except Exception as e:
-        print(e)
-
-        print(body)
-        # df = pd.DataFrame(json.loads(body))
-        # df["date_check"] = date_obj
-        # df["hour_check"] = hour
-        # df["timestamp_check"] = str(
-        #     datetime.datetime(year=date_obj.year, month=date_obj.month, day=date_obj.day, hour=hour))
-        # data = data.append(df)
-    # except Exception as e:
-    #     print(e, key)
-    #     pass
-    # if data.empty:
-    #     print(f"WARNING: No data returned from S3 for {str(date_obj)}!")
-    #     return []
-
-
-
-    # one specific item attribute
-    print('Item #2 attribute:')
-    print(items[1].attributes['name'].value)
-
-    # all item attributes
-    print('\nAll attributes:')
-    for elem in items:
-        print(elem.attributes['name'].value)
-
-    # one specific item's data
-    print('\nItem #2 data:')
-    print(items[1].firstChild.data)
-    print(items[1].childNodes[0].data)
-
-    # all items data
-    print('\nAll item data:')
-    for elem in items:
-        print(elem.firstChild.data)
-
-
-if __name__ == '__main__':
-    # for testing
-    for i in range(0,4):
-        date_obj = date.today() - timedelta(days = i)
-        list_results = aggregate(date_obj)
-    # print(list_results)

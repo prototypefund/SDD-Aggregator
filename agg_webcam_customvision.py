@@ -57,11 +57,9 @@ def aggregate(date_obj=datetime.date.today()):
     # cannot use "id" as unique identifier, because e.g. id=35 was assigned to multiple 
     # cameras in the past by accident. Workaround: use compound _id made up from id and ags.
     data["_id"] = data.apply(lambda x: str(x["id"])+"_"+str(x["ags"]), 1)
-    
-    #data = data.rename(columns={"stand": "time",
-    #                            "state": "bundesland",
-    #                            "url": "origin",
-    #                            "districttype": "districtType"})
+
+    if data.columns()
+        data = data.rename(columns={"url": "origin"})
     data = data.rename(columns={"stand": "time",
                                 "state": "bundesland",
                                 "districttype": "districtType"})
