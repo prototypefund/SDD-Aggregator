@@ -104,18 +104,18 @@ if __name__ == "__main__":
                 print("Error Airquality")
                 print(e)
        
-        print("--------------")
-        print("write output...")
-        list_result["date"] = str(date_obj)
-        list_result.index = list_result.index.astype(int).astype(str).str.zfill(5)
-        #list_result.to_csv("test.csv")
-
-        #list_result
-        dict_results = list_result.T.to_dict()
-        #dict
-        # s3_client.put_object(Bucket='sdd-s3-basebucket', Key="aggdata/live", Body=json.dumps(dict))
-        response = s3_client.put_object(Bucket=settings.BUCKET, Key='aggdata/{}/{}/{}'.format(str(date_obj.year).zfill(4), str(date_obj.month).zfill(2),str(date_obj.day).zfill(2)), Body=json.dumps(dict_results))
-        print("s3_client.put_object response:", response)
-        print('\n###     END ',date_obj,"")
-        print("##########################\n")
+        # print("--------------")
+        # print("write output...")
+        # list_result["date"] = str(date_obj)
+        # list_result.index = list_result.index.astype(int).astype(str).str.zfill(5)
+        # #list_result.to_csv("test.csv")
+        #
+        # #list_result
+        # dict_results = list_result.T.to_dict()
+        # #dict
+        # # s3_client.put_object(Bucket='sdd-s3-basebucket', Key="aggdata/live", Body=json.dumps(dict))
+        # response = s3_client.put_object(Bucket=settings.BUCKET, Key='aggdata/{}/{}/{}'.format(str(date_obj.year).zfill(4), str(date_obj.month).zfill(2),str(date_obj.day).zfill(2)), Body=json.dumps(dict_results))
+        # print("s3_client.put_object response:", response)
+        # print('\n###     END ',date_obj,"")
+        # print("##########################\n")
 
