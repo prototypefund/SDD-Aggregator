@@ -40,7 +40,7 @@ def aggregate(date_obj=datetime.date.today()):
             #maybe better... if k in list_keys
             json_body = [{k: v for k, v in d.items() if k != "pred"} for d in json_body]
 
-            df = pd.DataFrame()
+            df = pd.DataFrame(json_body)
             df["date_check"] = date_obj
             df["hour_check"] = hour
             df["timestamp_check"] = str(datetime.datetime(year=date_obj.year, month=date_obj.month, day=date_obj.day, hour=hour))
