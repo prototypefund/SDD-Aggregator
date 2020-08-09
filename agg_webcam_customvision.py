@@ -30,12 +30,17 @@ def convert_lat_lon_to_float(data):
 def aggregate(date_obj=datetime.date.today()):
     s3_client = boto3.client('s3')
     data = pd.DataFrame()
+    list_keys = [""]
     for hour in range(0,23):
         try:
             key = 'webcamdaten/{}/{}/{}/{}webcamdaten-customvision.json'.format(str(date_obj.year).zfill(4), str(date_obj.month).zfill(2), str(date_obj.day).zfill(2), str(hour).zfill(2))
             response = s3_client.get_object(Bucket=settings.BUCKET, Key=key)
             body = response["Body"].read()
-            df = pd.DataFrame(json.loads(body))
+            json_body = json.loads(body)
+            #maybe better... if k in list_keys
+            json_body = [{k: v for k, v in d.items() if k != "pred"} for d in json_body]
+
+            df = pd.DataFrame()
             df["date_check"] = date_obj
             df["hour_check"] = hour
             df["timestamp_check"] = str(datetime.datetime(year=date_obj.year, month=date_obj.month, day=date_obj.day, hour=hour))
@@ -59,7 +64,7 @@ def aggregate(date_obj=datetime.date.today()):
     data["_id"] = data.apply(lambda x: str(x["id"])+"_"+str(x["ags"]), 1)
 
     if "orgin" not in data.columns:
-        data = data.rename(columns={"url": "origin"})
+        data["origin"] = data["URL"]
     data = data.rename(columns={"stand": "time",
                                 "state": "bundesland",
                                 "districttype": "districtType"})
