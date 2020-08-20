@@ -4,14 +4,14 @@ from datetime import date, timedelta
 from agg_webcam import aggregate as agg_webcam
 from agg_webcam_customvision import aggregate as agg_webcam_customvision
 from agg_hystreet import aggregate as agg_hystreet
-from agg_gmap_transit_score import aggregate as agg_gmap_transit_score
+# from agg_gmap_transit_score import aggregate as agg_gmap_transit_score
 from agg_fahrrad import aggregate as agg_fahrrad
 from agg_airquality import aggregate as agg_airquality
 from agg_lemgo_digital import aggregate as agg_lemgo_digital
-from agg_mdm import aggregate as agg_mdm
-#from agg_tomtom import aggregate as agg_tomtom
-import json
-import settings
+# from agg_mdm import aggregate as agg_mdm
+# from agg_tomtom import aggregate as agg_tomtom
+# import json
+# import settings
 import os
 
 
@@ -105,7 +105,6 @@ if __name__ == "__main__":
             except Exception as e:
                 print("Error Airquality")
                 print(e)
-
 
         if 'mdm' in list_sources:
             print("--------------")
