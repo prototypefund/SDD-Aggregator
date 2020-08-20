@@ -52,9 +52,17 @@ def get_ags(df):
         gdf_joined.loc[nan_indices] = geopandas.sjoin(gdf.loc[nan_indices], countries_with_buffer, how="left", op='intersects')
         gdf_joined = gdf_joined.drop(columns=["ags_right", "index_right"], errors="ignore")
         if gdf_joined.loc[gdf_joined['ags'].isna()].empty:
-            print(f"coords_convert: Successfully applied buffer fix to {len(gdf_joined.loc[nan_indices]['Name'].unique())} locations!")
+            try:
+                print(f"coords_convert: Successfully applied buffer fix to {len(gdf_joined.loc[nan_indices]['Name'].unique())} locations!")
+            except Exception as e:
+                print(f"coords_convert: Successfully applied buffer fix to {len(gdf_joined.loc[nan_indices]['name'].unique())} locations!")
+
         else:
-            print(f"Warning: coords_convert: Some locatations could not be found {gdf_joined.loc[gdf_joined['ags'].isna()]['Name'].unique()}")
+            try:
+                loc_err = gdf_joined.loc[gdf_joined['ags'].isna()]['Name'].unique()
+            except:
+                loc_err = gdf_joined.loc[gdf_joined['ags'].isna()]['name'].unique()
+            print(f"Warning: coords_convert: {len(loc_err)} locatations could not be found {loc_err}")
             gdf_joined = gdf_joined.dropna(subset=["ags"])
 
     # in case there was a "ags" column in the original dataframe:
