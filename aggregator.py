@@ -8,7 +8,7 @@ from agg_hystreet import aggregate as agg_hystreet
 from agg_fahrrad import aggregate as agg_fahrrad
 from agg_airquality import aggregate as agg_airquality
 from agg_lemgo_digital import aggregate as agg_lemgo_digital
-# from agg_mdm import aggregate as agg_mdm
+from agg_mdm import aggregate as agg_mdm
 # from agg_tomtom import aggregate as agg_tomtom
 # import json
 # import settings
@@ -16,8 +16,8 @@ import os
 
 
 if __name__ == "__main__":
-    sources = "lemgo;webcam;webcam-customvision;hystreet;fahrrad;airquality;mdm"
-    dict_environ = {"TIMERANGE": 2, "SOURCE_SELECTOR": sources, "OFFSET": 0}
+    sources = "mdm"
+    dict_environ = {"TIMERANGE": 20, "SOURCE_SELECTOR": sources, "OFFSET": 0}
     for key, value in dict_environ.items():
         if key in list(os.environ):
             dict_environ[key] = os.environ[key]
