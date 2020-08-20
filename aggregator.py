@@ -17,7 +17,7 @@ import os
 
 if __name__ == "__main__":
     sources = "mdm"
-    dict_environ = {"TIMERANGE": 20, "SOURCE_SELECTOR": sources, "OFFSET": 0}
+    dict_environ = {"TIMERANGE": 30, "SOURCE_SELECTOR": sources, "OFFSET": 0}
     for key, value in dict_environ.items():
         if key in list(os.environ):
             dict_environ[key] = os.environ[key]

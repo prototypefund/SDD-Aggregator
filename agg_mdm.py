@@ -10,13 +10,6 @@ from convert_df_to_influxdb import convert_df_to_influxdb
 def get_basicdatalist(document):
     return document.getElementsByTagName("basicData")
 
-def get_data_from_basicdata(basicdata):
-    xsi_type = basicdata.getAttributeNode("xsi:type").nodeValue
-    if xsi_type == "TrafficStatus":
-        return get_traffic_status(basicdata)
-    else:
-        return get_traffic_speed(basicdata)
-
 def get_traffic_status(basicdata):
     dict_basicdata = {}
     # dict_basicdata["location_type"] = basicdata
@@ -81,6 +74,7 @@ def aggregate(date_obj=datetime.date.today()):
     mdm_data = get_mdm_data(date_obj)
 
     list_dict_basicdata = []
+    list_dict_statusdata = []
     list_locations = []
     for mdm_file in mdm_data:
         payload_pub = mdm_file.getElementsByTagName("payloadPublication")[0]
@@ -90,44 +84,62 @@ def aggregate(date_obj=datetime.date.today()):
             list_basicdata = get_basicdatalist(mdm_file)
             for basicdata in list_basicdata:
                 # print(basicdata.childNodes)
-                dict_basicdata = get_data_from_basicdata(basicdata)
-                dict_basicdata["time"] = timestamp
-                list_dict_basicdata.append(dict_basicdata)
+                xsi_type = basicdata.getAttributeNode("xsi:type").nodeValue
+                if xsi_type == "TrafficStatus":
+                    dict_data = get_traffic_status(basicdata)
+                    dict_data["time"] = timestamp
+                    list_dict_statusdata.append(dict_data)
+                else:
+                    dict_data = get_traffic_speed(basicdata)
+                    dict_data["time"] = timestamp
+                    list_dict_basicdata.append(dict_data)
+            print(dict_data)
             # Lösung 2 ohne xsi_type und targetClass
 
         elif mdm_file_type == "PredefinedLocationsPublication":
             list_locations += get_location_data(mdm_file)
     df_data = pd.DataFrame().from_records(list_dict_basicdata)
+    df_status = pd.DataFrame().from_records(list_dict_statusdata)
 
-    df_data = df_data.astype({'averageVehicleSpeed': 'float', 'percentageLongVehicles': 'float', "vehicleFlow": "float",
-         'measurementOrCalculationPeriod' : "float", 'trafficStatus' : "str"}).drop(
+    df_data = df_data.astype({'averageVehicleSpeed': 'float', 'percentageLongVehicles': 'float', "vehicleFlow": "float"}).drop(
         columns=['version', "targetClass"], errors="ignore").sort_values(by="id")
 
-    # df_data = df_data.groupby(['id', 'forVehiclesWithCharacteristicsOf']).agg(
-    #     {"vehicleFlow": "max", 'averageVehicleSpeed': 'max',
-    #      'percentageLongVehicles': 'max'}).reset_index().sort_values(by="id")
+    dict_x = {'nan' : float("nan"), 'congested' : float(0), 'impossible' : float(1), 'heavy' : float(2), 'freeFlow' : float(3)}
+    df_status["trafficStatus"] = df_status["trafficStatus"].apply(lambda x: dict_x[x])
+
+    df_data = df_data.groupby(['id', 'forVehiclesWithCharacteristicsOf', "time"]).agg(
+        {"vehicleFlow": "max", 'averageVehicleSpeed': 'max',
+         'percentageLongVehicles': 'max'}).reset_index().sort_values(by="id")
 
     df_locations = pd.DataFrame().from_records(list_locations)
     df_locations = df_locations.drop_duplicates(subset=["id"], keep="last").drop(columns="version")
 
     df_data = df_data.merge(df_locations, on=["id"], how="left")
-    df_data["name"] = df_data["id"].copy()
+    df_roadnames = df_data["id"].str.split(".", expand=True)
+    df_data[['road','abschnitt','fahrbahn','richtung']] = df_roadnames[list(range(2,6))]
+    df_data["name"] = df_data['road'] + " (" +df_data['abschnitt'] + ")"
     df_data = df_data.rename(columns={"latitude" : "lon", "longitude" : "lat", "id" : "_id"}) # LAT LON VERTAUSCHT IN ROHDATEN
     df_data = df_data.astype({"lat" : "float", "lon" : "float"})
     df_data = get_ags(df_data.copy())
-    df_data = df_data.rename(columns={"state" : "bundesland"})
+    df_data = df_data.rename(columns={"state" : "bundesland", "forVehiclesWithCharacteristicsOf" : "fahrzeugtyp"})
 
     df_data["measurement"] = "mdm"
+    df_data["origin"] = "https://www.mdm-portal.de/"
 
-    list_mdm_fields = ["vehicleFlow", "averageVehicleSpeed", "percentageLongVehicles", "trafficStatus", "lat", "lon"]
+    list_mdm_fields = ["vehicleFlow", "averageVehicleSpeed", "percentageLongVehicles", "lat", "lon"]
     list_mdm_tags = [
         '_id',
         'name',
         'ags',
         'bundesland',
         'landkreis',
-        'districtType'
-        # ,'origin'
+        'districtType',
+        'origin',
+        'road',
+        'abschnitt',
+        'fahrbahn',
+        'richtung',
+        "fahrzeugtyp"
     ]
     json_out = convert_df_to_influxdb(df_data, list_mdm_fields, list_mdm_tags)
     push_to_influxdb(json_out)
@@ -147,21 +159,22 @@ def aggregate(date_obj=datetime.date.today()):
     # df6 = pd.merge(df7, df8, how="left", on=["id", "forVehiclesWithCharacteristicsOf", "version"])
 
 # if __name__ == "__main__":
-    # debug
-    # list_att = []
-    # node = mdm_data[1]
-    # f = open("z.xml", "w")
-    # node.writexml(f)
-    # f.close()
-    # x, y = rec2(node, list_att, 0)
-    # df = pd.DataFrame(y)
-    # df.to_csv("z.csv", sep=";")
-    # date_obj = _init()
-    # date_obj = datetime.datetime.now()
-    # # dict_objects = get_client().list_objects(Bucket=settings.BUCKET, Prefix=get_mdm_prefix(date_obj))
-    # date_obj = date_obj.replace(minute=int(date_obj.minute/15) *15)
-    # data = pd.DataFrame()
-    # date_obj = datetime.date.today() - datetime.timedelta(1)
+#     date_obj = _init()
+#     date_obj = datetime.datetime.now()
+#     # dict_objects = get_client().list_objects(Bucket=settings.BUCKET, Prefix=get_mdm_prefix(date_obj))
+#     date_obj = date_obj.replace(minute=int(date_obj.minute/15) *15)
+#     data = pd.DataFrame()
+#     date_obj = datetime.date.today() - datetime.timedelta(1)
+#
+#     debug
+#     list_att = []
+#     node = mdm_data[1]
+#     f = open("z.xml", "w")
+#     node.writexml(f)
+#     f.close()
+#     x, y = rec2(node, list_att, 0)
+#     df = pd.DataFrame(y)
+#     df.to_csv("z.csv", sep=";")
 
 # import boto3
 # import io
