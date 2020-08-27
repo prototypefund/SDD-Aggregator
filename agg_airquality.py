@@ -25,11 +25,11 @@ def aggregate(date_obj):
     # Aggregation.Aggregator.aggregateDf(fullData, "airquality", "aqi", "airquality_score")
     # pd.DataFrame.from_records(fullData)
     list_fields = ["airquality_score", "lat", "lon"]
-    list_tags = ["state", "landkreis", "districtType", "_id", "ags"] #"name",  "origin"
+    list_tags = ["state", "landkreis", "districtType", "_id", "ags", "name", "origin"]
 
     df[["lat","lon"]] = df[["lat","lon"]].astype(float)
     df = df.sort_values(by=["lat", "lon"])
-    df["_id"] = range(len(df))
+
     df["measurement"] = "airquality"
     # df["_id"] = \
     # len(pd.unique((df["lon"] * 1000).astype(int).astype(str) + (df["lon"] * 1000).astype(int).astype(str)))
