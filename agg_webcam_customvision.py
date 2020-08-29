@@ -52,13 +52,19 @@ def aggregate(date_obj=datetime.date.today()):
         print(f"WARNING: No data returned from S3 for {str(date_obj)}!")
         return []
 
+    # Some cams do not update the image for several hours, e.g. at night.
+    # Remove entries with identical hash, keep first. Keep all data without hashes.
+    data_without_hashes = data[data["hash"].isna()]
+    data_with_hashes = data[~data["hash"].isna()]
+    data_with_hashes = data_with_hashes.drop_duplicates(subset="hash", keep="first")
+    data = pd.concat([data_without_hashes, data_with_hashes])
+
     data = convert_lat_lon_to_float(data)
-    data = get_ags(data)
+    data = get_ags(data)  # data is now a GeoDataFrame
     data.columns = [col.lower() for col in data.columns]
-    # data["ags"] = data["ags"].astype(int, errors="ignore")
     data["personenzahl"] = data["personenzahl"].astype(float, errors="raise")
     data["measurement"] = "webcam-customvision"
-    
+
     # cannot use "id" as unique identifier, because e.g. id=35 was assigned to multiple 
     # cameras in the past by accident. Workaround: use compound _id made up from id and ags.
     data["_id"] = data.apply(lambda x: str(x["id"])+"_"+str(x["ags"]), 1)
@@ -94,10 +100,11 @@ def aggregate(date_obj=datetime.date.today()):
         }
         list_results.append(data_index)
     return list_results
-#
-# if __name__ == '__main__':
-#     # for testing
-#     for i in range(1,14):
-#         date = date.today() - timedelta(days = i)
-#         list_results = aggregate(date)
-#     print(list_results)
+
+
+if __name__ == '__main__':
+    # for testing
+    for i in range(0, 3):
+        date = date.today() - timedelta(days = i)
+        list_results = aggregate(date)
+    print(list_results)
