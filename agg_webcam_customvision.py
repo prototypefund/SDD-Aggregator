@@ -54,10 +54,11 @@ def aggregate(date_obj=datetime.date.today()):
 
     # Some cams do not update the image for several hours, e.g. at night.
     # Remove entries with identical hash, keep first. Keep all data without hashes.
-    data_without_hashes = data[data["hash"].isna()]
-    data_with_hashes = data[~data["hash"].isna()]
-    data_with_hashes = data_with_hashes.drop_duplicates(subset="hash", keep="first")
-    data = pd.concat([data_without_hashes, data_with_hashes])
+    if "hash" in data.columns:
+        data_without_hashes = data[data["hash"].isna()]
+        data_with_hashes = data[~data["hash"].isna()]
+        data_with_hashes = data_with_hashes.drop_duplicates(subset="hash", keep="first")
+        data = pd.concat([data_without_hashes, data_with_hashes])
 
     data = convert_lat_lon_to_float(data)
     data = get_ags(data)  # data is now a GeoDataFrame
