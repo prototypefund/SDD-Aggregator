@@ -72,6 +72,13 @@ df_new_locations['landkreis'] = list(coords_convert(df_new_locations))
 df_new_locations = df_new_locations[["id", "name", "city", "landkreis", "lat", "lon", "address"]]
 df_new_locations = df_new_locations.rename(columns={'id': 'stationid'})
 
+# drop NA values (e.g. for stations outside germany)
+df_na = df_new_locations[df_new_locations["landkreis"].isna()]
+if not df_na.empty:
+    print("NaN values in AGS column (probably outside of Germany):")
+    print(df_new_locations[df_new_locations["landkreis"].isna()]["address"])
+    df_new_locations = df_new_locations.dropna(axis=0, subset=["landkreis"])
+
 # 5 Write output to file
 # -----------------------
 df_new_locations = df_new_locations.drop_duplicates()
