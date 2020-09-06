@@ -20,17 +20,24 @@ class AWSRequest(threading.Thread):
     def __init__(self, list_keys):
         threading.Thread.__init__(self)
         self.list_keys = list_keys
-        self.s3_client = get_client()
-        self.list_doc = []
+        # self.s3_client = boto3.client('s3')
+        # self.list_doc = []
+        self.dict_doc = {}
 
     def run(self):
         for element in self.list_keys:
-            self.list_doc.append(get_object(self.s3_client, element))
+            self.get_object(element)
 
+    def get_object(self, element):
+        # print("0_REQUEST  ", element)
+        response = boto3.client('s3').get_object(Bucket=settings.BUCKET, Key=element)
+        body = response["Body"].read()
+        # print("1_RESPONSE  ", element)
+        # self.list_doc.append({element : minidom.parse(io.StringIO(body.decode()))})
+        self.dict_doc[element] = minidom.parse(io.StringIO(body.decode()))
 
-def create_threads(list_keys=[]):
+def create_threads(list_keys=[], num_th = 200):
     list_threads = []
-    num_th = 5
     num_th += 1
     len_list_keys = len(list_keys)
     if len_list_keys > num_th:
@@ -44,11 +51,13 @@ def create_threads(list_keys=[]):
             list_threads.append(AWSRequest(list_sub))
     else:
         list_threads.append(AWSRequest(list_keys))
-
+    print("threads appended")
     for t in list_threads:
         t.start()
+    print("threads started")
     for t in list_threads:
         t.join()
+    print("threads joined")
     return list_threads
 
 
@@ -78,11 +87,15 @@ def get_mdm_data(date_obj):
     s3_client = boto3.client('s3')
     dict_objects = s3_client.list_objects(Bucket=settings.BUCKET, Prefix=get_mdm_prefix(date_obj))
     list_keys = [x["Key"] for x in dict_objects["Contents"]]
-    list_threads = create_threads(list_keys)
-    list_doc = []
+    list_threads = create_threads(list_keys, num_th=100)
+    print(list_threads)
+    dict_doc = {}
     for t in list_threads:
-        list_doc += t.list_doc
-    return [minidom.parse(x) for x in list_doc]
+        dict_doc.update(t.dict_doc)
+    print(dict_doc)
+    # dict_doc = [minidom.parse(x) for x in list_doc]
+    print(dict_doc)
+    return dict_doc
 
 # if __name__ == "__main__":
 #     date_obj = _init()

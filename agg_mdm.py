@@ -6,6 +6,8 @@ import datetime
 from coords_to_kreis import get_ags
 from push_to_influxdb import push_to_influxdb
 from convert_df_to_influxdb import convert_df_to_influxdb
+import fiona
+fiona.supported_drivers
 
 def get_basicdatalist(document):
     return document.getElementsByTagName("basicData")
@@ -76,9 +78,11 @@ def aggregate(date_obj=datetime.date.today()):
     list_dict_basicdata = []
     list_dict_statusdata = []
     list_locations = []
-    for mdm_file in mdm_data:
+    for key, mdm_file in mdm_data.items():
+        print(key, mdm_file)
         payload_pub = mdm_file.getElementsByTagName("payloadPublication")[0]
         mdm_file_type = payload_pub.getAttributeNode("xsi:type").value
+        print(mdm_file_type)
         timestamp = payload_pub.getElementsByTagName("publicationTime")[0].childNodes[0].nodeValue
         if mdm_file_type == "ElaboratedDataPublication":
             list_basicdata = get_basicdatalist(mdm_file)
