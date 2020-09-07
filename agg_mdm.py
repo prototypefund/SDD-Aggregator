@@ -1,57 +1,77 @@
 import pandas as pd
-from awsthreading import get_mdm_data, _init, get_client, get_mdm_prefix
+from awsthreading import get_mdm_data
 import settings
-from xml.dom import minidom
+# from xml.dom import minidom
 import datetime
 from coords_to_kreis import get_ags
 from push_to_influxdb import push_to_influxdb
 from convert_df_to_influxdb import convert_df_to_influxdb
-import fiona
-fiona.supported_drivers
+# import fiona
+# fiona.supported_drivers
 
 def get_basicdatalist(document):
     return document.getElementsByTagName("basicData")
 
 def get_traffic_status(basicdata):
     dict_basicdata = {}
-    # dict_basicdata["location_type"] = basicdata
-    # dict_basicdata["vehicleType"] = basicdata.getElementsByTagName("vehicleType")[0].childNodes[0].nodeValue
     for key, value in basicdata.getElementsByTagName("pertinentLocation")[0].childNodes[1].attributes.items():
         dict_basicdata[key] = value
 
 
     for child in basicdata.childNodes:
         nodename = child.nodeName
-        # print(nodename)
         if nodename == "trafficStatus":
             dict_basicdata[nodename] = child.childNodes[1].childNodes[0].nodeValue
         elif nodename != "#text" and nodename != "pertinentLocation":
             dict_basicdata[nodename] = child.childNodes[0].nodeValue
-            # print(child.childNodes)
-            # child.childNodes[1].childNodes[0].nodeValue
-            # print(nodename , child.childNodes[1].childNodes[0].nodeValue)
-    # print(dict_basicdata)
+    return dict_basicdata
+
+def get_traffic_status_2(basicdata):
+    dict_basicdata = {}
+    for key, value in basicdata.getElementsByTagName("pertinentLocation")[0].childNodes[1].attributes.items():
+        dict_basicdata[key] = value
+
+
+    for child in basicdata.childNodes:
+        nodename = child.nodeName
+        if nodename == "trafficStatus":
+            dict_basicdata[nodename] = child.childNodes[1].childNodes[0].nodeValue
+        elif nodename != "#text" and nodename != "pertinentLocation":
+            dict_basicdata[nodename] = child.childNodes[0].nodeValue
     return dict_basicdata
 
 def get_traffic_speed(basicdata):
     dict_basicdata = {}
-    # dict_basicdata["location_type"] = basicdata
-    # dict_basicdata["vehicleType"] = basicdata.getElementsByTagName("vehicleType")[0].childNodes[0].nodeValue
     for key, value in basicdata.getElementsByTagName("pertinentLocation")[0].childNodes[1].attributes.items():
         dict_basicdata[key] = value
-        # dict_basicdata["key"] = dict_basicdata["vehicleType"] + key
-        # dict_basicdata["value"] = value
-        # print(dict_basicdata)
-
+    print(dict_basicdata)
     for child in basicdata.childNodes:
         nodename = child.nodeName
-        # print(nodename)
         if nodename != "#text" and nodename != "pertinentLocation":
             dict_basicdata[nodename] = child.childNodes[1].childNodes[0].nodeValue
-            # print(child.childNodes)
-            # child.childNodes[1].childNodes[0].nodeValue
-            # print(nodename , child.childNodes[1].childNodes[0].nodeValue)
-    # print(dict_basicdata)
+    return dict_basicdata
+
+def get_traffic_speed(basicdata):
+    dict_basicdata = {}
+    # for key, value in basicdata.getElementsByTagName("pertinentLocation")[0].childNodes[0].attributes.items():
+    #     dict_basicdata[key] = value
+    for key, value in basicdata.getElementsByTagName("predefinedLocationReference")[0].attributes.items():
+        dict_basicdata[key] = value
+    for key in ["vehicleType", "speed", "vehicleFlowRate"]:
+        try:
+            node = basicdata.getElementsByTagName(key)[0]
+        except:
+            continue
+        dict_basicdata[node.parentNode.nodeName] = node.childNodes[0].nodeValue
+
+    # print(basicdata.childNodes)
+    # for child in basicdata.childNodes:
+    #     nodename = child.nodeName
+    #     print(nodename)
+    #     print(child.childNodes[0].nodeName)
+    #     if nodename != "#text" and nodename != "pertinentLocation":
+    #         print(child.childNodes[0].nodeName)
+    #         dict_basicdata[nodename] = child.childNodes[0].childNodes[0].nodeValue
     return dict_basicdata
 
 def get_location_data(mdm_file):
@@ -73,35 +93,71 @@ def get_location_data(mdm_file):
 
 
 def aggregate(date_obj=datetime.date.today()):
+    # gets mdm data with {filename : filecontent} as xml doc
     mdm_data = get_mdm_data(date_obj)
 
     list_dict_basicdata = []
     list_dict_statusdata = []
     list_locations = []
+    # try to separate the files from each other through the filename
+    # old method was to handle all files as equal
+    # creating this will be an intermediate step because issues with another state occured (origin state was: bw)
     for key, mdm_file in mdm_data.items():
-        print(key, mdm_file)
+        # print(key, mdm_file)
+        _, year, month, day, hour, filename = key.split("/")
+        filename, _ = filename.split(".")
+        # print(filename)
+
+
         payload_pub = mdm_file.getElementsByTagName("payloadPublication")[0]
         mdm_file_type = payload_pub.getAttributeNode("xsi:type").value
-        print(mdm_file_type)
+        # print(mdm_file_type)
         timestamp = payload_pub.getElementsByTagName("publicationTime")[0].childNodes[0].nodeValue
-        if mdm_file_type == "ElaboratedDataPublication":
+        if filename == "3717000":
+            pass
+        if filename == "3710002":
+            continue
             list_basicdata = get_basicdatalist(mdm_file)
             for basicdata in list_basicdata:
                 # print(basicdata.childNodes)
                 xsi_type = basicdata.getAttributeNode("xsi:type").nodeValue
+                print(xsi_type)
                 if xsi_type == "TrafficStatus":
-                    dict_data = get_traffic_status(basicdata)
+                    dict_data = get_traffic_status_2(basicdata)
                     dict_data["time"] = timestamp
                     list_dict_statusdata.append(dict_data)
+                    break
                 else:
                     dict_data = get_traffic_speed(basicdata)
                     dict_data["time"] = timestamp
                     list_dict_basicdata.append(dict_data)
-            print(dict_data)
-            # Lösung 2 ohne xsi_type und targetClass
+        # if filename == "3710001":
 
-        elif mdm_file_type == "PredefinedLocationsPublication":
-            list_locations += get_location_data(mdm_file)
+
+        elif filename[0:4] == "3653":
+            print("BAWÜ")
+            if mdm_file_type == "ElaboratedDataPublication":
+                list_basicdata = get_basicdatalist(mdm_file)
+                for basicdata in list_basicdata:
+                    # print(basicdata.childNodes)
+                    xsi_type = basicdata.getAttributeNode("xsi:type").nodeValue
+                    if xsi_type == "TrafficStatus":
+                        dict_data = get_traffic_status(basicdata)
+                        dict_data["time"] = timestamp
+                        list_dict_statusdata.append(dict_data)
+                    else:
+                        print(basicdata)
+                        try:
+                            dict_data = get_traffic_speed(basicdata)
+                        except:
+                            break
+                        dict_data["time"] = timestamp
+                        list_dict_basicdata.append(dict_data)
+                # print(dict_data)
+            #replace the function with a filename check
+            # Lösung 2 ohne xsi_type und targetClass
+            elif mdm_file_type == "PredefinedLocationsPublication":
+                list_locations += get_location_data(mdm_file)
     df_data = pd.DataFrame().from_records(list_dict_basicdata)
     df_status = pd.DataFrame().from_records(list_dict_statusdata)
 
