@@ -57,7 +57,7 @@ def get_traffic_speed(basicdata):
     #     dict_basicdata[key] = value
     for key, value in basicdata.getElementsByTagName("predefinedLocationReference")[0].attributes.items():
         dict_basicdata[key] = value
-    for key in ["vehicleType", "speed", "vehicleFlowRate"]:
+    for key in ["vehicleType", "speed", "vehicleFlowRate", "percentage"]:
         try:
             node = basicdata.getElementsByTagName(key)[0]
         except:
@@ -116,7 +116,6 @@ def aggregate(date_obj=datetime.date.today()):
         if filename == "3717000":
             pass
         if filename == "3710002":
-            continue
             list_basicdata = get_basicdatalist(mdm_file)
             for basicdata in list_basicdata:
                 # print(basicdata.childNodes)
@@ -142,26 +141,28 @@ def aggregate(date_obj=datetime.date.today()):
                     # print(basicdata.childNodes)
                     xsi_type = basicdata.getAttributeNode("xsi:type").nodeValue
                     if xsi_type == "TrafficStatus":
+                        print("traffic staus")
                         dict_data = get_traffic_status(basicdata)
                         dict_data["time"] = timestamp
                         list_dict_statusdata.append(dict_data)
                     else:
-                        print(basicdata)
+                        # print(basicdata)
                         try:
                             dict_data = get_traffic_speed(basicdata)
                         except:
+                            print("ERROR")
                             break
                         dict_data["time"] = timestamp
                         list_dict_basicdata.append(dict_data)
                 # print(dict_data)
             #replace the function with a filename check
             # Lösung 2 ohne xsi_type und targetClass
-            elif mdm_file_type == "PredefinedLocationsPublication":
-                list_locations += get_location_data(mdm_file)
+        elif mdm_file_type == "PredefinedLocationsPublication":
+            list_locations += get_location_data(mdm_file)
     df_data = pd.DataFrame().from_records(list_dict_basicdata)
     df_status = pd.DataFrame().from_records(list_dict_statusdata)
 
-    df_data = df_data.astype({'averageVehicleSpeed': 'float', 'percentageLongVehicles': 'float', "vehicleFlow": "float"}).drop(
+    df_data = df_data.astype({'averageVehicleSpeed': 'float', 'percentageLongVehicles': 'float', "vehicleFlow": "float"}).drop( #
         columns=['version', "targetClass"], errors="ignore").sort_values(by="id")
 
     dict_x = {'nan' : float("nan"), 'congested' : float(0), 'impossible' : float(1), 'heavy' : float(2), 'freeFlow' : float(3)}

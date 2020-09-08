@@ -21,7 +21,7 @@ except KeyError as e:
     print("switched to local mode")
 
 
-def push_to_influxdb(json_out, write_bucket="sdd"):
+def push_to_influxdb(json_out, write_bucket="testscraperbucket_julius"):
     client = InfluxDBClient(url=INF_URL, token=INF_TOKEN, org=INF_ORG)
     write_api = client.write_api(write_options=SYNCHRONOUS)
     write_api.write(bucket=write_bucket, org=INF_ORG, record=json_out)
