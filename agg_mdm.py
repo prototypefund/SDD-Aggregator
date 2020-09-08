@@ -74,7 +74,7 @@ def get_traffic_speed(basicdata):
     #         dict_basicdata[nodename] = child.childNodes[0].childNodes[0].nodeValue
     return dict_basicdata
 
-def get_location_data(mdm_file):
+def get_location_data(mdm_file, filename):
     list_basicdata = []
     list_nodes = mdm_file.getElementsByTagName("predefinedLocation")
     for node in list_nodes:
@@ -84,7 +84,7 @@ def get_location_data(mdm_file):
             dict_basicdata[key] = value
         for key in ["latitude", "longitude"]:
             dict_basicdata[key] = float(node.getElementsByTagName(key)[0].childNodes[0].nodeValue)
-
+        dict_basicdata["filename"] = filename
         list_basicdata.append(dict_basicdata)
     # df_locations = pd.DataFrame().from_records(list_basicdata)
     # return df_locations
@@ -124,11 +124,13 @@ def aggregate(date_obj=datetime.date.today()):
                 if xsi_type == "TrafficStatus":
                     dict_data = get_traffic_status_2(basicdata)
                     dict_data["time"] = timestamp
+                    dict_data["filename"] = filename
                     list_dict_statusdata.append(dict_data)
                     break
                 else:
                     dict_data = get_traffic_speed(basicdata)
                     dict_data["time"] = timestamp
+                    dict_data["filename"] = filename
                     list_dict_basicdata.append(dict_data)
         # if filename == "3710001":
 
@@ -144,6 +146,7 @@ def aggregate(date_obj=datetime.date.today()):
                         print("traffic staus")
                         dict_data = get_traffic_status(basicdata)
                         dict_data["time"] = timestamp
+                        dict_data["filename"] = filename
                         list_dict_statusdata.append(dict_data)
                     else:
                         # print(basicdata)
@@ -153,12 +156,13 @@ def aggregate(date_obj=datetime.date.today()):
                             print("ERROR")
                             break
                         dict_data["time"] = timestamp
+                        dict_data["filename"] = filename
                         list_dict_basicdata.append(dict_data)
                 # print(dict_data)
             #replace the function with a filename check
             # Lösung 2 ohne xsi_type und targetClass
         elif mdm_file_type == "PredefinedLocationsPublication":
-            list_locations += get_location_data(mdm_file)
+            list_locations += get_location_data(mdm_file, filename)
     df_data = pd.DataFrame().from_records(list_dict_basicdata)
     df_status = pd.DataFrame().from_records(list_dict_statusdata)
 
