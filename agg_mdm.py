@@ -96,6 +96,22 @@ def aggregate(date_obj=datetime.date.today()):
     # gets mdm data with {filename : filecontent} as xml doc
     mdm_data = get_mdm_data(date_obj)
 
+    # import pickle
+    # pickle.dump(mdm_data, open("mdm_dump.pkl", "w"))
+
+    xml_file = list(mdm_data.values())[0]
+    import xmltodict
+    json_xml_file = xmltodict.parse(xml_file.toxml())
+
+    df = pd.DataFrame(json_xml_file)
+    df3 = pd.DataFrame(df.loc["payloadPublication"].values[0].items()).set_index(0)
+
+    data = df3.loc["elaboratedData"].values[0]
+
+    df4 = pd.DataFrame().from_records(data)
+    df5 = pd.DataFrame(list(df4["basicData"].values))
+
+
     list_dict_basicdata = []
     list_dict_statusdata = []
     list_locations = []
@@ -180,8 +196,11 @@ def aggregate(date_obj=datetime.date.today()):
     df_locations = df_locations.drop_duplicates(subset=["id"], keep="last").drop(columns="version")
 
     df_data = df_data.merge(df_locations, on=["id"], how="left")
-    df_roadnames = df_data["id"].str.split(".", expand=True)
-    df_data[['road','abschnitt','fahrbahn','richtung']] = df_roadnames[list(range(2,6))]
+    def df_split_bw():
+        df_roadnames = df_data["id"].str.split(".", expand=True)
+        df_data[['road','abschnitt','fahrbahn','richtung']] = df_roadnames[list(range(2,6))]
+        return df_data
+    df_split_bw(df_data.loc[df_data[]])
     df_data["name"] = df_data['road'] + " (" +df_data['abschnitt'] + ")"
     df_data = df_data.rename(columns={"latitude" : "lon", "longitude" : "lat", "id" : "_id"}) # LAT LON VERTAUSCHT IN ROHDATEN
     df_data = df_data.astype({"lat" : "float", "lon" : "float"})
