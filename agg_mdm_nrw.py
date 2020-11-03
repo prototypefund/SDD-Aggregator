@@ -98,18 +98,18 @@ def aggregate(date_obj=datetime.date.today()):
 
     # import pickle
     # pickle.dump(mdm_data, open("mdm_dump.pkl", "w"))
-
-    xml_file = list(mdm_data.values())[0]
-    import xmltodict
-    json_xml_file = xmltodict.parse(xml_file.toxml())
-
-    df = pd.DataFrame(json_xml_file)
-    df3 = pd.DataFrame(df.loc["payloadPublication"].values[0].items()).set_index(0)
-
-    data = df3.loc["elaboratedData"].values[0]
-
-    df4 = pd.DataFrame().from_records(data)
-    df5 = pd.DataFrame(list(df4["basicData"].values))
+    #
+    # xml_file = list(mdm_data.values())[0]
+    # import xmltodict
+    # json_xml_file = xmltodict.parse(xml_file.toxml())
+    #
+    # df = pd.DataFrame(json_xml_file)
+    # df3 = pd.DataFrame(df.loc["payloadPublication"].values[0].items()).set_index(0)
+    #
+    # data = df3.loc["elaboratedData"].values[0]
+    #
+    # df4 = pd.DataFrame().from_records(data)
+    # df5 = pd.DataFrame(list(df4["basicData"].values))
 
 
     list_dict_basicdata = []
@@ -138,7 +138,7 @@ def aggregate(date_obj=datetime.date.today()):
             for basicdata in list_basicdata:
                 # print(basicdata.childNodes)
                 xsi_type = basicdata.getAttributeNode("xsi:type").nodeValue
-                print(xsi_type)
+                # print(xsi_type)
                 if xsi_type == "TrafficStatus":
                     dict_data = get_traffic_status_2(basicdata)
                     dict_data["time"] = timestamp
@@ -187,9 +187,9 @@ def aggregate(date_obj=datetime.date.today()):
 
     df_data = df_data.astype({'averageVehicleSpeed': 'float', 'percentageLongVehicles': 'float', "vehicleFlow": "float"}).drop( #
         columns=['version', "targetClass"], errors="ignore").sort_values(by="id")
-
-    dict_x = {'nan' : float("nan"), 'congested' : float(0), 'impossible' : float(1), 'heavy' : float(2), 'freeFlow' : float(3)}
-    df_status["trafficStatus"] = df_status["trafficStatus"].apply(lambda x: dict_x[x])
+    #
+    # dict_x = {'nan' : float("nan"), 'congested' : float(0), 'impossible' : float(1), 'heavy' : float(2), 'freeFlow' : float(3)}
+    # df_status["trafficStatus"] = df_status["trafficStatus"].apply(lambda x: dict_x[x])
 
     df_data = df_data.groupby(['id', 'forVehiclesWithCharacteristicsOf', "time"]).agg(
         {"vehicleFlow": "max", 'averageVehicleSpeed': 'max',
@@ -200,20 +200,24 @@ def aggregate(date_obj=datetime.date.today()):
     df_locations = df_locations.drop(columns="filename")
 
     df_data = df_data.merge(df_locations, on=["id"], how="left")
-    def df_split_bw():
+    def df_split_bw(df_data):
         df_roadnames = df_data["id"].str.split(".", expand=True)
         df_data[['road','abschnitt','fahrbahn','richtung']] = df_roadnames[list(range(2,6))]
         return df_data
+    def df_split_nrw(df_data):
+        df_roadnames = df_data["id"].str.split(".", expand=True)
+        df_data["id"].apply(lambda x: x.replace(".", "_"))
+
     # df_split_bw(df_data.loc[df_data[]])
-    df_data["name"] = df_data['road'] + " (" +df_data['abschnitt'] + ")"
-    df_data = df_data.rename(columns={"latitude" : "lon", "longitude" : "lat", "id" : "_id"}) # LAT LON VERTAUSCHT IN ROHDATEN
+    # df_data["name"] = df_data['road'] + " (" +df_data['abschnitt'] + ")"
+    df_data = df_data.rename(columns={"latitude" : "lat", "longitude" : "lon", "id" : "_id"}) # LAT LON VERTAUSCHT IN ROHDATEN
     df_data = df_data.astype({"lat" : "float", "lon" : "float"})
+    df_data["name"] = df_data["_id"]
     df_data = get_ags(df_data.copy())
     df_data = df_data.rename(columns={"state" : "bundesland", "forVehiclesWithCharacteristicsOf" : "fahrzeugtyp"})
 
     df_data["measurement"] = "mdm"
     df_data["origin"] = "https://www.mdm-portal.de/"
-
     list_mdm_fields = ["vehicleFlow", "averageVehicleSpeed", "percentageLongVehicles", "lat", "lon"]
     list_mdm_tags = [
         '_id',
@@ -223,10 +227,10 @@ def aggregate(date_obj=datetime.date.today()):
         'landkreis',
         'districtType',
         'origin',
-        'road',
-        'abschnitt',
-        'fahrbahn',
-        'richtung',
+        # 'road',
+        # 'abschnitt',
+        # 'fahrbahn',
+        # 'richtung',
         "fahrzeugtyp"
     ]
     json_out = convert_df_to_influxdb(df_data, list_mdm_fields, list_mdm_tags)
@@ -246,13 +250,11 @@ def aggregate(date_obj=datetime.date.today()):
     # df8 = df[["id", 'vehicleFlow', "averageVehicleSpeed", 'percentageLongVehicles', "forVehiclesWithCharacteristicsOf"]]
     # df6 = pd.merge(df7, df8, how="left", on=["id", "forVehiclesWithCharacteristicsOf", "version"])
 
-# if __name__ == "__main__":
-#     date_obj = _init()
-#     date_obj = datetime.datetime.now()
-#     # dict_objects = get_client().list_objects(Bucket=settings.BUCKET, Prefix=get_mdm_prefix(date_obj))
-#     date_obj = date_obj.replace(minute=int(date_obj.minute/15) *15)
-#     data = pd.DataFrame()
-#     date_obj = datetime.date.today() - datetime.timedelta(1)
+if __name__ == "__main__":
+    for x in range(30):
+        date_obj = datetime.date.today() - datetime.timedelta(days=x)
+        aggregate(date_obj)
+
 #
 #     debug
 #     list_att = []
