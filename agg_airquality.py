@@ -10,7 +10,6 @@ from convert_df_to_influxdb import convert_df_to_influxdb
 import pandas as pd
 import json
 
-date_obj = datetime.date.today().replace(day=30)
 def aggregate(date_obj):
     s3Handler = S3.S3_Handler()
     listOfFile = s3Handler.listFromAWS("airquality", date_obj)
