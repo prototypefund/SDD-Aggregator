@@ -6,6 +6,8 @@ import datetime
 from coords_to_kreis import get_ags
 from push_to_influxdb import push_to_influxdb
 from convert_df_to_influxdb import convert_df_to_influxdb
+from sklearn.cluster import KMeans, MiniBatchKMeans
+
 # import fiona
 # fiona.supported_drivers
 
@@ -213,9 +215,112 @@ def aggregate(date_obj=datetime.date.today()):
     df_data = df_data.rename(columns={"latitude" : "lat", "longitude" : "lon", "id" : "_id"}) # LAT LON VERTAUSCHT IN ROHDATEN
     df_data = df_data.astype({"lat" : "float", "lon" : "float"})
     df_data["name"] = df_data["_id"]
-    df_data = get_ags(df_data.copy())
     df_data = df_data.rename(columns={"state" : "bundesland", "forVehiclesWithCharacteristicsOf" : "fahrzeugtyp"})
 
+
+# ------------- cluster geo algorithm ---------------------
+    geo_df = gpd.GeoDataFrame(df.drop(['longitude', 'latitude'], axis=1),
+                              crs={'init': 'epsg:4326'},
+                              geometry=[Point(xy) for xy in zip(df.longitude, df.latitude)])
+    df = df_data.copy()
+    df.to_pickle("temp.pkl")
+
+    # df.columns
+    # Index(['_id', 'fahrzeugtyp', 'time', 'vehicleFlow', 'averageVehicleSpeed',
+    #        'percentageLongVehicles', 'lat', 'lon', 'name', 'geometry', 'ags',
+    #        'bundesland', 'landkreis', 'districtType', 'measurement', 'origin'],
+    #       dtype='object')
+
+    df["fahrzeugtyp"].value_counts()
+
+    df.loc[df["fahrzeugtyp"] == "anyVehicle"]["lat"].unique()
+    df["lat_short"] = df["lat"].apply(lambda x: round(x, 3))
+    len(df["lat_short"].unique())
+    df["time"].value_counts()
+
+    ssd = {}
+
+    for i in range(100, 1500):
+        km = MiniBatchKMeans(n_clusters=i)
+        km.fit_predict(df[["lat", "lon"]])
+        ssd[i] = km.inertia_
+
+    ssd2 = {}
+    cluster_centres = {}
+    for i in range(296, 350):
+        km = MiniBatchKMeans(n_clusters=i)
+        km.fit_predict(df[["lat", "lon"]])
+        ssd2[i] = km.inertia_
+        plt.figure()
+        plt.title(f"{i}")
+        cluster_centres[i] = km.cluster_centers_
+        plt.scatter(df["lat"], df["lon"],s=2, c="black")
+        plt.scatter(km.cluster_centers_[:,0],km.cluster_centers_[:,1], s = 5, c="red")
+
+    plt.plot(ssd2.keys(), ssd2.values())
+
+    import pandas as pd
+    import numpy as np
+    from scipy.cluster.hierarchy import linkage, fcluster, fclusterdata
+    from matplotlib import pyplot as plt
+    import scipy.cluster.hierarchy as shc
+    import mplleaflet
+    # plt.hold(True)
+
+
+    # plt.figure(figsize=(10, 7))
+    # plt.title("Dendogram for cluster")
+    # dend = shc.dendrogram(shc.linkage(np.array(df[["lat", "lon"]]), method='ward'))
+
+    df = pd.read_pickle("temp.pkl")
+    df =  df.loc[df["fahrzeugtyp"] == "anyVehicle"].copy()
+    df =  df.loc[df["time"] == "2021-02-15T01:00:39.074+01:00"].copy()
+    data = np.array(df[["lon", "lat"]])
+    np.random.shuffle(data)
+    data = data
+
+    for t in np.arange(0.000,0.005,0.001):
+        t = 0.001
+        y_pred = fcluster(shc.linkage(data, method="ward"), t, criterion='distance')
+        print(y_pred)
+        cluster_size = np.unique(y_pred).shape
+        # plt.scatter(np.unique(y_pred).shape, t)
+
+        plot_data = np.append(data,np.atleast_2d(y_pred).T, axis=1)
+        df_plot = pd.DataFrame(plot_data, columns=["lat", "lon", "cluster"])
+        df_plot.cluster = df_plot.cluster.astype(int)
+        # plt.figure()
+        # plt.title(f"distance: {t}, clusters: {cluster_size}")
+        # plt.scatter(df_plot["lat"].values, df_plot["lon"].values,
+        #             c=df_plot.cluster.values, cmap='flag', s=7)
+
+        fig, ax = plt.subplots(figsize=(10,6))
+        plt.title(f"distance: {t}, clusters: {cluster_size}")
+        plt.scatter(df_plot["lat"].values, df_plot["lon"].values,
+                    c=df_plot.cluster.values, cmap='flag', s=15)
+
+        for index, row in df_plot.iterrows():
+            plt.annotate(row['cluster'],
+                         (row['lat'], row['lon']),
+                         horizontalalignment='center',
+                         verticalalignment='top',
+                         size=10, color="black")
+        ax.yaxis._gridOnMajor = True
+        ax.xaxis._gridOnMajor = True
+
+        mplleaflet.show(fig=fig)
+
+        # ---------------------------------------------------------
+
+    df_data[""]
+    df_data["lat"] =
+    df_data["lon"] =
+    df_data.groupby("agg_point").aggreg     ate({"_id" : "max", "name" : "max", "lat" : "mean", "lon" : "mean",
+                                            "vehicleFlow" : "mean", "averageVehicleSpeed" : "mean", "percentageLongVehicles" : "mean"
+                                            #"bundesland" :"max", "ags" : "max", "landkreis" : "max", "districtType" : "max"
+                                           })
+
+    df_data = get_ags(df_data.copy())
     df_data["measurement"] = "mdm"
     df_data["origin"] = "https://www.mdm-portal.de/"
     list_mdm_fields = ["vehicleFlow", "averageVehicleSpeed", "percentageLongVehicles", "lat", "lon"]
@@ -250,10 +355,10 @@ def aggregate(date_obj=datetime.date.today()):
     # df8 = df[["id", 'vehicleFlow', "averageVehicleSpeed", 'percentageLongVehicles', "forVehiclesWithCharacteristicsOf"]]
     # df6 = pd.merge(df7, df8, how="left", on=["id", "forVehiclesWithCharacteristicsOf", "version"])
 
-if __name__ == "__main__":
-    for x in range(30):
-        date_obj = datetime.date.today() - datetime.timedelta(days=x)
-        aggregate(date_obj)
+# if __name__ == "__main__":
+#     for x in range(30):
+#         date_obj = datetime.date.today() - datetime.timedelta(days=x)
+#         aggregate(date_obj)
 
 #
 #     debug
