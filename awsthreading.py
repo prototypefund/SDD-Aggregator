@@ -86,6 +86,7 @@ def _init():
 def get_mdm_data(date_obj):
     s3_client = boto3.client('s3')
     dict_objects = s3_client.list_objects(Bucket=settings.BUCKET, Prefix=get_mdm_prefix(date_obj))
+    print(dict_objects)
     list_keys = [x["Key"] for x in dict_objects["Contents"]]
     list_threads = create_threads(list_keys, num_th=100)
     print(list_threads)
